@@ -1,0 +1,7 @@
+{
+  "name": "world-of-drums",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
