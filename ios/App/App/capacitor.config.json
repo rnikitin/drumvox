@@ -1,0 +1,8 @@
+{
+  "appId": "io.ionic.starter",
+  "appName": "world-of-drums",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "build",
+  "cordova": {}
+}
