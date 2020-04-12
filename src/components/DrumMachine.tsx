@@ -1,7 +1,7 @@
 import React from 'react';
 import { IonCheckbox, IonCol, IonRange, IonLabel, IonFab, IonFabButton, IonIcon, IonRow, IonGrid, IonContent } from '@ionic/react';
 //import Tone from 'tone/Tone';
-import Tone from '../../node_modules/tone/Tone';
+import Tone from 'tone/Tone';
 import { play, pause } from 'ionicons/icons';
 import DrumPoint from './DrumPoint';
 import KanakolCol from './KanakolCol';
