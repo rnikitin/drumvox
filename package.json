@@ -50,7 +50,7 @@
     ]
   },
   "devDependencies": {
-    "@capacitor/cli": "2.0.0",
+    "@capacitor/cli": "2.0.1",
     "tone": "^13.8.25"
   },
   "description": "An Ionic project"
