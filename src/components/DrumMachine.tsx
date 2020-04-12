@@ -1,5 +1,5 @@
 import React from 'react';
-import { IonCheckbox, IonCol, IonRange, IonLabel, IonFab, IonFabButton, IonIcon, IonRow, IonGrid, IonContent } from '@ionic/react';
+import { IonCol, IonRange, IonLabel, IonRow, IonGrid, IonContent } from '@ionic/react';
 //import Tone from 'tone/Tone';
 import Tone from 'tone/Tone';
 import { play, pause } from 'ionicons/icons';
@@ -24,8 +24,6 @@ type DrumMachineState = {
 
 // size of playing sequence, constant for now
 const SEQUENCE_SIZE = 8;
-// note 4 = 0
-const KANAKOL_NOTES = ["Mi", "Ta", "Ka", "Di"];
 // Our set of drum notes with mp3
 const DRUM_NOTES = {
     "HH" : "/assets/audio/505/hh.mp3",

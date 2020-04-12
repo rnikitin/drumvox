@@ -1,6 +1,5 @@
-import React, { MouseEventHandler } from 'react';
+import React from 'react';
 import { IonFab, IonFabButton, IonIcon } from '@ionic/react';
-import { pause, play } from 'ionicons/icons';
 
 
 interface BigFabButtonProps {
