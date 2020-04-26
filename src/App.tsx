@@ -11,7 +11,8 @@ import {
   IonList,
   IonItem} from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import DrumPage from './pages/DrumPage';
+import DrumMachinePage from './pages/DrumMachinePage';
+import KanakolPlayerPage from './pages/KanakolPlayerPage';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -31,7 +32,7 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
-
+import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 
 const App: React.FC = () => (
   <IonApp>
@@ -40,25 +41,22 @@ const App: React.FC = () => (
     <IonMenu side="start" menuId="first" contentId="mainContent">
       <IonHeader>
         <IonToolbar>
-          <IonTitle>World Of Drums</IonTitle>
+          <IonTitle>DrumVox</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
         <IonList>
-          <IonItem>Drum Machine</IonItem>
-          <IonItem>Menu Item</IonItem>
-          <IonItem>Menu Item</IonItem>
-          <IonItem>Menu Item</IonItem>
-          <IonItem>Menu Item</IonItem>
+          <IonItem href="/kanakolPlayer">Kanakol Player</IonItem>
+          <IonItem href="/drumMachine">Drum Machine</IonItem>
+          
         </IonList>
       </IonContent>
     </IonMenu>
 
     <IonRouterOutlet id="mainContent">
-      <Route path="/Drum" component={DrumPage} exact={true} />
-      {/* <Route path="/tab2" component={Tab2} exact={true} />
-      <Route path="/tab3" component={Tab3} /> */}
-      <Route path="/" render={() => <Redirect to="/Drum" />} exact={true} />
+      <Route path="/drumMachine" component={DrumMachinePage} exact={true} />
+      <Route path="/kanakolPlayer" component={KanakolPlayerPage} exact={true} />
+      <Route path="/" render={() => <Redirect to="/kanakolPlayer" />} exact={true} />
     </IonRouterOutlet>
 
     </IonReactRouter>
@@ -66,6 +64,6 @@ const App: React.FC = () => (
 );
 
 // dark mode
-document.body.classList.add('dark');
+//document.body.classList.add('dark');
 
 export default App;

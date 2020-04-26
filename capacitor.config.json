@@ -1,6 +1,6 @@
 {
   "appId": "io.ionic.starter",
-  "appName": "world-of-drums",
+  "appName": "DrumVox",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "build",

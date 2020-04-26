@@ -26,8 +26,8 @@ type DrumMachineState = {
 const SEQUENCE_SIZE = 8;
 // Our set of drum notes with mp3
 const DRUM_NOTES = {
-    "HH" : "/assets/audio/drumvox/hh.mp3",
     "Ride" : "/assets/audio/drumvox/ride.mp3",
+    "HH" : "/assets/audio/drumvox/hh.mp3",
     "Kick" : "/assets/audio/drumvox/kick.mp3",
     "Snare" : "/assets/audio/drumvox/snare.mp3",
 };
@@ -86,7 +86,7 @@ class DrumMachine extends React.Component<DrumMachineProps, DrumMachineState> {
         // update UI
         Tone.Draw.schedule(() => {
             this.updateBeat(beat);
-        }, new Tone.Time(time));
+        }, new Tone.Time(time + 0.025));
     }
 
     componentDidMount() {

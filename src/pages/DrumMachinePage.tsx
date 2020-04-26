@@ -1,9 +1,9 @@
 import React from 'react';
 import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle } from '@ionic/react';
-import './DrumPage.css';
+import './DrumMachinePage.css';
 import DrumMachine from '../components/DrumMachine';
 
-const DrumPage: React.FC = () => {
+const DrumMachinePage: React.FC = () => {
     return (
       <IonPage>
       <IonHeader>
@@ -28,5 +28,4 @@ const DrumPage: React.FC = () => {
     );
 };
 
-
-export default DrumPage;
+export default DrumMachinePage;
