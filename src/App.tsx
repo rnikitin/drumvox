@@ -9,10 +9,13 @@ import {
   IonToolbar,
   IonTitle,
   IonList,
-  IonItem} from '@ionic/react';
+  IonItem
+} from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import DrumMachinePage from './pages/DrumMachinePage';
-import KanakolPlayerPage from './pages/KanakolPlayerPage';
+import KonnakolPlayerPage from './pages/KonnakolPlayerPage';
+import { AppProvider } from './AppContext';
+import LogRocket from 'logrocket';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -30,40 +33,41 @@ import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
+
 /* Theme variables */
 import './theme/variables.css';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 
+//LogRocket.init('zfojck/drumvox');
+
 const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
+  <AppProvider>
+    <IonApp>
+      <IonReactRouter>
+        <IonMenu side="start" menuId="first" contentId="mainContent">
+          <IonHeader>
+            <IonToolbar>
+              <IonTitle>DrumVox</IonTitle>
+            </IonToolbar>
+          </IonHeader>
+          <IonContent>
+            <IonList>
+              <IonItem href="/kanakolPlayer">Kanakol Player</IonItem>
+              <IonItem href="/drumMachine">Drum Machine</IonItem>
 
-    <IonMenu side="start" menuId="first" contentId="mainContent">
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>DrumVox</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent>
-        <IonList>
-          <IonItem href="/kanakolPlayer">Kanakol Player</IonItem>
-          <IonItem href="/drumMachine">Drum Machine</IonItem>
-          
-        </IonList>
-      </IonContent>
-    </IonMenu>
+            </IonList>
+          </IonContent>
+        </IonMenu>
 
-    <IonRouterOutlet id="mainContent">
-      <Route path="/drumMachine" component={DrumMachinePage} exact={true} />
-      <Route path="/kanakolPlayer" component={KanakolPlayerPage} exact={true} />
-      <Route path="/" render={() => <Redirect to="/kanakolPlayer" />} exact={true} />
-    </IonRouterOutlet>
+        <IonRouterOutlet id="mainContent">
+          <Route path="/drumMachine" component={DrumMachinePage} exact={true} />
+          <Route path="/kanakolPlayer" component={KonnakolPlayerPage} exact={true} />
+          <Route path="/" render={() => <Redirect to="/kanakolPlayer" />} exact={true} />
+        </IonRouterOutlet>
 
-    </IonReactRouter>
-  </IonApp>
+      </IonReactRouter>
+    </IonApp>
+  </AppProvider>
 );
-
-// dark mode
-//document.body.classList.add('dark');
 
 export default App;

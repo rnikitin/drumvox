@@ -2,10 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { isPlatform, getPlatforms } from '@ionic/react';
 
-console.log(window.screen.orientation.type);
-window.screen.orientation.lock('landscape');
-console.log(window.screen.orientation.type)
+// lock the app to landscale on mobile
+console.log("DrumVox is running on", getPlatforms());
+window.screen.orientation?.lock('landscape')
+    .then(() => { },
+        (err) => {
+            console.log(err);
+        });
+
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

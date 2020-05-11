@@ -98,7 +98,7 @@ class DrumMachine extends React.Component<DrumMachineProps, DrumMachineState> {
     }
 
     togglePlayPause(){
-        if (Tone.Transport.state != Tone.State.Started){
+        if (Tone.Transport.state !== Tone.State.Started){
             Tone.Transport.start();
             this.setState({isPlaying: true});
         }
