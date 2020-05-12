@@ -28,7 +28,6 @@ class KanakolCol extends React.PureComponent<KanakolColProp, KanakolColState> {
     }
 
     beat(newBeat: number){
-        console.log("KanakolColProp.beat", )
         this.setState({currentBeat: newBeat});
     }
 

@@ -2,37 +2,15 @@ import React, { useRef, useEffect } from 'react';
 import Konva from 'konva';
 import { Stage } from 'react-konva';
 import { bus, KonnakolPlayerPlayEvent } from '../lib/events';
+import { TestMelody, MelodyBeat } from '../lib/KonnakolMelody';
 
 type KonnakolPlayerProps = {
     contentRef: React.RefObject<HTMLIonContentElement>;
 };
 
-type MelodyBeat = {
-    id: string;
-    notes: string[];
-    konnakol: string;
-    main?: boolean;
-};
 
-const instruments = ["Crash", "HH", "Snare", "Kick"];
-const melody: MelodyBeat[] = [
-    { id: "1", notes: ["Crash", "Kick"], konnakol: "Ta", main: true },
-    { id: "2", notes: ["HH"], konnakol: "Ka" },
-    { id: "3", notes: ["HH"], konnakol: "Di" },
-    { id: "4", notes: ["HH"], konnakol: "Mi" },
-    { id: "5", notes: ["HH", "Snare"], konnakol: "Ta", main: true },
-    { id: "6", notes: ["HH"], konnakol: "Ki" },
-    { id: "7", notes: ["HH"], konnakol: "Ta" },
-    { id: "8", notes: ["HH", "Kick"], konnakol: "Ta", main: true },
-    { id: "9", notes: ["HH"], konnakol: "Ki" },
-    { id: "10", notes: ["HH"], konnakol: "Ta" },
-    { id: "11", notes: ["HH", "Kick"], konnakol: "Ta", main: true },
-    { id: "12", notes: ["HH"], konnakol: "Ka" },
-    { id: "13", notes: ["HH", "Snare"], konnakol: "Ta", main: true },
-    { id: "14", notes: ["HH", "Kick"], konnakol: "Ta", main: true },
-    { id: "15", notes: ["HH"], konnakol: "Ki" },
-    { id: "16", notes: ["HH"], konnakol: "Ta" }
-];
+var melody = TestMelody;
+
 
 const KonnakolPlayer: React.FC<KonnakolPlayerProps> = (props) => {
 
@@ -72,12 +50,6 @@ const KonnakolPlayer: React.FC<KonnakolPlayerProps> = (props) => {
                 child.x(newX);
             }
         })
-
-        //console.log('melodyAnimation', frame, melodyLayer.children.length);
-
-        // TODO clean invisible notes
-        // TODO render notes ahead
-
     }, melodyLayer);
 
 
@@ -137,7 +109,7 @@ const KonnakolPlayer: React.FC<KonnakolPlayerProps> = (props) => {
             x: 0,
             y: YOffset,
             width: XTerminatorOffset,
-            height: (groupHeight * (instruments.length + 1)),
+            height: (groupHeight * (melody.instruments.length + 1)),
             fill: backgroundColor
         });
         instrumentsLayer.add(terminatorRect);
@@ -148,7 +120,7 @@ const KonnakolPlayer: React.FC<KonnakolPlayerProps> = (props) => {
                 XTerminatorOffset,
                 YOffset,
                 XTerminatorOffset,
-                YOffset + (groupHeight * (instruments.length + 1))
+                YOffset + (groupHeight * (melody.instruments.length + 1))
             ],
             stroke: "#BDBDBD",
             strokeWidth: 14,
@@ -160,7 +132,7 @@ const KonnakolPlayer: React.FC<KonnakolPlayerProps> = (props) => {
 
 
         // render each instrument canvas layer
-        instruments.forEach((instrument, i) => {
+        melody.instruments.forEach((instrument, i) => {
             const group = new Konva.Group();
             const text = new Konva.Text({
                 x: XTextOffset,
@@ -203,8 +175,8 @@ const KonnakolPlayer: React.FC<KonnakolPlayerProps> = (props) => {
 
         // render first 32 melody notes
         for (var i = 0; i < melodyPrerenderSize; i++) {
-            var n = i % melody.length;
-            var beat = melody[n];
+            var n = i % melody.beats.length;
+            var beat = melody.beats[n];
 
             lastRenderedBeat = beat;
 
@@ -212,7 +184,7 @@ const KonnakolPlayer: React.FC<KonnakolPlayerProps> = (props) => {
                 x: XTerminatorOffset + i * beatXSize,
                 y: YOffset,
                 width: beatXSize,
-                height: (instruments.length + 1),
+                height: (melody.instruments.length + 1),
                 name: beat.id
             });
 
@@ -220,7 +192,7 @@ const KonnakolPlayer: React.FC<KonnakolPlayerProps> = (props) => {
             beat.notes.forEach(note => {
 
                 // find instrument
-                var instrumentIndex = instruments.indexOf(note);
+                var instrumentIndex = melody.instruments.indexOf(note);
 
                 // render note
                 var circle = new Konva.Circle({
@@ -236,7 +208,7 @@ const KonnakolPlayer: React.FC<KonnakolPlayerProps> = (props) => {
             // render konnakol
             const konnakolText = new Konva.Text({
                 x: beatXSize - 8,
-                y: instruments.length * groupHeight + groupHeight / 2,
+                y: melody.instruments.length * groupHeight + groupHeight / 2,
                 fontSize: 18,
                 fill: beat.main ? "#EB5757" : textColor,
                 text: beat.konnakol,
@@ -260,12 +232,12 @@ const KonnakolPlayer: React.FC<KonnakolPlayerProps> = (props) => {
         var lastGroup = melodyLayer.children[melodyLayer.children.length - 1];
 
         // find beats to render
-        var idx = melody.indexOf(lastRenderedBeat);
+        var idx = melody.beats.indexOf(lastRenderedBeat);
         // restart melody if we approched the end
-        if ((idx + 1) == melody.length)
+        if ((idx + 1) == melody.beats.length)
             idx = -1;
         // get next beats
-        var nextBeats = melody.slice(idx + 1, idx + (melodyPrerenderSize - notesRendered));
+        var nextBeats = melody.beats.slice(idx + 1, idx + (melodyPrerenderSize - notesRendered));
         console.log('renderMelodyAhead. notesRendered=', notesRendered, 'idx=', idx, 'nextBeats=', nextBeats);
 
         // render beats
@@ -275,7 +247,7 @@ const KonnakolPlayer: React.FC<KonnakolPlayerProps> = (props) => {
                 x: lastGroup.x() + beatXSize,
                 y: YOffset,
                 width: beatXSize,
-                height: (instruments.length + 1),
+                height: (melody.instruments.length + 1),
                 name: beat.id
             });
 
@@ -283,7 +255,7 @@ const KonnakolPlayer: React.FC<KonnakolPlayerProps> = (props) => {
             beat.notes.forEach(note => {
 
                 // find instrument
-                var instrumentIndex = instruments.indexOf(note);
+                var instrumentIndex = melody.instruments.indexOf(note);
 
                 // render note
                 var circle = new Konva.Circle({
@@ -299,7 +271,7 @@ const KonnakolPlayer: React.FC<KonnakolPlayerProps> = (props) => {
             // render konnakol
             const konnakolText = new Konva.Text({
                 x: beatXSize - 8,
-                y: instruments.length * groupHeight + groupHeight / 2,
+                y: melody.instruments.length * groupHeight + groupHeight / 2,
                 fontSize: 18,
                 fill: beat.main ? "#EB5757" : textColor,
                 text: beat.konnakol,

@@ -1,7 +1,7 @@
 import React from 'react';
 import { IonCol, IonRange, IonLabel, IonRow, IonGrid, IonContent } from '@ionic/react';
 //import Tone from 'tone/Tone';
-import Tone from 'tone/Tone';
+import * as Tone from "tone";
 import { play, pause } from 'ionicons/icons';
 import DrumPoint from './DrumPoint';
 import KanakolCol from './KanakolCol';
@@ -68,8 +68,8 @@ class DrumMachine extends React.Component<DrumMachineProps, DrumMachineState> {
           
           Tone.Transport.bpm.value = 80;
             
-          var seq = new Tone.Sequence(this.sequencerCallback.bind(this), this.controls.sequencer, new Tone.Time("4n"));
-          seq.start(new Tone.Time(Tone.now()));
+          var seq = new Tone.Sequence(this.sequencerCallback.bind(this), this.controls.sequencer, "4n");
+          seq.start();
     }
     
     sequencerCallback(time:number, beat:number){
@@ -79,14 +79,15 @@ class DrumMachine extends React.Component<DrumMachineProps, DrumMachineState> {
         if (this.controls.melody[beat].length > 0){
             for(let i=0; i < this.controls.melody[beat].length; i++){
                 let note = this.controls.melody[beat][i];
-                this.drumPlayers.get(note).start(new Tone.Time(time), new Tone.Time(0), new Tone.Time("4n"));
+
+                this.drumPlayers.player(note).start(time, 0, "8n");
             }
         }
         
         // update UI
         Tone.Draw.schedule(() => {
             this.updateBeat(beat);
-        }, new Tone.Time(time + 0.025));
+        }, time + 0.025);
     }
 
     componentDidMount() {
@@ -98,7 +99,7 @@ class DrumMachine extends React.Component<DrumMachineProps, DrumMachineState> {
     }
 
     togglePlayPause(){
-        if (Tone.Transport.state !== Tone.State.Started){
+        if (Tone.Transport.state !== "started"){
             Tone.Transport.start();
             this.setState({isPlaying: true});
         }
