@@ -11,7 +11,7 @@ export type KonnakolMelody = {
     beats: MelodyBeat[];
 }
 
-export const TestMelody:KonnakolMelody = {
+export const TestMelody1:KonnakolMelody = {
     name: "Just a test melody",
     instruments: ["Ride", "HH", "Snare", "Kick"],
     beats: [
@@ -34,4 +34,26 @@ export const TestMelody:KonnakolMelody = {
     ]
 }
 
+export const TestMelody2:KonnakolMelody = {
+    name: "Just a test melody",
+    instruments: ["Ride", "HH", "Snare", "Kick"],
+    beats: [
+        { id: "1", notes: ["Ride"], konnakol: "Ta", main: true },
+        { id: "2", notes: [], konnakol: "Ka" },
+        { id: "3", notes: ["HH"], konnakol: "Di" },
+        { id: "4", notes: [], konnakol: "Mi" },
+        { id: "5", notes: ["HH", "Snare"], konnakol: "Ta", main: true },
+        { id: "6", notes: [], konnakol: "Ki" },
+        { id: "7", notes: ["HH"], konnakol: "Ta" },
+        { id: "8", notes: ["Kick"], konnakol: "Ta", main: true },
+        { id: "9", notes: ["HH"], konnakol: "Ki" },
+        { id: "10", notes: [], konnakol: "Ta" },
+        { id: "11", notes: ["HH", "Kick"], konnakol: "Ta", main: true },
+        { id: "12", notes: [], konnakol: "Ka" },
+        { id: "13", notes: ["HH", "Snare"], konnakol: "Ta", main: true },
+        { id: "14", notes: ["Kick"], konnakol: "Ta", main: true },
+        { id: "15", notes: ["HH"], konnakol: "Ki" },
+        { id: "16", notes: [], konnakol: "Ta" }
+    ]
+}
 

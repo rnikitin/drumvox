@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react"
 import { Stage } from "react-konva"
 import { bus, KonnakolPlayerPlayEvent } from "../lib/events"
-import { TestMelody } from "../lib/KonnakolMelody"
+import * as Melodies from "../lib/KonnakolMelody"
 import { KonnakolGame } from "../lib/KonnakolGame"
 import { KonnakolGameAudio } from "../lib/KonnakolGameAudio"
 
@@ -9,7 +9,7 @@ type KonnakolPlayerProps = {
     contentRef: React.RefObject<HTMLIonContentElement>
 };
 
-var melody = TestMelody
+var melody = Melodies.TestMelody1
 
 const KonnakolPlayer: React.FC<KonnakolPlayerProps> = (props) => {
 
@@ -48,9 +48,7 @@ const KonnakolPlayer: React.FC<KonnakolPlayerProps> = (props) => {
         }, 1000)
 
         // unmount function
-        return () => {
-            konnakolPlayerPlayEventUnsubscribe()
-        }
+        return () => konnakolPlayerPlayEventUnsubscribe()
     }, [])
 
     return (

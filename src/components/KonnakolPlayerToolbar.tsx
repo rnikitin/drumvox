@@ -1,19 +1,19 @@
-import React, { useContext } from 'react';
-import { IonToolbar, IonButtons, IonButton, IonIcon } from '@ionic/react';
-import { play, pause } from 'ionicons/icons';
-import { AppContext } from '../AppContext';
-import { bus, KonnakolPlayerPlayEvent } from '../lib/events';
+import React, { useContext } from "react"
+import { IonToolbar, IonButtons, IonButton, IonIcon } from "@ionic/react"
+import { play, pause } from "ionicons/icons"
+import { AppContext } from "../AppContext"
+import { bus, KonnakolPlayerPlayEvent } from "../lib/events"
 
 const KonnakolPlayerToolbar: React.FC = () => {
 
-    const { state, dispatch } = useContext(AppContext);
+    const { state, dispatch } = useContext(AppContext)
 
     const onPlayClicked = () => {
-        console.log('onPlayClicked', state);
+        console.log("onPlayClicked", state)
 
-        dispatch({ type: 'PLAY', playing: !state.playing });
-        
-        bus.publish(KonnakolPlayerPlayEvent({ playing: !state.playing }));
+        dispatch({ type: "PLAY", playing: !state.playing })
+
+        bus.publish(KonnakolPlayerPlayEvent({ playing: !state.playing }))
     }
 
     return (

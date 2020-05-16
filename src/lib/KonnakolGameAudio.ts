@@ -13,7 +13,7 @@ const DRUM_NOTES = {
 
 export class KonnakolGameAudio {
 	private drumPlayers: Tone.Players
-	private bpm = 70
+	private bpm = 60
 	private melody: KonnakolMelody
 	private sequenceEvents: number[] = []
 	private Sequencer : Tone.Sequence<number>
