@@ -1,11 +1,10 @@
-import React, { useContext, useRef } from 'react';
-import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonFooter } from '@ionic/react';
-import KonnakolPlayer from '../components/KonnakolPlayer';
-import KonnakolPlayerToolbar from '../components/KonnakolPlayerToolbar';
-import { AppContext } from '../AppContext';
+import React, { useRef } from "react"
+import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonFooter } from "@ionic/react"
+import KonnakolPlayer from "../components/KonnakolPlayer"
+import KonnakolPlayerToolbar from "../components/KonnakolPlayerToolbar"
 
 const KanakolPlayerPage: React.FC = () => {
-  const contentRef = useRef<HTMLIonContentElement>(null);
+  const contentRef = useRef<HTMLIonContentElement>(null)
 
   return (
     <IonPage>

@@ -1,5 +1,5 @@
-import React from 'react';
-import { Redirect, Route } from 'react-router-dom';
+import React from "react"
+import { Redirect, Route } from "react-router-dom"
 import {
   IonApp,
   IonRouterOutlet,
@@ -10,35 +10,46 @@ import {
   IonTitle,
   IonList,
   IonItem
-} from '@ionic/react';
-import { IonReactRouter } from '@ionic/react-router';
-import DrumMachinePage from './pages/DrumMachinePage';
-import KonnakolPlayerPage from './pages/KonnakolPlayerPage';
-import { AppProvider } from './AppContext';
-import LogRocket from 'logrocket';
+} from "@ionic/react"
+import { IonReactRouter } from "@ionic/react-router"
+import DrumMachinePage from "./pages/DrumMachinePage"
+import KonnakolPlayerPage from "./pages/KonnakolPlayerPage"
+import { AppProvider } from "./AppContext"
 
 /* Core CSS required for Ionic components to work properly */
-import '@ionic/react/css/core.css';
+import "@ionic/react/css/core.css"
 
 /* Basic CSS for apps built with Ionic */
-import '@ionic/react/css/normalize.css';
-import '@ionic/react/css/structure.css';
-import '@ionic/react/css/typography.css';
+import "@ionic/react/css/normalize.css"
+import "@ionic/react/css/structure.css"
+import "@ionic/react/css/typography.css"
 
 /* Optional CSS utils that can be commented out */
-import '@ionic/react/css/padding.css';
-import '@ionic/react/css/float-elements.css';
-import '@ionic/react/css/text-alignment.css';
-import '@ionic/react/css/text-transformation.css';
-import '@ionic/react/css/flex-utils.css';
-import '@ionic/react/css/display.css';
+import "@ionic/react/css/padding.css"
+import "@ionic/react/css/float-elements.css"
+import "@ionic/react/css/text-alignment.css"
+import "@ionic/react/css/text-transformation.css"
+import "@ionic/react/css/flex-utils.css"
+import "@ionic/react/css/display.css"
 
 
 /* Theme variables */
-import './theme/variables.css';
-import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
+import "./theme/variables.css"
+import { ScreenOrientation } from "@ionic-native/screen-orientation"
 
 //LogRocket.init('zfojck/drumvox');
+
+
+ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.LANDSCAPE)
+.then(v=> {
+  console.log("Screen orientation locked.", v)
+},
+err => {
+  console.log("failed to lock orientation...", err)
+})
+
+
+//this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
 
 const App: React.FC = () => (
   <AppProvider>
@@ -68,6 +79,6 @@ const App: React.FC = () => (
       </IonReactRouter>
     </IonApp>
   </AppProvider>
-);
+)
 
-export default App;
+export default App

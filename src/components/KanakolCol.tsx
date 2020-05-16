@@ -1,10 +1,9 @@
-import React from 'react';
-import { IonCol } from '@ionic/react';
-
-import './KanakolCol.css';
+import React from "react"
+import { IonCol } from "@ionic/react"
+import "./KanakolCol.css"
 
 // note 4 = 0
-const KANAKOL_NOTES = ["Mi", "Ta", "Ka", "Di"];
+const KANAKOL_NOTES = ["Mi", "Ta", "Ka", "Di"]
 
 type KanakolColState = {
     currentBeat: number;
@@ -22,21 +21,21 @@ class KanakolCol extends React.PureComponent<KanakolColProp, KanakolColState> {
     }
 
     constructor(props:KanakolColProp){
-        super(props);
+        super(props)
 
-        props.onBeat(this.beat.bind(this));
+        props.onBeat(this.beat.bind(this))
     }
 
     beat(newBeat: number){
-        this.setState({currentBeat: newBeat});
+        this.setState({currentBeat: newBeat})
     }
 
     render(){
         return (<IonCol 
-                    class={(this.state.currentBeat == this.props.position) ? "kan-current" : ""}>
+                    class={(this.state.currentBeat === this.props.position) ? "kan-current" : ""}>
                         {KANAKOL_NOTES[this.props.position % 4]}
-                </IonCol>);
+                </IonCol>)
     }
 }
 
-export default KanakolCol;
+export default KanakolCol

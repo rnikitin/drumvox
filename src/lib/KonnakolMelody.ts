@@ -13,9 +13,9 @@ export type KonnakolMelody = {
 
 export const TestMelody:KonnakolMelody = {
     name: "Just a test melody",
-    instruments: ["Crash", "HH", "Snare", "Kick"],
+    instruments: ["Ride", "HH", "Snare", "Kick"],
     beats: [
-        { id: "1", notes: ["Crash", "Kick"], konnakol: "Ta", main: true },
+        { id: "1", notes: ["Ride"], konnakol: "Ta", main: true },
         { id: "2", notes: ["HH"], konnakol: "Ka" },
         { id: "3", notes: ["HH"], konnakol: "Di" },
         { id: "4", notes: ["HH"], konnakol: "Mi" },
