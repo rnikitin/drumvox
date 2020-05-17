@@ -14,7 +14,7 @@ const KonnakolPlayerToolbar: React.FC = () => {
         AppContext.Player.playing = !AppContext.Player.playing
     }
 
-    const onChangeBpm = (change:number) => {
+    const onChangeBpm = (change: number) => {
         console.log("onChangeBpm", AppContext.Player.bpm)
 
         AppContext.Player.bpm = AppContext.Player.bpm + change
@@ -40,7 +40,7 @@ const KonnakolPlayerToolbar: React.FC = () => {
                 <IonButton onClick={onStop}>
                     <IonIcon slot="icon-only" icon={stop} />
                 </IonButton>
-                <IonButton onClick={()=>onChangeBpm(-BPM_STEP)}>
+                <IonButton onClick={() => onChangeBpm(-BPM_STEP)}>
                     <IonIcon slot="icon-only" icon={removeCircleOutline} />
                 </IonButton>
                 <Observer>
@@ -50,7 +50,7 @@ const KonnakolPlayerToolbar: React.FC = () => {
                         )
                     }
                 </Observer>
-                <IonButton onClick={()=>onChangeBpm(+BPM_STEP)}>
+                <IonButton onClick={() => onChangeBpm(+BPM_STEP)}>
                     <IonIcon slot="icon-only" icon={addCircleOutline} />
                 </IonButton>
             </IonButtons>

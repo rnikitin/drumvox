@@ -30,7 +30,7 @@ const TERMINATOR_OFFSET_X = 100
 /**
  * 
  */
-const TERMINATOR_COLOR = "#BDBDBD"
+const TERMINATOR_COLOR = "#FF0000"
 /**
  * Цвет текста
  */
@@ -128,7 +128,7 @@ export class KonnakolGame {
                 OFFSET_Y + (GROUP_HEIGHT * (this.melody.instruments.length + 1))
             ],
             stroke: TERMINATOR_COLOR,
-            strokeWidth: 14,
+            strokeWidth: 2,
             lineCap: "round",
             lineJoin: "round"
         })
