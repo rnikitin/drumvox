@@ -1,11 +1,11 @@
-import React from 'react';
-import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle } from '@ionic/react';
-import './DrumMachinePage.css';
-import DrumMachine from '../components/DrumMachine';
+import React from "react"
+import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle } from "@ionic/react"
+import "./DrumMachinePage.css"
+import DrumMachine from "../components/DrumMachine"
 
 const DrumMachinePage: React.FC = () => {
-    return (
-      <IonPage>
+  return (
+    <IonPage>
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
@@ -22,10 +22,10 @@ const DrumMachinePage: React.FC = () => {
         </IonHeader>
 
         <DrumMachine />
-    
+
       </IonContent>
     </IonPage>
-    );
-};
+  )
+}
 
-export default DrumMachinePage;
+export default DrumMachinePage

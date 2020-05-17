@@ -17,12 +17,6 @@ const KanakolPlayerPage: React.FC = () => {
         </IonToolbar>
       </IonHeader>
 
-      <IonHeader collapse="condense">
-        <IonToolbar>
-          <IonTitle size="large"></IonTitle>
-        </IonToolbar>
-      </IonHeader>
-
       <IonContent ref={contentRef} class="kannakol-player-content" slot="fixed" forceOverscroll={false}>
         <KonnakolPlayer contentRef={contentRef} />
       </IonContent>

@@ -1,8 +1,5 @@
 import { FirebaseX } from "@ionic-native/firebase-x"
 import { AppCenterAnalytics } from "@ionic-native/app-center-analytics"
-import { analytics } from "ionicons/icons"
-
-
 
 export class Analytics {
 
@@ -12,7 +9,22 @@ export class Analytics {
 	 * @param data event payload
 	 */
 	public static LogEvent(name: string, data: any) {
+
+		console.log("try to log", name, data, FirebaseX, AppCenterAnalytics)
+
 		FirebaseX.logEvent(name, data)
+			.then(function () {
+				console.log("FirebaseX analytics success", arguments)
+			},
+				function () {
+					console.log("FirebaseX analytics fail", arguments)
+				})
 		AppCenterAnalytics.trackEvent(name, data)
+			.then(function () {
+				console.log("AppCenterAnalytics analytics success", arguments)
+			},
+				function () {
+					console.log("AppCenterAnalytics analytics fail", arguments)
+				})
 	}
 }

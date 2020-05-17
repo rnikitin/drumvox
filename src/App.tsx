@@ -35,46 +35,55 @@ import "@ionic/react/css/display.css"
 /* Theme variables */
 import "./theme/variables.css"
 import { ScreenOrientation } from "@ionic-native/screen-orientation"
+import * as firebase from "./lib/Firebase"
+import CollectionsListPage from "./pages/CollectionsListPage"
+import CollectionView from "./pages/CollectionViewPage"
 
 //LogRocket.init('zfojck/drumvox');
 
 
 ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.LANDSCAPE)
-.then(v=> {
-  console.log("Screen orientation locked.", v)
-},
-err => {
-  console.log("failed to lock orientation...", err)
-})
+  .then(v => {
+    console.log("Screen orientation locked.", v)
+  },
+    err => {
+      console.log("failed to lock orientation...", err)
+    })
+
+// start analytics tracking
+firebase.app.analytics()
 
 //this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
 
 const App: React.FC = () => (
-    <IonApp>
-      <IonReactRouter>
-        <IonMenu side="start" menuId="first" contentId="mainContent">
-          <IonHeader>
-            <IonToolbar>
-              <IonTitle>DrumVox</IonTitle>
-            </IonToolbar>
-          </IonHeader>
-          <IonContent>
-            <IonList>
-              <IonItem href="/kanakolPlayer">Kanakol Player</IonItem>
-              <IonItem href="/drumMachine">Drum Machine</IonItem>
+  <IonApp>
+    <IonReactRouter>
+      <IonMenu side="start" menuId="first" contentId="mainContent">
+        <IonHeader>
+          <IonToolbar>
+            <IonTitle>DrumVox</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+        <IonContent>
+          <IonList>
+            <IonItem routerLink="/collections">Home</IonItem>
+            {/* <IonItem href="/kanakolPlayer">Kanakol Player</IonItem> */}
+            {/* <IonItem href="/drumMachine">Drum Machine</IonItem> */}
+          </IonList>
+        </IonContent>
+      </IonMenu>
 
-            </IonList>
-          </IonContent>
-        </IonMenu>
+      <IonRouterOutlet id="mainContent">
+        <Route path="/collections" component={CollectionsListPage} exact={true} />
+        <Route path="/collection/:id" component={CollectionView} />
+        {/* <Route path="/drumMachine" component={DrumMachinePage} exact={true} /> */}
+        <Route path="/player/:id" component={KonnakolPlayerPage} exact={true} />
 
-        <IonRouterOutlet id="mainContent">
-          <Route path="/drumMachine" component={DrumMachinePage} exact={true} />
-          <Route path="/kanakolPlayer" component={KonnakolPlayerPage} exact={true} />
-          <Route path="/" render={() => <Redirect to="/kanakolPlayer" />} exact={true} />
-        </IonRouterOutlet>
+        <Redirect exact from="/" to="/collections" />
+      </IonRouterOutlet>
 
-      </IonReactRouter>
-    </IonApp>
+    </IonReactRouter>
+  </IonApp>
 )
 
 export default App
