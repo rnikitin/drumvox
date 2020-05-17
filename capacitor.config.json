@@ -1,8 +1,12 @@
 {
-  "appId": "io.ionic.starter",
+  "appId": "com.drumvox",
   "appName": "DrumVox",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "build",
-  "cordova": {}
+  "cordova": {
+    "preferences": {
+      "APP_SECRET": "b7ebc8e9-fc69-44ff-b157-e952ba47fbdf"
+    }
+  }
 }

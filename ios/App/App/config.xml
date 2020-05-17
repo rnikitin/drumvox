@@ -26,4 +26,5 @@
   </feature>
 
   
+  <preference name="APP_SECRET" value="b7ebc8e9-fc69-44ff-b157-e952ba47fbdf" />
 </widget>
