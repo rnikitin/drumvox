@@ -3,6 +3,7 @@ import { IonToolbar, IonButtons, IonButton, IonIcon, IonTitle } from "@ionic/rea
 import { Observer } from "mobx-react"
 import { play, pause, addCircleOutline, removeCircleOutline, stop } from "ionicons/icons"
 import { AppContext } from "../AppContext"
+import { Analytics } from "../lib/Analytics"
 
 const BPM_STEP = 10
 
@@ -12,17 +13,25 @@ const KonnakolPlayerToolbar: React.FC = () => {
         console.log("onPlay", AppContext.Player.playing)
 
         AppContext.Player.playing = !AppContext.Player.playing
+
+        Analytics.LogEvent("KonnakolPlayerToolbar.Play", {playing: AppContext.Player.playing})
     }
 
     const onChangeBpm = (change: number) => {
         console.log("onChangeBpm", AppContext.Player.bpm)
 
         AppContext.Player.bpm = AppContext.Player.bpm + change
+
+        Analytics.LogEvent("KonnakolPlayerToolbar.ChangeBpm", {bpm: AppContext.Player.bpm})
     }
 
     const onStop = () => {
+        console.log("onStop", AppContext.Player.stopping)
+
         AppContext.Player.playing = false
         AppContext.Player.stopping++
+
+        Analytics.LogEvent("KonnakolPlayerToolbar.Stop", {stopping: AppContext.Player.stopping})
     }
 
     return (

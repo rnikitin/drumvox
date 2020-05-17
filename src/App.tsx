@@ -47,7 +47,6 @@ err => {
   console.log("failed to lock orientation...", err)
 })
 
-
 //this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
 
 const App: React.FC = () => (
