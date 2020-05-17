@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "380858414699",
+    "firebase_url": "https://drumvox-prod.firebaseio.com",
+    "project_id": "drumvox-prod",
+    "storage_bucket": "drumvox-prod.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:380858414699:android:a5637584a25cd08e36e32e",
+        "android_client_info": {
+          "package_name": "com.drumvox"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "380858414699-cf888euo0q0c68f1nc3t7htt89j9g5rt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDW69N6VD5XqDv6YfOguyKSpkByjpLvH8g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "380858414699-cf888euo0q0c68f1nc3t7htt89j9g5rt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

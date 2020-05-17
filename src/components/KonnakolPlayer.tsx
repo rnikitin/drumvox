@@ -68,6 +68,7 @@ const KonnakolPlayer: React.FC<KonnakolPlayerProps> = (props) => {
         return () => {
             reactionPlayingDisposer()
             reactionBpmDisposer()
+            reactionStopDisposer()
         }
     }, [])
 

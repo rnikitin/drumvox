@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-  <string name="app_name">World of Drums</string>
-  <string name="title_activity_main">World of Drums</string>
-  <string name="package_name">of.drums.world</string>
-  <string name="custom_url_scheme">of.drums.world</string>
+  <string name="app_name">DRUMVOX</string>
+  <string name="title_activity_main">DRUMVOX</string>
+  <string name="package_name">com.drumvox</string>
+  <string name="custom_url_scheme">com.drumvox</string>
   <string name="ionic_app_id">f8fdd4f1</string>
   <string name="ionic_channel_name">Production</string>
-  <string name="ionic_update_method">background</string>
+  <string name="ionic_update_method">auto</string>
   <string name="ionic_max_versions">2</string>
   <string name="ionic_min_background_duration">30</string>
   <string name="ionic_update_api">https://api.ionicjs.com</string>
