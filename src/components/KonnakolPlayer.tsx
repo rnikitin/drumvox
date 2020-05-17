@@ -1,15 +1,16 @@
 import React, { useRef, useEffect } from "react"
 import { Stage } from "react-konva"
-import { bus, KonnakolPlayerPlayEvent } from "../lib/events"
 import * as Melodies from "../lib/KonnakolMelody"
 import { KonnakolGame } from "../lib/KonnakolGame"
 import { KonnakolGameAudio } from "../lib/KonnakolGameAudio"
+import { AppContext } from "../AppContext"
+import { reaction } from "mobx"
 
 type KonnakolPlayerProps = {
     contentRef: React.RefObject<HTMLIonContentElement>
 };
 
-var melody = Melodies.TestMelody1
+var melody = Melodies.TestMelody2
 
 const KonnakolPlayer: React.FC<KonnakolPlayerProps> = (props) => {
 
@@ -20,11 +21,13 @@ const KonnakolPlayer: React.FC<KonnakolPlayerProps> = (props) => {
     // On Component Mount
     useEffect(() => {
 
-        // EVENTS
-        const konnakolPlayerPlayEventUnsubscribe = bus.subscribe(KonnakolPlayerPlayEvent, e => {
-            console.log("KonnakolPlayer.KonnakolPlayerPlayEvent", e)
+        // REACTIONS
 
-            if (e.payload.playing) {
+        // react on play/pause change
+        const reactionPlayingDisposer = reaction(() => AppContext.Player.playing, nowPlaying => {
+            console.log("KonnakolPlayer.reaction.playing", nowPlaying)
+
+            if (nowPlaying) {
                 game.play()
                 gameAudio.play()
             }
@@ -34,7 +37,21 @@ const KonnakolPlayer: React.FC<KonnakolPlayerProps> = (props) => {
             }
         })
 
-        // dirty hack goes here
+        const reactionBpmDisposer = reaction(() => AppContext.Player.bpm, newBPM => {
+            console.log("KonnakolPlayer.reaction.bpm", newBPM)
+
+            game.changeBPM(newBPM)
+            gameAudio.changeBPM(newBPM)
+        })
+
+        const reactionStopDisposer = reaction(() => AppContext.Player.stopping, newStopping => {
+            console.log("KonnakolPlayer.reaction.stopping", newStopping)
+
+            game.stop()
+            gameAudio.stop()
+        })
+
+        // todo: fix this dirty hack goes here
         // start drawing later, because at the moment didMount size is not initialized yet
         setTimeout(() => {
             // get size of content area
@@ -42,13 +59,16 @@ const KonnakolPlayer: React.FC<KonnakolPlayerProps> = (props) => {
             console.log("KonnakolPlayer Mount and Ready", contentRect)
 
             // render canvas stage
-            game = new KonnakolGame(stageRef!.current!.getStage(), contentRect!.height, contentRect!.width, melody)
-            gameAudio = new KonnakolGameAudio(melody)
+            game = new KonnakolGame(stageRef!.current!.getStage(), contentRect!.height, contentRect!.width, melody, AppContext.Player.bpm)
+            gameAudio = new KonnakolGameAudio(melody, AppContext.Player.bpm)
 
         }, 1000)
 
         // unmount function
-        return () => konnakolPlayerPlayEventUnsubscribe()
+        return () => {
+            reactionPlayingDisposer()
+            reactionBpmDisposer()
+        }
     }, [])
 
     return (

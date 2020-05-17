@@ -2,8 +2,6 @@ import Konva from "konva"
 import { Stage } from "konva/types/Stage"
 import { KonnakolMelody, MelodyBeat } from "./KonnakolMelody"
 import { IFrame } from "konva/types/types"
-import { KonnakolGameAudio } from "./KonnakolGameAudio"
-
 
 /**
  * Отступ от края экрана для текста Инструментов
@@ -58,9 +56,6 @@ const COLOR_BEAT = "#F2F2F2"
  */
 const COUNT_BEATS_TO_RENDER_AHEAD = 32
 
-
-const BPM = 60
-
 export class KonnakolGame {
     private stage: Stage
     private melody: KonnakolMelody
@@ -68,10 +63,12 @@ export class KonnakolGame {
     private melodyLayer = new Konva.Layer()
     private lastRenderedBeat: MelodyBeat = { id: "-1", notes: [], konnakol: "" }
     private melodyAnimation: Konva.Animation
+    private BPM = 60
 
-    constructor(stage: Stage, stageHeight: number, stageWidth: number, melody: KonnakolMelody) {
+    constructor(stage: Stage, stageHeight: number, stageWidth: number, melody: KonnakolMelody, bpm: number) {
         this.stage = stage
         this.melody = melody
+        this.BPM = bpm
 
         this.stage.width(stageWidth)
         this.stage.height(stageHeight)
@@ -90,11 +87,22 @@ export class KonnakolGame {
         this.melodyAnimation.stop()
     }
 
+    public changeBPM(newBPM: number) {
+        this.BPM = newBPM
+    }
+
+    public stop() {
+        this.renderMelody()
+    }
+
     private render() {
         this.renderInstruments()
         this.renderMelody()
 
-        // set layers zindex
+
+    }
+
+    private updateLayerZIndexes() {
         this.melodyLayer.moveToBottom()
         this.instrumentsLayer.moveToTop()
     }
@@ -158,6 +166,8 @@ export class KonnakolGame {
 
         // now show layer
         this.stage.add(this.instrumentsLayer)
+
+        this.updateLayerZIndexes()
     }
 
     private renderMelody() {
@@ -182,9 +192,11 @@ export class KonnakolGame {
 
         // finnally add to stage
         this.stage.add(this.melodyLayer)
+
+        this.updateLayerZIndexes()
     }
 
-    private renderBeatGroup(beat:MelodyBeat, offsetX: number): Konva.Group {
+    private renderBeatGroup(beat: MelodyBeat, offsetX: number): Konva.Group {
         const groupLayer = new Konva.Group({
             x: offsetX,
             y: OFFSET_Y,
@@ -260,7 +272,7 @@ export class KonnakolGame {
         // расстояние которое проходит бит за t
         var S = BEAT_WIDTH
         // время, за которое проигрывается 1 бит
-        var t = 60 / BPM
+        var t = 60 / this.BPM
         // скорость, с которой движется бит по полотну
         var v = S / t
 
@@ -268,7 +280,7 @@ export class KonnakolGame {
         var tdiff = frame!.timeDiff / 1000
         var Sdiff = v * tdiff
 
-        console.log(`S=${S} t=${t} v=${v} tdiff=${tdiff} Sdiff=${Sdiff} fps=${frame?.frameRate}`)
+        //console.log(`S=${S} t=${t} v=${v} tdiff=${tdiff} Sdiff=${Sdiff} fps=${frame?.frameRate}`)
 
         // move all beats left
         this.melodyLayer.children.each(child => {

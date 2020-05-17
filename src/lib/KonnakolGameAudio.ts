@@ -19,8 +19,9 @@ export class KonnakolGameAudio {
 	private Sequencer : Tone.Sequence<number>
 
 
-	constructor(melody: KonnakolMelody) {
+	constructor(melody: KonnakolMelody, bpm: number) {
 		this.melody = melody
+		this.bpm = bpm
 
 		// generate sequencer events
 		for (var i = 0; i < melody.beats.length; i++){
@@ -59,6 +60,10 @@ export class KonnakolGameAudio {
 		console.log("KonnakolGameAudio.pause", this.bpm)
 
 		Tone.Transport.pause()
+	}
+
+	public stop() {
+		Tone.Transport.stop()
 	}
 
 	public changeBPM(newBpm: number) {

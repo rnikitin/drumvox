@@ -14,7 +14,6 @@ import {
 import { IonReactRouter } from "@ionic/react-router"
 import DrumMachinePage from "./pages/DrumMachinePage"
 import KonnakolPlayerPage from "./pages/KonnakolPlayerPage"
-import { AppProvider } from "./AppContext"
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css"
@@ -52,7 +51,6 @@ err => {
 //this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
 
 const App: React.FC = () => (
-  <AppProvider>
     <IonApp>
       <IonReactRouter>
         <IonMenu side="start" menuId="first" contentId="mainContent">
@@ -78,7 +76,6 @@ const App: React.FC = () => (
 
       </IonReactRouter>
     </IonApp>
-  </AppProvider>
 )
 
 export default App
