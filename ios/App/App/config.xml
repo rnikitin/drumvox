@@ -17,11 +17,6 @@
     <param name="onload" value="true"/>
   </feature>
 
-  <feature name="FirebasePlugin">
-    <param name="ios-package" value="FirebasePlugin"/>
-    <param name="onload" value="true"/>
-  </feature>
-
   <feature name="IonicCordovaCommon">
     <param name="ios-package" value="IonicCordovaCommon" onload="true"/>
   </feature>

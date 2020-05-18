@@ -1,4 +1,4 @@
-import { FirebaseX } from "@ionic-native/firebase-x"
+
 import { AppCenterAnalytics } from "@ionic-native/app-center-analytics"
 
 export class Analytics {
@@ -10,15 +10,16 @@ export class Analytics {
 	 */
 	public static LogEvent(name: string, data: any) {
 
-		console.log("try to log", name, data, FirebaseX, AppCenterAnalytics)
+		console.log("1 -> try to log", name, data)
+		console.log("2 -> try to log", name, data, AppCenterAnalytics)
 
-		FirebaseX.logEvent(name, data)
-			.then(function () {
-				console.log("FirebaseX analytics success", arguments)
-			},
-				function () {
-					console.log("FirebaseX analytics fail", arguments)
-				})
+		// FirebaseX.logEvent(name, data)
+		// 	.then(function () {
+		// 		console.log("FirebaseX analytics success", arguments)
+		// 	},
+		// 		function () {
+		// 			console.log("FirebaseX analytics fail", arguments)
+		// 		})
 		AppCenterAnalytics.trackEvent(name, data)
 			.then(function () {
 				console.log("AppCenterAnalytics analytics success", arguments)
