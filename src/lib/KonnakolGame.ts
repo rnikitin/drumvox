@@ -272,7 +272,7 @@ export class KonnakolGame {
         // расстояние которое проходит бит за t
         var S = BEAT_WIDTH
         // время, за которое проигрывается 1 бит
-        var t = 60 / this.BPM
+        var t = 60 / (this.BPM * 4)
         // скорость, с которой движется бит по полотну
         var v = S / t
 

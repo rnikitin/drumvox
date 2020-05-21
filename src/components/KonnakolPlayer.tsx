@@ -1,15 +1,15 @@
 import React, { useRef, useEffect } from "react"
 import { Stage } from "react-konva"
-import * as Melodies from "../lib/KonnakolMelody"
 import { KonnakolGame } from "../lib/KonnakolGame"
 import { KonnakolGameAudio } from "../lib/KonnakolGameAudio"
 import { AppContext } from "../AppContext"
 import { reaction, IReactionDisposer } from "mobx"
 import { useIonViewWillEnter, useIonViewWillLeave, useIonViewDidEnter } from "@ionic/react"
+import { Melody } from "../lib/DataModels"
 
 type KonnakolPlayerProps = {
     contentRef: React.RefObject<HTMLIonContentElement>
-    melody: Melodies.KonnakolMelody
+    melody: Melody
 };
 
 const KonnakolPlayer: React.FC<KonnakolPlayerProps> = (props) => {

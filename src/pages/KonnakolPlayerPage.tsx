@@ -17,7 +17,7 @@ interface KanakolPlayerPagePageArgs extends RouteComponentProps<{
 const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
   const contentRef = useRef<HTMLIonContentElement>(null)
 
-  const [melody, setMelody] = useState<KonnakolMelody>()
+  const [melody, setMelody] = useState<Melody>()
 
   useIonViewWillEnter(() => {
     MelodiesStore.getMelody(props.match.params.collection_id, props.match.params.melody_id)

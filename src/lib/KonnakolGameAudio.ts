@@ -43,7 +43,7 @@ export class KonnakolGameAudio {
 	
 			let melodyBeat = this.melody.beats[beat]
 			this.playNotes(melodyBeat.notes, time)
-		}, this.sequenceEvents, "4n")
+		}, this.sequenceEvents, "16n")
 	}
 
 	public play() {
