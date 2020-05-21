@@ -38,6 +38,7 @@ import { ScreenOrientation } from "@ionic-native/screen-orientation"
 import * as firebase from "./lib/Firebase"
 import CollectionsListPage from "./pages/CollectionsListPage"
 import CollectionView from "./pages/CollectionViewPage"
+import KonnakolAdminPage from "./pages/KonnakolAdminPage"
 
 //LogRocket.init('zfojck/drumvox');
 
@@ -53,12 +54,10 @@ ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.LANDSCAPE)
 // start analytics tracking
 firebase.app.analytics()
 
-//this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
-
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
-      <IonMenu side="start" menuId="first" contentId="mainContent">
+      <IonMenu side="end" menuId="first" contentId="mainContent">
         <IonHeader>
           <IonToolbar>
             <IonTitle>DrumVox</IonTitle>
@@ -66,18 +65,18 @@ const App: React.FC = () => (
         </IonHeader>
         <IonContent>
           <IonList>
-            <IonItem routerLink="/collections">Home</IonItem>
-            {/* <IonItem href="/kanakolPlayer">Kanakol Player</IonItem> */}
-            {/* <IonItem href="/drumMachine">Drum Machine</IonItem> */}
+            <IonItem href="/collections">Collections</IonItem>
+            <IonItem href="/drumMachine">Drum Machine</IonItem>
           </IonList>
         </IonContent>
       </IonMenu>
 
       <IonRouterOutlet id="mainContent">
+        <Route path="/drumMachine" component={DrumMachinePage} exact={true} />
+        <Route path="/konnakolAdmin" component={KonnakolAdminPage} exact={true} />
+        <Route path="/collections/:collection_id/melody/:melody_id" component={KonnakolPlayerPage} />
+        <Route path="/collections/:collection_id" component={CollectionView} />
         <Route path="/collections" component={CollectionsListPage} exact={true} />
-        <Route path="/collection/:id" component={CollectionView} />
-        {/* <Route path="/drumMachine" component={DrumMachinePage} exact={true} /> */}
-        <Route path="/player/:id" component={KonnakolPlayerPage} exact={true} />
 
         <Redirect exact from="/" to="/collections" />
       </IonRouterOutlet>

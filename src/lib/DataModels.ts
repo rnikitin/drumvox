@@ -1,14 +1,20 @@
+import { MelodyBeat } from "./KonnakolMelody"
+
 export type MelodyCollection = {
-	readonly id: string,
-	readonly order: number,
-	readonly name: string,
+	readonly id: string
+	readonly order: number
+	readonly name: string
 	readonly description: string
 }
 
 export type Melody = {
-	readonly id: string,
-	readonly order: number,
+	readonly id?: string
+	readonly collection_id?: string
+	
+	readonly order: number
 	readonly name: string
+	instruments: string[]
+	beats: MelodyBeat[]
 }
 
 export const MelodyCollectionConverter = {
@@ -35,6 +41,13 @@ export const MelodyConverter = {
 	): Melody {
 		const data = snapshot.data(options)!
 
-		return { id: snapshot.id, order: data.order, name: data.name }
+		return {
+			id: snapshot.id,
+			order: data.order,
+			name: data.name,
+			collection_id: snapshot.ref.parent.id,
+			instruments: data.instruments,
+			beats: data.beats
+		}
 	}
 }

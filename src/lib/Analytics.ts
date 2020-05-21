@@ -1,5 +1,9 @@
 
 import { AppCenterAnalytics } from "@ionic-native/app-center-analytics"
+import { app } from "./Firebase"
+
+const fa = app.analytics()
+
 
 export class Analytics {
 
@@ -10,22 +14,15 @@ export class Analytics {
 	 */
 	public static LogEvent(name: string, data: any) {
 
-		console.log("1 -> try to log", name, data)
-		console.log("2 -> try to log", name, data, AppCenterAnalytics)
-
-		// FirebaseX.logEvent(name, data)
-		// 	.then(function () {
-		// 		console.log("FirebaseX analytics success", arguments)
-		// 	},
-		// 		function () {
-		// 			console.log("FirebaseX analytics fail", arguments)
-		// 		})
+		fa.logEvent(name, data)
 		AppCenterAnalytics.trackEvent(name, data)
-			.then(function () {
-				console.log("AppCenterAnalytics analytics success", arguments)
-			},
-				function () {
-					console.log("AppCenterAnalytics analytics fail", arguments)
-				})
+	}
+
+
+	public static setCurrentScreen(name: string, data: any) {
+
+		fa.setCurrentScreen(name, data)
+
+		AppCenterAnalytics.trackEvent("PageView", { ...data, screenName: name })
 	}
 }

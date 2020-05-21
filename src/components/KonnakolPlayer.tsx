@@ -4,27 +4,27 @@ import * as Melodies from "../lib/KonnakolMelody"
 import { KonnakolGame } from "../lib/KonnakolGame"
 import { KonnakolGameAudio } from "../lib/KonnakolGameAudio"
 import { AppContext } from "../AppContext"
-import { reaction } from "mobx"
+import { reaction, IReactionDisposer } from "mobx"
+import { useIonViewWillEnter, useIonViewWillLeave, useIonViewDidEnter } from "@ionic/react"
 
 type KonnakolPlayerProps = {
     contentRef: React.RefObject<HTMLIonContentElement>
+    melody: Melodies.KonnakolMelody
 };
-
-var melody = Melodies.TestMelody2
 
 const KonnakolPlayer: React.FC<KonnakolPlayerProps> = (props) => {
 
     const stageRef = useRef<Stage>(null)
     let game: KonnakolGame
     let gameAudio: KonnakolGameAudio
+    let reactionPlayingDisposer: IReactionDisposer, reactionBpmDisposer: IReactionDisposer, reactionStopDisposer: IReactionDisposer
 
-    // On Component Mount
-    useEffect(() => {
 
+    useIonViewWillEnter(() => {
         // REACTIONS
 
         // react on play/pause change
-        const reactionPlayingDisposer = reaction(() => AppContext.Player.playing, nowPlaying => {
+        reactionPlayingDisposer = reaction(() => AppContext.Player.playing, nowPlaying => {
             console.log("KonnakolPlayer.reaction.playing", nowPlaying)
 
             if (nowPlaying) {
@@ -37,40 +37,42 @@ const KonnakolPlayer: React.FC<KonnakolPlayerProps> = (props) => {
             }
         })
 
-        const reactionBpmDisposer = reaction(() => AppContext.Player.bpm, newBPM => {
+        // react on BPM change
+        reactionBpmDisposer = reaction(() => AppContext.Player.bpm, newBPM => {
             console.log("KonnakolPlayer.reaction.bpm", newBPM)
 
             game.changeBPM(newBPM)
             gameAudio.changeBPM(newBPM)
         })
 
-        const reactionStopDisposer = reaction(() => AppContext.Player.stopping, newStopping => {
+        // react on stop
+        reactionStopDisposer = reaction(() => AppContext.Player.stopping, newStopping => {
             console.log("KonnakolPlayer.reaction.stopping", newStopping)
 
             game.stop()
             gameAudio.stop()
         })
+    })
 
-        // todo: fix this dirty hack goes here
-        // start drawing later, because at the moment didMount size is not initialized yet
-        setTimeout(() => {
-            // get size of content area
-            let contentRect = props.contentRef.current!.getBoundingClientRect()
-            console.log("KonnakolPlayer Mount and Ready", contentRect)
+    useIonViewDidEnter(() => {
+        // get size of content area
+        let contentRect = props.contentRef.current!.getBoundingClientRect()
+        console.log("KonnakolPlayer Mount and Ready", contentRect)
 
-            // render canvas stage
-            game = new KonnakolGame(stageRef!.current!.getStage(), contentRect!.height, contentRect!.width, melody, AppContext.Player.bpm)
-            gameAudio = new KonnakolGameAudio(melody, AppContext.Player.bpm)
+        // render canvas stage
+        game = new KonnakolGame(stageRef!.current!.getStage(), contentRect!.height, contentRect!.width, props.melody, AppContext.Player.bpm)
+        gameAudio = new KonnakolGameAudio(props.melody, AppContext.Player.bpm)
+    })
 
-        }, 1000)
+    useIonViewWillLeave(() => {
+        reactionPlayingDisposer()
+        reactionBpmDisposer()
+        reactionStopDisposer()
 
-        // unmount function
-        return () => {
-            reactionPlayingDisposer()
-            reactionBpmDisposer()
-            reactionStopDisposer()
-        }
-    }, [])
+        // todo: proper unmount for game & gameAudio
+        game.stop()
+        gameAudio.stop()
+    })
 
     return (
         <Stage ref={stageRef}>
