@@ -16,5 +16,5 @@ ionic cap open android
 
 To update plugins and break everything use
 ```
-ionic cap sync
+ionic cap copy
 ```
