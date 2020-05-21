@@ -1,9 +1,11 @@
 
 import { AppCenterAnalytics } from "@ionic-native/app-center-analytics"
-import { app } from "./Firebase"
+import { FirebaseAnalytics } from "@ionic-native/firebase-analytics"
+//import { app } from "./Firebase"
 
-const fa = app.analytics()
+//const fa = app.analytics()
 
+FirebaseAnalytics.setEnabled(true)
 
 export class Analytics {
 
@@ -14,14 +16,16 @@ export class Analytics {
 	 */
 	public static LogEvent(name: string, data: any) {
 
-		fa.logEvent(name, data)
+		//fa.logEvent(name, data)
+		FirebaseAnalytics.logEvent(name, data)
 		AppCenterAnalytics.trackEvent(name, data)
 	}
 
 
 	public static setCurrentScreen(name: string, data: any) {
 
-		fa.setCurrentScreen(name, data)
+		//fa.setCurrentScreen(name)
+		FirebaseAnalytics.setCurrentScreen(name)
 
 		AppCenterAnalytics.trackEvent("PageView", { ...data, screenName: name })
 	}

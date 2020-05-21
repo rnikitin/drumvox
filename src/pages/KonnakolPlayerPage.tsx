@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react"
-import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonFooter, IonButton, IonIcon, useIonViewWillEnter } from "@ionic/react"
+import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonFooter, IonButton, IonIcon, useIonViewWillEnter, useIonViewDidEnter } from "@ionic/react"
 import KonnakolPlayer from "../components/KonnakolPlayer"
 import KonnakolPlayerToolbar from "../components/KonnakolPlayerToolbar"
 import { arrowBackOutline } from "ionicons/icons"
@@ -14,7 +14,7 @@ interface KanakolPlayerPagePageArgs extends RouteComponentProps<{
   collection_id: string
 }> { }
 
-const KanakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
+const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
   const contentRef = useRef<HTMLIonContentElement>(null)
 
   const [melody, setMelody] = useState<KonnakolMelody>()
@@ -24,8 +24,10 @@ const KanakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
       .then((val) => {
         setMelody(val)
       })
+  })
 
-    Analytics.setCurrentScreen("KanakolPlayerPage", { collection_id: props.match.params.collection_id, melody_id: props.match.params.melody_id })
+  useIonViewDidEnter(() => {
+    Analytics.setCurrentScreen("KonnakolPlayerPage", { collection_id: props.match.params.collection_id, melody_id: props.match.params.melody_id })
   })
 
   return (
@@ -41,7 +43,7 @@ const KanakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
         </IonToolbar>
       </IonHeader>
 
-      <IonContent ref={contentRef} class="kannakol-player-content" slot="fixed" forceOverscroll={false}>
+      <IonContent ref={contentRef} slot="fixed" forceOverscroll={false}>
         {melody ? (<KonnakolPlayer contentRef={contentRef} melody={melody!} />) : ("")}
       </IonContent>
 
@@ -53,4 +55,4 @@ const KanakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
   )
 }
 
-export default KanakolPlayerPage
+export default KonnakolPlayerPage

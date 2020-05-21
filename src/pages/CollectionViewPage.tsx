@@ -1,10 +1,9 @@
 import React, { useState } from "react"
-import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonList, IonItem, IonLabel, IonButton, IonIcon, useIonViewWillEnter } from "@ionic/react"
+import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonList, IonItem, IonLabel, IonButton, IonIcon, useIonViewWillEnter, useIonViewDidEnter } from "@ionic/react"
 import { RouteComponentProps } from "react-router"
 import { MelodiesStore } from "../lib/Firestore"
 import { Melody, MelodyCollection } from "../lib/DataModels"
 import { arrowBackOutline } from "ionicons/icons"
-import { Collection } from "konva/types/Util"
 import { Analytics } from "../lib/Analytics"
 
 interface CollectionViewPageArgs extends RouteComponentProps<{
@@ -24,7 +23,9 @@ const CollectionViewPage: React.FC<CollectionViewPageArgs> = (props) => {
     MelodiesStore.getMelodies(props.match.params.collection_id).then((value) => {
       setMelodies(value)
     })
+  })
 
+  useIonViewDidEnter(() => {
     Analytics.setCurrentScreen("CollectionViewPage", { collection_id: props.match.params.collection_id })
   })
 

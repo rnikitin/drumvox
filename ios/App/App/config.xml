@@ -17,6 +17,11 @@
     <param name="onload" value="true"/>
   </feature>
 
+  <feature name="FirebaseAnalytics">
+    <param name="ios-package" value="FirebaseAnalyticsPlugin"/>
+    <param name="onload" value="$FIREBASE_ANALYTICS_COLLECTION_ENABLED"/>
+  </feature>
+
   <feature name="IonicCordovaCommon">
     <param name="ios-package" value="IonicCordovaCommon" onload="true"/>
   </feature>
@@ -27,4 +32,5 @@
 
   
   <preference name="APP_SECRET" value="b7ebc8e9-fc69-44ff-b157-e952ba47fbdf" />
+  <preference name="FIREBASE_ANALYTICS_COLLECTION_ENABLED" value="true" />
 </widget>

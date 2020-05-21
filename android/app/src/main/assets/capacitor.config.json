@@ -6,7 +6,8 @@
   "webDir": "build",
   "cordova": {
     "preferences": {
-      "APP_SECRET": "b7ebc8e9-fc69-44ff-b157-e952ba47fbdf"
+      "APP_SECRET": "b7ebc8e9-fc69-44ff-b157-e952ba47fbdf",
+      "FIREBASE_ANALYTICS_COLLECTION_ENABLED": "true"
     }
   }
 }

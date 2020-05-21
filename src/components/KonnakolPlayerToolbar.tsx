@@ -14,7 +14,7 @@ const KonnakolPlayerToolbar: React.FC = () => {
 
         AppContext.Player.playing = !AppContext.Player.playing
 
-        Analytics.LogEvent("KonnakolPlayerToolbar.Play", {playing: AppContext.Player.playing})
+        Analytics.LogEvent("KonnakolPlayerToolbar.Play", {playing: (AppContext.Player.playing ? 1: 0)})
     }
 
     const onChangeBpm = (change: number) => {

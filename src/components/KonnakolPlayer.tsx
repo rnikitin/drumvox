@@ -19,9 +19,33 @@ const KonnakolPlayer: React.FC<KonnakolPlayerProps> = (props) => {
     let gameAudio: KonnakolGameAudio
     let reactionPlayingDisposer: IReactionDisposer, reactionBpmDisposer: IReactionDisposer, reactionStopDisposer: IReactionDisposer
 
+    useIonViewDidEnter(() => {
+        registerReactions()
 
-    useIonViewWillEnter(() => {
-        // REACTIONS
+        // get size of content area
+        let contentRect = props.contentRef.current!.getBoundingClientRect()
+        console.log("KonnakolPlayer Mount and Ready", contentRect)
+
+        // render canvas stage
+        game = new KonnakolGame(stageRef!.current!.getStage(), contentRect!.height, contentRect!.width, props.melody, AppContext.Player.bpm)
+        gameAudio = new KonnakolGameAudio(props.melody, AppContext.Player.bpm)
+    })
+
+    useIonViewWillLeave(() => {
+        // dispose reactions
+        reactionPlayingDisposer()
+        reactionBpmDisposer()
+        reactionStopDisposer()
+
+        // todo: proper unmount for game & gameAudio
+        game.stop()
+        gameAudio.stop()
+    })
+
+    /**
+     * REACTIONS
+     */
+    function registerReactions(){
 
         // react on play/pause change
         reactionPlayingDisposer = reaction(() => AppContext.Player.playing, nowPlaying => {
@@ -52,27 +76,7 @@ const KonnakolPlayer: React.FC<KonnakolPlayerProps> = (props) => {
             game.stop()
             gameAudio.stop()
         })
-    })
-
-    useIonViewDidEnter(() => {
-        // get size of content area
-        let contentRect = props.contentRef.current!.getBoundingClientRect()
-        console.log("KonnakolPlayer Mount and Ready", contentRect)
-
-        // render canvas stage
-        game = new KonnakolGame(stageRef!.current!.getStage(), contentRect!.height, contentRect!.width, props.melody, AppContext.Player.bpm)
-        gameAudio = new KonnakolGameAudio(props.melody, AppContext.Player.bpm)
-    })
-
-    useIonViewWillLeave(() => {
-        reactionPlayingDisposer()
-        reactionBpmDisposer()
-        reactionStopDisposer()
-
-        // todo: proper unmount for game & gameAudio
-        game.stop()
-        gameAudio.stop()
-    })
+    }
 
     return (
         <Stage ref={stageRef}>

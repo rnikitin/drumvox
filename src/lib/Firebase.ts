@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app"
-import "firebase/analytics"
+//import "firebase/analytics"
 import "firebase/firestore"
 
 var firebaseConfig = {

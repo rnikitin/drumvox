@@ -52,7 +52,7 @@ ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.LANDSCAPE)
     })
 
 // start analytics tracking
-firebase.app.analytics()
+//firebase.app.analytics()
 
 const App: React.FC = () => (
   <IonApp>

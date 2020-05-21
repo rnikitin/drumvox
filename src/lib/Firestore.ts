@@ -13,7 +13,7 @@ function init() {
 	const firestore = app.firestore()
 
 	// enable persistance storage by default
-	firestore.enablePersistence()
+	firestore.enablePersistence({ synchronizeTabs: true })
 
 	return firestore
 }

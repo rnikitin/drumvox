@@ -1,12 +1,12 @@
 import React from "react"
-import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, useIonViewWillEnter } from "@ionic/react"
+import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, useIonViewDidEnter } from "@ionic/react"
 import "./DrumMachinePage.css"
 import DrumMachine from "../components/DrumMachine"
 import { Analytics } from "../lib/Analytics"
 
 const DrumMachinePage: React.FC = () => {
 
-  useIonViewWillEnter(() => {
+  useIonViewDidEnter(() => {
     Analytics.setCurrentScreen("DrumMachinePage", {})
   })
 
