@@ -25,10 +25,10 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
   const [loaded, setLoaded] = useState<boolean>(false)
 
   useIonViewWillEnter(() => {
-
     console.log("KonnakolPlayerPage.useIonViewWillEnter loaded=", loaded)
 
     load()
+    handleDeviceEvents()
   })
 
   useIonViewDidEnter(() => {
@@ -82,6 +82,9 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
     }
   }
 
+  /**
+   * Loads data
+   */
   function load() {
     MelodiesStore.getMelody(props.match.params.collection_id, props.match.params.melody_id)
       .then((val) => {
@@ -91,6 +94,24 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
         setMelody(val)
         setLoaded(true)
       })
+  }
+
+  function handleDeviceEvents() {
+    // on device ready
+    document.addEventListener("deviceready", () => {
+      console.log("KonnakolPlayerPage.deviceready")
+    })
+
+    // on app pause
+    document.addEventListener("pause", () => {
+      console.log("KonnakolPlayerPage.device.pause")
+      AppContext.Player.playing = false
+    })
+
+    // on app resume
+    document.addEventListener("resume", () => {
+      console.log("KonnakolPlayerPage.device.resume")
+    })
   }
 
   /**
