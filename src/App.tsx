@@ -74,8 +74,8 @@ const App: React.FC = () => (
       <IonRouterOutlet id="mainContent">
         <Route path="/drumMachine" component={DrumMachinePage} exact={true} />
         <Route path="/konnakolAdmin" component={KonnakolAdminPage} exact={true} />
-        <Route path="/collections/:collection_id/melody/:melody_id" component={KonnakolPlayerPage} />
-        <Route path="/collections/:collection_id" component={CollectionView} />
+        <Route path="/collections/:collection_id/melody/:melody_id" component={KonnakolPlayerPage} exact={true} />
+        <Route path="/collections/:collection_id" component={CollectionView} exact={true} />
         <Route path="/collections" component={CollectionsListPage} exact={true} />
 
         <Redirect exact from="/" to="/collections" />

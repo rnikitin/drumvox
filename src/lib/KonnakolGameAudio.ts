@@ -1,5 +1,6 @@
 import * as Tone from "tone"
 import { KonnakolMelody } from "./KonnakolMelody"
+import { Melody } from "./DataModels"
 
 // size of playing sequence, constant for now
 const SEQUENCE_SIZE = 8
@@ -19,7 +20,7 @@ export class KonnakolGameAudio {
 	private Sequencer : Tone.Sequence<number>
 
 
-	constructor(melody: KonnakolMelody, bpm: number) {
+	constructor(melody: Melody, bpm: number) {
 		this.melody = melody
 		this.bpm = bpm
 

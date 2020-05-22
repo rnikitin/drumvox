@@ -22,7 +22,7 @@ const GROUP_HEIGHT = 32
 /**
  * Ширина Beat
  */
-const BEAT_WIDTH = 40
+const BEAT_WIDTH = 60
 /**
  * Отсутп справа для Терминатора
  */
@@ -184,7 +184,7 @@ export class KonnakolGame {
 
             this.lastRenderedBeat = beat
 
-            let groupLayer = this.renderBeatGroup(beat, (TERMINATOR_OFFSET_X + i * BEAT_WIDTH))
+            let groupLayer = this.renderBeatGroup(beat, n, (TERMINATOR_OFFSET_X + i * BEAT_WIDTH))
 
             // render group
             this.melodyLayer.add(groupLayer)
@@ -196,7 +196,9 @@ export class KonnakolGame {
         this.updateLayerZIndexes()
     }
 
-    private renderBeatGroup(beat: MelodyBeat, offsetX: number): Konva.Group {
+    private renderBeatGroup(beat: MelodyBeat, beatIdx: number, offsetX: number): Konva.Group {
+
+        // group layer
         const groupLayer = new Konva.Group({
             x: offsetX,
             y: OFFSET_Y,
@@ -204,6 +206,17 @@ export class KonnakolGame {
             height: (this.melody.instruments.length + 1),
             name: beat.id
         })
+
+        // render melody start indicator
+        if (beatIdx === 0) {
+            var startIndicatorLine = new Konva.Line({
+                points: [BEAT_WIDTH / 2, 0, BEAT_WIDTH / 2, this.melody.instruments.length * GROUP_HEIGHT],
+                stroke: COLOR_BEAT,
+                strokeWidth: 1
+            })
+
+            groupLayer.add(startIndicatorLine)
+        }
 
         // render beats
         beat.notes.forEach(note => {
@@ -244,21 +257,21 @@ export class KonnakolGame {
         var lastGroup = this.melodyLayer.children[this.melodyLayer.children.length - 1]
 
         // find beats to render
-        var idx = this.melody.beats.indexOf(this.lastRenderedBeat)
+        var idx = this.melody.beats.indexOf(this.lastRenderedBeat) + 1
 
         // restart melody if we approched the end
-        if ((idx + 1) === this.melody.beats.length)
-            idx = -1
+        if (idx === this.melody.beats.length)
+            idx = 0
 
         // get next beats
-        var nextBeats = this.melody.beats.slice(idx + 1, idx + (COUNT_BEATS_TO_RENDER_AHEAD - notesRendered))
+        var nextBeats = this.melody.beats.slice(idx, idx + (COUNT_BEATS_TO_RENDER_AHEAD - notesRendered - 1))
 
         //console.log("renderMelodyAhead. notesRendered=", notesRendered, "idx=", idx, "nextBeats=", nextBeats)
 
         // render beats
-        nextBeats.forEach(beat => {
+        nextBeats.forEach((beat, n) => {
 
-            let groupLayer = this.renderBeatGroup(beat, lastGroup.x() + BEAT_WIDTH)
+            let groupLayer = this.renderBeatGroup(beat, idx + n, lastGroup.x() + BEAT_WIDTH)
 
             // render group
             this.melodyLayer.add(groupLayer)

@@ -16,6 +16,9 @@ const CollectionViewPage: React.FC<CollectionViewPageArgs> = (props) => {
   const [melodies, setMelodies] = useState<Melody[]>([])
 
   useIonViewWillEnter(() => {
+
+    console.log("CollectionViewPage.useIonViewWillEnter", currentCollection, melodies)
+
     MelodiesStore.getCollection(props.match.params.collection_id).then((value) => {
       setCurrentCollection(value)
     })
@@ -26,6 +29,8 @@ const CollectionViewPage: React.FC<CollectionViewPageArgs> = (props) => {
   })
 
   useIonViewDidEnter(() => {
+    console.log("CollectionViewPage.useIonViewDidEnter", currentCollection, melodies)
+
     Analytics.setCurrentScreen("CollectionViewPage", { collection_id: props.match.params.collection_id })
   })
 

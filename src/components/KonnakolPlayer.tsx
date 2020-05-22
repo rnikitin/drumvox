@@ -14,74 +14,29 @@ type KonnakolPlayerProps = {
 
 const KonnakolPlayer: React.FC<KonnakolPlayerProps> = (props) => {
 
+    console.log("KonnakolPlayer", props)
+
     const stageRef = useRef<Stage>(null)
     let game: KonnakolGame
     let gameAudio: KonnakolGameAudio
     let reactionPlayingDisposer: IReactionDisposer, reactionBpmDisposer: IReactionDisposer, reactionStopDisposer: IReactionDisposer
+    let alreadyInitialized = false
+
+    useIonViewWillEnter(() => {
+        console.log("useIonViewWillEnter")   
+    })
 
     useIonViewDidEnter(() => {
-        registerReactions()
-
-        // get size of content area
-        let contentRect = props.contentRef.current!.getBoundingClientRect()
-        console.log("KonnakolPlayer Mount and Ready", contentRect)
-
-        // render canvas stage
-        game = new KonnakolGame(stageRef!.current!.getStage(), contentRect!.height, contentRect!.width, props.melody, AppContext.Player.bpm)
-        gameAudio = new KonnakolGameAudio(props.melody, AppContext.Player.bpm)
+        console.log("useIonViewDidEnter")   
+      
     })
 
-    useIonViewWillLeave(() => {
-        // dispose reactions
-        reactionPlayingDisposer()
-        reactionBpmDisposer()
-        reactionStopDisposer()
+    useEffect(() => {
+        console.log("useEffect")
 
-        // todo: proper unmount for game & gameAudio
-        game.stop()
-        gameAudio.stop()
     })
 
-    /**
-     * REACTIONS
-     */
-    function registerReactions(){
-
-        // react on play/pause change
-        reactionPlayingDisposer = reaction(() => AppContext.Player.playing, nowPlaying => {
-            console.log("KonnakolPlayer.reaction.playing", nowPlaying)
-
-            if (nowPlaying) {
-                game.play()
-                gameAudio.play()
-            }
-            else {
-                game.pause()
-                gameAudio.pause()
-            }
-        })
-
-        // react on BPM change
-        reactionBpmDisposer = reaction(() => AppContext.Player.bpm, newBPM => {
-            console.log("KonnakolPlayer.reaction.bpm", newBPM)
-
-            game.changeBPM(newBPM)
-            gameAudio.changeBPM(newBPM)
-        })
-
-        // react on stop
-        reactionStopDisposer = reaction(() => AppContext.Player.stopping, newStopping => {
-            console.log("KonnakolPlayer.reaction.stopping", newStopping)
-
-            game.stop()
-            gameAudio.stop()
-        })
-    }
-
-    return (
-        <Stage ref={stageRef}>
-        </Stage>
-    )
+    return (<div>hello</div>)
 }
 
 export default KonnakolPlayer
