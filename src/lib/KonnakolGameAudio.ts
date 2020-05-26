@@ -47,6 +47,11 @@ export class KonnakolGameAudio {
 		}, this.sequenceEvents, "16n")
 	}
 
+	public destroy(){
+		this.stop()
+		this.Sequencer.clear()
+	}
+
 	public play() {
 		console.log("KonnakolGameAudio.play", this.bpm, Tone.Transport, this.Sequencer)
 

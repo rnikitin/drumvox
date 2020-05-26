@@ -103,6 +103,11 @@ export class KonnakolGame {
         this.renderMelody()
     }
 
+    public destroy(){
+        this.stop()
+        this.stage.removeChildren()
+    }
+
     /**
      * calculate offsets and sizes depends on stage size
      */

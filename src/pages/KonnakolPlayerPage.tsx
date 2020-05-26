@@ -74,9 +74,8 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
       reactionBpmDisposer()
       reactionStopDisposer()
 
-      // todo: proper unmount and destroy for game & gameAudio
-      game?.stop()
-      gameAudio?.stop()
+      game?.destroy()
+      gameAudio?.destroy()
 
       // release wakelock since we leave the page
       PowerManagement.release().then(() => {
@@ -92,7 +91,7 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
     MelodiesStore.getMelody(props.match.params.collection_id, props.match.params.melody_id)
       .then((val) => {
 
-        console.log("load")
+        console.log("KonnakolPlayerPage.loaded melody", val)
 
         setMelody(val)
         setLoaded(true)
