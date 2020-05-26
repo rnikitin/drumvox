@@ -12,6 +12,7 @@ import { KonnakolGameAudio } from "../lib/KonnakolGameAudio"
 import { reaction } from "mobx"
 import { AppContext } from "../AppContext"
 import { PowerManagement } from "@ionic-native/power-management"
+import App from "../App"
 
 interface KanakolPlayerPagePageArgs extends RouteComponentProps<{
   melody_id: string
@@ -48,6 +49,8 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
    * initialize Konva and Tone players
    */
   function initPlayer() {
+
+    AppContext.Player.playing = false
 
     // set a wakelock when entered page
     PowerManagement.acquire().then(() => {

@@ -14,7 +14,7 @@ const LINE_OFFSET_X = 80
 /**
  * Базовый отступ от верхнего края Stage
  */
-const OFFSET_Y = 60
+let OFFSET_Y = 35
 /**
  * Высота группы с инструментом
  */
@@ -28,7 +28,7 @@ const BEAT_WIDTH = 60
  */
 const TERMINATOR_OFFSET_X = 100
 /**
- * 
+ * Цвет Терминатора
  */
 const TERMINATOR_COLOR = "#FF0000"
 /**
@@ -65,6 +65,8 @@ export class KonnakolGame {
     private melodyAnimation: Konva.Animation
     private BPM = 60
 
+    private get GAME_HEIGHT() { return GROUP_HEIGHT * (this.melody.instruments.length + 1) }
+
     constructor(stage: Stage, stageHeight: number, stageWidth: number, melody: KonnakolMelody, bpm: number) {
         this.stage = stage
         this.melody = melody
@@ -96,10 +98,18 @@ export class KonnakolGame {
     }
 
     private render() {
+        this.calculateRulers()
         this.renderInstruments()
         this.renderMelody()
+    }
 
+    /**
+     * calculate offsets and sizes depends on stage size
+     */
+    private calculateRulers() {
+        OFFSET_Y = (this.stage.height() - this.GAME_HEIGHT) * 0.5
 
+        console.log(`calculated ${OFFSET_Y}=(${this.stage.height()}-${this.GAME_HEIGHT}) * 0.6`)
     }
 
     private updateLayerZIndexes() {
@@ -113,7 +123,7 @@ export class KonnakolGame {
             x: 0,
             y: OFFSET_Y,
             width: TERMINATOR_OFFSET_X,
-            height: (GROUP_HEIGHT * (this.melody.instruments.length + 1)),
+            height: GROUP_HEIGHT * (this.melody.instruments.length + 1),
             fill: COLOR_BACKGROUND
         })
 

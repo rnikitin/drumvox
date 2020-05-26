@@ -112,6 +112,9 @@ const AboutPage: React.FC = () => {
 					<IonItem>
 						<IonLabel><strong>Version Code:</strong> {state.versionCode}</IonLabel>
 					</IonItem>
+					<IonItem>
+						<IonLabel><strong>Screen Size:</strong> {window.innerWidth} x {window.innerHeight} x {window.devicePixelRatio}</IonLabel>
+					</IonItem>
 
 					<IonCardContent>If there are any problems with app, please include this information with your bug report.</IonCardContent>
 				</IonCard>
