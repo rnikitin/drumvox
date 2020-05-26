@@ -9,8 +9,9 @@ import { Analytics } from "../lib/Analytics"
 import { Stage } from "react-konva"
 import { KonnakolGame } from "../lib/KonnakolGame"
 import { KonnakolGameAudio } from "../lib/KonnakolGameAudio"
-import { IReactionDisposer, reaction, observable } from "mobx"
+import { reaction } from "mobx"
 import { AppContext } from "../AppContext"
+import { PowerManagement } from "@ionic-native/power-management"
 
 interface KanakolPlayerPagePageArgs extends RouteComponentProps<{
   melody_id: string
@@ -59,6 +60,11 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
    */
   function initPlayer() {
 
+    // set a wakelock when entered page
+    PowerManagement.acquire().then(() => {
+      console.log("wakelock acquired")
+    })
+
     // get size of content area
     let contentRect = contentRef.current!.getBoundingClientRect()
     console.log("KonnakolPlayerPage.initPlayer", contentRect, melody)
@@ -79,6 +85,11 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
       // todo: proper unmount and destroy for game & gameAudio
       game?.stop()
       gameAudio?.stop()
+
+      // release wakelock since we leave the page
+      PowerManagement.release().then(() => {
+        console.log("wakelock released")
+      })
     }
   }
 

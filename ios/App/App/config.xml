@@ -26,6 +26,10 @@
     <param name="ios-package" value="IonicCordovaCommon" onload="true"/>
   </feature>
 
+  <feature name="PowerManagement">
+    <param name="ios-package" value="PowerManagement"/>
+  </feature>
+
   <feature name="CDVOrientation">
     <param name="ios-package" value="CDVOrientation"/>
   </feature>
