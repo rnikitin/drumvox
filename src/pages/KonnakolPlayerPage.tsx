@@ -26,26 +26,15 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
   const [loaded, setLoaded] = useState<boolean>(false)
 
   useIonViewWillEnter(() => {
-    console.log("KonnakolPlayerPage.useIonViewWillEnter loaded=", loaded)
-
     load()
     handleDeviceEvents()
   })
 
   useIonViewDidEnter(() => {
-    console.log("KonnakolPlayerPage.useIonViewDidEnter loaded=", loaded)
-
     Analytics.setCurrentScreen("KonnakolPlayerPage", { collection_id: props.match.params.collection_id, melody_id: props.match.params.melody_id })
   })
 
-  useIonViewWillLeave(() => {
-
-    console.log("KonnakolPlayerPage.useIonViewWillLeave")
-  })
-
   useEffect(() => {
-    console.log("KonnakolPlayerPage.useEffect", loaded, melody)
-
     if (loaded) {
       // initialize player
       const desctructor = initPlayer()

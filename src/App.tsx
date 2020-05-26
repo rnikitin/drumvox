@@ -38,6 +38,7 @@ import { ScreenOrientation } from "@ionic-native/screen-orientation"
 import CollectionsListPage from "./pages/CollectionsListPage"
 import CollectionView from "./pages/CollectionViewPage"
 import KonnakolAdminPage from "./pages/KonnakolAdminPage"
+import AboutPage from "./pages/AboutPage"
 
 //LogRocket.init('zfojck/drumvox');
 
@@ -66,6 +67,7 @@ const App: React.FC = () => (
           <IonList>
             <IonItem href="/collections">Collections</IonItem>
             <IonItem href="/drumMachine">Drum Machine</IonItem>
+            <IonItem href="/about">About</IonItem>
           </IonList>
         </IonContent>
       </IonMenu>
@@ -73,6 +75,7 @@ const App: React.FC = () => (
       <IonRouterOutlet id="mainContent">
         <Route path="/drumMachine" component={DrumMachinePage} exact={true} />
         <Route path="/konnakolAdmin" component={KonnakolAdminPage} exact={true} />
+        <Route path="/about" component={AboutPage} exact={true} />
         <Route path="/collections/:collection_id/melody/:melody_id" component={KonnakolPlayerPage} exact={true} />
         <Route path="/collections/:collection_id" component={CollectionView} exact={true} />
         <Route path="/collections" component={CollectionsListPage} exact={true} />

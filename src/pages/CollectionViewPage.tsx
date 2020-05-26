@@ -29,8 +29,6 @@ const CollectionViewPage: React.FC<CollectionViewPageArgs> = (props) => {
   })
 
   useIonViewDidEnter(() => {
-    console.log("CollectionViewPage.useIonViewDidEnter", currentCollection, melodies)
-
     Analytics.setCurrentScreen("CollectionViewPage", { collection_id: props.match.params.collection_id })
   })
 
