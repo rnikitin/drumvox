@@ -1,10 +1,16 @@
 import { observable } from "mobx"
 
 
+export enum PlayerState {
+	Stopped = "Stopped",
+	Playing = "Playing",
+	Paused = "Paused"
+}
+
 export class PlayerStateStore {
-	@observable playing = false
+	// TODO: make it getters and add actions
+	@observable state = PlayerState.Stopped
 	@observable bpm = 60
-	@observable stopping = 0
 }
 
 export class ContextStore {

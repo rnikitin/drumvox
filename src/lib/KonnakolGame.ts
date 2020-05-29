@@ -94,6 +94,7 @@ export class KonnakolGame {
     }
 
     public stop() {
+        this.melodyAnimation.stop()
         this.renderMelody()
     }
 

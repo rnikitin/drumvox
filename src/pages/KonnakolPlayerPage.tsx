@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react"
-import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonTitle, IonFooter, IonButton, IonIcon, useIonViewWillEnter, useIonViewDidEnter } from "@ionic/react"
+import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonTitle, IonFooter, IonButton, IonIcon, useIonViewWillEnter, useIonViewDidEnter, IonToast } from "@ionic/react"
 import KonnakolPlayerToolbar from "../components/KonnakolPlayerToolbar"
 import { arrowBackOutline } from "ionicons/icons"
 import { RouteComponentProps } from "react-router"
@@ -9,9 +9,10 @@ import { Analytics } from "../lib/Analytics"
 import { Stage } from "react-konva"
 import { KonnakolGame } from "../lib/KonnakolGame"
 import { KonnakolGameAudio } from "../lib/KonnakolGameAudio"
-import { reaction } from "mobx"
-import { AppContext } from "../AppContext"
+import { reaction, observe } from "mobx"
+import { AppContext, PlayerState } from "../AppContext"
 import { PowerManagement } from "@ionic-native/power-management"
+import { toastController } from "@ionic/core"
 
 interface KanakolPlayerPagePageArgs extends RouteComponentProps<{
   melody_id: string
@@ -21,6 +22,7 @@ interface KanakolPlayerPagePageArgs extends RouteComponentProps<{
 const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
   const contentRef = useRef<HTMLIonContentElement>(null)
   const stageRef = useRef<Stage>(null)
+  const toastRef = useRef<HTMLIonToastElement>(null)
 
   const [melody, setMelody] = useState<Melody>()
   const [loaded, setLoaded] = useState<boolean>(false)
@@ -49,8 +51,6 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
    */
   function initPlayer() {
 
-    AppContext.Player.playing = false
-
     // set a wakelock when entered page
     PowerManagement.acquire().then(() => {
       console.log("wakelock acquired")
@@ -64,14 +64,14 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
     const game = new KonnakolGame(stageRef!.current!.getStage(), contentRect!.height, contentRect!.width, melody!, AppContext.Player.bpm)
     const gameAudio = new KonnakolGameAudio(melody!, AppContext.Player.bpm)
 
-    let [reactionPlayingDisposer, reactionBpmDisposer, reactionStopDisposer] = registerReactions(game, gameAudio)
+    let disposers = registerReactions(game, gameAudio)
 
     // return desctructor function
     return () => {
+      AppContext.Player.state = PlayerState.Stopped
+
       // dispose reactions
-      reactionPlayingDisposer()
-      reactionBpmDisposer()
-      reactionStopDisposer()
+      disposers.map((disposer) => disposer())
 
       game?.destroy()
       gameAudio?.destroy()
@@ -106,7 +106,7 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
     // on app pause
     document.addEventListener("pause", () => {
       console.log("KonnakolPlayerPage.device.pause")
-      AppContext.Player.playing = false
+      AppContext.Player.state = PlayerState.Paused
     })
 
     // on app resume
@@ -120,19 +120,35 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
   */
   function registerReactions(game: KonnakolGame, gameAudio: KonnakolGameAudio) {
 
-    // react on play/pause change
-    const reactionPlayingDisposer = reaction(() => AppContext.Player.playing, nowPlaying => {
-      console.log("KonnakolPlayer.reaction.playing", nowPlaying)
+    const observeStateDisposer = observe(AppContext.Player, "state", (change) => {
+      console.log(`KonnakolPlayer.observe state changed ${change.oldValue} to ${change.newValue}`)
 
-      if (nowPlaying) {
-        game?.play()
-        gameAudio?.play()
-      }
-      else {
-        game?.pause()
-        gameAudio?.pause()
+      switch (change.newValue) {
+        case PlayerState.Playing:
+          if (change.oldValue == PlayerState.Stopped) {
+            // play from stop
+            gameAudio?.playWithPreCount(() => {
+              game?.play()
+            })
+          }
+          else {
+            // resume playing
+            game?.play()
+            gameAudio?.play()
+          }
+          break
+        case PlayerState.Paused:
+          game?.pause()
+          gameAudio?.pause()
+          break
+
+        case PlayerState.Stopped:
+          game?.stop()
+          gameAudio?.stop()
+          break
       }
     })
+
 
     // react on BPM change
     const reactionBpmDisposer = reaction(() => AppContext.Player.bpm, newBPM => {
@@ -142,15 +158,7 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
       gameAudio?.changeBPM(newBPM)
     })
 
-    // react on stop
-    const reactionStopDisposer = reaction(() => AppContext.Player.stopping, newStopping => {
-      console.log("KonnakolPlayer.reaction.stopping", newStopping)
-
-      game?.stop()
-      gameAudio?.stop()
-    })
-
-    return [reactionPlayingDisposer, reactionBpmDisposer, reactionStopDisposer]
+    return [observeStateDisposer, reactionBpmDisposer]
   }
 
   return (

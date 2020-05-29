@@ -2,7 +2,7 @@ import React from "react"
 import { IonToolbar, IonButtons, IonButton, IonIcon, IonTitle } from "@ionic/react"
 import { Observer } from "mobx-react"
 import { play, pause, addCircleOutline, removeCircleOutline, stop } from "ionicons/icons"
-import { AppContext } from "../AppContext"
+import { AppContext, PlayerState } from "../AppContext"
 import { Analytics } from "../lib/Analytics"
 
 const BPM_STEP = 10
@@ -10,11 +10,11 @@ const BPM_STEP = 10
 const KonnakolPlayerToolbar: React.FC = () => {
 
     const onPlay = () => {
-        console.log("onPlay", AppContext.Player.playing)
+        console.log("onPlay", AppContext.Player.state)
 
-        AppContext.Player.playing = !AppContext.Player.playing
+        AppContext.Player.state = AppContext.Player.state == PlayerState.Playing ? PlayerState.Paused : PlayerState.Playing
 
-        Analytics.LogEvent("KonnakolPlayerToolbar.Play", {playing: (AppContext.Player.playing ? 1: 0)})
+        Analytics.LogEvent("Player.StateChange", { playerState: AppContext.Player.state })
     }
 
     const onChangeBpm = (change: number) => {
@@ -22,16 +22,15 @@ const KonnakolPlayerToolbar: React.FC = () => {
 
         AppContext.Player.bpm = AppContext.Player.bpm + change
 
-        Analytics.LogEvent("KonnakolPlayerToolbar.ChangeBpm", {bpm: AppContext.Player.bpm})
+        Analytics.LogEvent("KonnakolPlayerToolbar.ChangeBpm", { bpm: AppContext.Player.bpm })
     }
 
     const onStop = () => {
-        console.log("onStop", AppContext.Player.stopping)
+        console.log("onStop", AppContext.Player.state)
 
-        AppContext.Player.playing = false
-        AppContext.Player.stopping++
+        AppContext.Player.state = PlayerState.Stopped
 
-        Analytics.LogEvent("KonnakolPlayerToolbar.Stop", {stopping: AppContext.Player.stopping})
+        Analytics.LogEvent("Player.StateChange", { playerState: AppContext.Player.state })
     }
 
     return (
@@ -41,7 +40,7 @@ const KonnakolPlayerToolbar: React.FC = () => {
                     {
                         () => (
                             <IonButton onClick={onPlay}>
-                                <IonIcon slot="icon-only" icon={AppContext.Player.playing ? pause : play} />
+                                <IonIcon slot="icon-only" icon={AppContext.Player.state == PlayerState.Playing ? pause : play} />
                             </IonButton>
                         )
                     }
