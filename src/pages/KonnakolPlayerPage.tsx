@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react"
-import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonTitle, IonFooter, IonButton, IonIcon, useIonViewWillEnter, useIonViewDidEnter, useIonViewWillLeave } from "@ionic/react"
+import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonTitle, IonFooter, IonButton, IonIcon, useIonViewWillEnter, useIonViewDidEnter } from "@ionic/react"
 import KonnakolPlayerToolbar from "../components/KonnakolPlayerToolbar"
 import { arrowBackOutline } from "ionicons/icons"
 import { RouteComponentProps } from "react-router"
@@ -12,7 +12,6 @@ import { KonnakolGameAudio } from "../lib/KonnakolGameAudio"
 import { reaction } from "mobx"
 import { AppContext } from "../AppContext"
 import { PowerManagement } from "@ionic-native/power-management"
-import App from "../App"
 
 interface KanakolPlayerPagePageArgs extends RouteComponentProps<{
   melody_id: string
