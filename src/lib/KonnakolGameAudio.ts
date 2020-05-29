@@ -105,10 +105,13 @@ export class KonnakolGameAudio {
 			this.drumPlayers.player("Snare").start(time, 0) // Taka
 			time += measureTime / 2
 
+			Tone.Draw.schedule(() => {
+				onStart()
+			}, time)
+
 			// schedule start playing
 			Tone.Transport.schedule(() => {
-				onStart()
-				this.play()
+				this.Sequencer.start()
 			}, time)
 		})
 	}
