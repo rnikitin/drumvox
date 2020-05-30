@@ -9,5 +9,9 @@
       "APP_SECRET": "b7ebc8e9-fc69-44ff-b157-e952ba47fbdf",
       "FIREBASE_ANALYTICS_COLLECTION_ENABLED": "true"
     }
+  },
+  "server": {
+    "url": "http://192.168.0.100:8101",
+    "cleartext": true
   }
 }

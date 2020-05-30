@@ -18,3 +18,8 @@ To update plugins and break everything use
 ```
 ionic cap copy
 ```
+
+To run the app with local development host
+```
+ionic capacitor run android -l --external=http://192.168.0.100:8100
+```

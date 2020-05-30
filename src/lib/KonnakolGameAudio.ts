@@ -49,6 +49,10 @@ export class KonnakolGameAudio {
 		}, this.sequenceEvents, "16n")
 	}
 
+	private initSequencer() {
+
+	}
+
 	public destroy() {
 		this.stop()
 		Tone.Transport.stop()
@@ -62,7 +66,7 @@ export class KonnakolGameAudio {
 		Tone.Transport.bpm.value = this.bpm
 
 		Tone.Transport.start()
-		this.Sequencer.start()
+		this.Sequencer.start("16n", 0)
 
 	}
 
@@ -75,40 +79,94 @@ export class KonnakolGameAudio {
 			if (Tone.Transport.state == "stopped")
 				Tone.Transport.start()
 
+			// let sampler = new Tone.Sampler({
+			// 	"C3": "/assets/audio/drumvox/snare.mp3"
+			// }, () => {
+			// 	let time = Tone.Transport.now()
+			// 	let measureTime = 60 / this.bpm
+
+			// 	console.log("Ta", time)
+			// 	sampler.triggerAttackRelease("C3", "4n", time) 
+			// 	//this.drumPlayers.player("Snare").start(time, 0) // Takadimi
+			// 	time += measureTime
+
+			// 	console.log("Ta", time)
+			// 	sampler.triggerAttackRelease("C3", "4n", time)
+			// 	//this.drumPlayers.player("Snare").start(time, 0) // Takadimi
+			// 	time += measureTime
+
+			// 	console.log("TaKa", time)
+			// 	sampler.triggerAttackRelease("C3", "8n", time)
+			// 	//this.drumPlayers.player("Snare").start(time, 0) // TaKa
+			// 	time += measureTime / 2
+
+			// 	console.log("TaKa", time)
+			// 	sampler.triggerAttackRelease("C3", "8n", time)
+			// 	//this.drumPlayers.player("Snare").start(time, 0) // Taka
+			// 	time += measureTime / 2
+
+			// 	console.log("TaKa", time)
+			// 	sampler.triggerAttackRelease("C3", "8n", time)
+			// 	//this.drumPlayers.player("Snare").start(time, 0) // Taka
+			// 	time += measureTime / 2
+
+			// 	console.log("TaKa", time)
+			// 	sampler.triggerAttackRelease("C3", "8n", time)
+			// 	//this.drumPlayers.player("Snare").start(time, 0) // Taka
+			// 	time += measureTime / 2
+
+			// 	console.log("Play", time)
+			// 	this.Sequencer.start(time, 0)
+
+			// 	Tone.Draw.schedule(() => {
+
+			// 		onStart()
+			// 	}, time)
+			// }).toDestination()
+
+
+
 			// schedule drums
 			let time = Tone.Transport.now()
 			let measureTime = 60 / this.bpm
+			let snare = this.drumPlayers.player("Snare")
 
 			console.log("Ta", time)
-			this.drumPlayers.player("Snare").start(time, 0) // Takadimi
+			snare.start(time, 0) // Takadimi
 			time += measureTime
 
 			console.log("Ta", time)
-			this.drumPlayers.player("Snare").start(time, 0) // Takadimi
+			snare.start(time, 0) // Takadimi
 			time += measureTime
 
 			console.log("TaKa", time)
-			this.drumPlayers.player("Snare").start(time, 0) // TaKa
+			snare.start(time, 0) // TaKa
 			time += measureTime / 2
 
 			console.log("TaKa", time)
-			this.drumPlayers.player("Snare").start(time, 0) // Taka
+			snare.start(time, 0) // Taka
 			time += measureTime / 2
 
 			console.log("TaKa", time)
-			this.drumPlayers.player("Snare").start(time, 0) // Taka
+			snare.start(time, 0) // Taka
 			time += measureTime / 2
 
 			console.log("TaKa", time)
-			this.drumPlayers.player("Snare").start(time, 0) // Taka
+			snare.start(time, 0) // Taka
 			time += measureTime / 2
 
-			console.log("Play", time)
+			console.log("Play", time, this.Sequencer)
 
 			Tone.Draw.schedule(() => {
-				this.Sequencer.start()
+				this.Sequencer.start("16n", 0)
+			}, time - 0.25)
+
+			Tone.Draw.schedule(() => {
 				onStart()
 			}, time)
+
+			// this.Sequencer.start()
+			// onStart()
 		})
 	}
 
