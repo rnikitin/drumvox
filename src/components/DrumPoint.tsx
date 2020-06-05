@@ -1,7 +1,7 @@
-import React from 'react';
-import { IonCheckbox, IonCol } from '@ionic/react';
+import React from "react"
+import { IonCheckbox, IonCol } from "@ionic/react"
 
-const colorOrange = "#ef6c00";
+const colorOrange = "#ef6c00"
 
 const DrumPointStyle = {
     "--size": "20px",
@@ -22,14 +22,14 @@ const DrumPointStyle = {
         <IonCol key={"col"+props.tick}>
             <IonCheckbox style={DrumPointStyle} class="drum-point" mode="ios" value={props.tick.toString()} onIonChange={togglePoint} />
         </IonCol>
-    );
+    )
 
     function togglePoint(e:any){
-        props.onToggle(props.tick, props.note);
+        props.onToggle(props.tick, props.note)
     }
-  };
+  }
   
   
 
-  export default DrumPoint;
+  export default DrumPoint
   

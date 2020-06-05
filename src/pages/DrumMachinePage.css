@@ -1,0 +1,10 @@
+.ssdm-players-grid ion-col.hydrated {
+	text-align: center;
+}
+
+.ssdm-controls {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}

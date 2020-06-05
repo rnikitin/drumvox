@@ -12,7 +12,7 @@ import {
   IonItem
 } from "@ionic/react"
 import { IonReactRouter } from "@ionic/react-router"
-import DrumMachinePage from "./pages/DrumMachinePage"
+import { DrumMachinePage } from "./pages/DrumMachinePage"
 import KonnakolPlayerPage from "./pages/KonnakolPlayerPage"
 
 /* Core CSS required for Ionic components to work properly */
@@ -65,9 +65,9 @@ const App: React.FC = () => (
         </IonHeader>
         <IonContent>
           <IonList>
-            <IonItem href="/collections">Collections</IonItem>
-            <IonItem href="/drumMachine">Drum Machine</IonItem>
-            <IonItem href="/about">About</IonItem>
+            <IonItem href="/collections">Training</IonItem>
+            <IonItem href="/drumMachine">Stupid Simple Drum Machine</IonItem>
+            <IonItem href="/about">About App</IonItem>
           </IonList>
         </IonContent>
       </IonMenu>
