@@ -125,8 +125,13 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
 
       switch (change.newValue) {
         case PlayerState.Playing:
+          
           if (change.oldValue == PlayerState.Stopped) {
             // play from stop
+
+            // game?.play()
+            // gameAudio?.play()
+
             gameAudio?.playWithPreCount(() => {
               game?.play()
             })

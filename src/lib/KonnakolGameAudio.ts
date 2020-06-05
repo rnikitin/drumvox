@@ -40,17 +40,17 @@ export class KonnakolGameAudio {
 		console.log("KonnakolGameAudio.constructor", DRUM_NOTES, this.sequenceEvents, this.bpm)
 
 		// create sequencer
-		this.Sequencer = new Tone.Sequence((time, beat) => {
+		this.Sequencer = this.initSequencer()
+	}
+
+	private initSequencer() {
+		return new Tone.Sequence((time, beat) => {
 
 			console.log("KonnakolGameAudio.sequencerCallback", time, beat)
 
 			let melodyBeat = this.melody.beats[beat]
 			this.playNotes(melodyBeat.notes, time)
 		}, this.sequenceEvents, "16n")
-	}
-
-	private initSequencer() {
-
 	}
 
 	public destroy() {
@@ -63,11 +63,12 @@ export class KonnakolGameAudio {
 	public play() {
 		console.log("KonnakolGameAudio.play", this.bpm, Tone.Transport, this.Sequencer)
 
-		Tone.Transport.bpm.value = this.bpm
+		Tone.start().then(() => {
+			Tone.Transport.bpm.value = this.bpm
 
-		Tone.Transport.start()
-		this.Sequencer.start("16n", 0)
-
+			Tone.Transport.start()
+			this.Sequencer.start(0, 0)
+		})
 	}
 
 	public playWithPreCount(onStart: () => void) {
@@ -79,94 +80,47 @@ export class KonnakolGameAudio {
 			if (Tone.Transport.state == "stopped")
 				Tone.Transport.start()
 
-			// let sampler = new Tone.Sampler({
-			// 	"C3": "/assets/audio/drumvox/snare.mp3"
-			// }, () => {
-			// 	let time = Tone.Transport.now()
-			// 	let measureTime = 60 / this.bpm
-
-			// 	console.log("Ta", time)
-			// 	sampler.triggerAttackRelease("C3", "4n", time) 
-			// 	//this.drumPlayers.player("Snare").start(time, 0) // Takadimi
-			// 	time += measureTime
-
-			// 	console.log("Ta", time)
-			// 	sampler.triggerAttackRelease("C3", "4n", time)
-			// 	//this.drumPlayers.player("Snare").start(time, 0) // Takadimi
-			// 	time += measureTime
-
-			// 	console.log("TaKa", time)
-			// 	sampler.triggerAttackRelease("C3", "8n", time)
-			// 	//this.drumPlayers.player("Snare").start(time, 0) // TaKa
-			// 	time += measureTime / 2
-
-			// 	console.log("TaKa", time)
-			// 	sampler.triggerAttackRelease("C3", "8n", time)
-			// 	//this.drumPlayers.player("Snare").start(time, 0) // Taka
-			// 	time += measureTime / 2
-
-			// 	console.log("TaKa", time)
-			// 	sampler.triggerAttackRelease("C3", "8n", time)
-			// 	//this.drumPlayers.player("Snare").start(time, 0) // Taka
-			// 	time += measureTime / 2
-
-			// 	console.log("TaKa", time)
-			// 	sampler.triggerAttackRelease("C3", "8n", time)
-			// 	//this.drumPlayers.player("Snare").start(time, 0) // Taka
-			// 	time += measureTime / 2
-
-			// 	console.log("Play", time)
-			// 	this.Sequencer.start(time, 0)
-
-			// 	Tone.Draw.schedule(() => {
-
-			// 		onStart()
-			// 	}, time)
-			// }).toDestination()
-
-
-
 			// schedule drums
-			let time = Tone.Transport.now()
+			let transportTime = Tone.Transport.now()
+			let firstTime = transportTime
 			let measureTime = 60 / this.bpm
 			let snare = this.drumPlayers.player("Snare")
 
-			console.log("Ta", time)
-			snare.start(time, 0) // Takadimi
-			time += measureTime
+			console.log("Ta on", transportTime)
+			snare.start(transportTime, 0) // Takadimi
+			transportTime += measureTime
 
-			console.log("Ta", time)
-			snare.start(time, 0) // Takadimi
-			time += measureTime
+			console.log("Ta on", transportTime)
+			snare.start(transportTime, 0) // Takadimi
+			transportTime += measureTime
 
-			console.log("TaKa", time)
-			snare.start(time, 0) // TaKa
-			time += measureTime / 2
+			console.log("TaKa on", transportTime)
+			snare.start(transportTime, 0) // TaKa
+			transportTime += measureTime / 2
 
-			console.log("TaKa", time)
-			snare.start(time, 0) // Taka
-			time += measureTime / 2
+			console.log("TaKa on", transportTime)
+			snare.start(transportTime, 0) // Taka
+			transportTime += measureTime / 2
 
-			console.log("TaKa", time)
-			snare.start(time, 0) // Taka
-			time += measureTime / 2
+			console.log("TaKa on", transportTime)
+			snare.start(transportTime, 0) // Taka
+			transportTime += measureTime / 2
 
-			console.log("TaKa", time)
-			snare.start(time, 0) // Taka
-			time += measureTime / 2
+			console.log("TaKa on", transportTime)
+			snare.start(transportTime, 0) // Taka
+			transportTime += measureTime / 2
 
-			console.log("Play", time, this.Sequencer)
+			console.log("Play", transportTime)
 
-			Tone.Draw.schedule(() => {
-				this.Sequencer.start("16n", 0)
-			}, time - 0.25)
+			// start the sequencer
+			this.Sequencer.start(transportTime - firstTime, 0)
 
-			Tone.Draw.schedule(() => {
+			// it's dirty but let it be
+			Tone.Draw.schedule(function(){
+				console.log("Tone.Draw.schedule")
+				//do drawing or DOM manipulation here
 				onStart()
-			}, time)
-
-			// this.Sequencer.start()
-			// onStart()
+			}, transportTime - 0.1)
 		})
 	}
 

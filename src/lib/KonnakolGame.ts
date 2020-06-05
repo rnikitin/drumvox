@@ -28,6 +28,14 @@ const BEAT_WIDTH = 60
  */
 const TERMINATOR_OFFSET_X = 100
 /**
+ * Radius of the beat dot
+ */
+const BEAT_RADIUS = 12
+/**
+ * offset from left corner for the beat
+ */
+const BEAT_START_OFFSET_X = TERMINATOR_OFFSET_X
+/**
  * Цвет Терминатора
  */
 const TERMINATOR_COLOR = "#FF0000"
@@ -82,6 +90,7 @@ export class KonnakolGame {
     }
 
     public play() {
+        console.log("KonnakolGame.play")
         this.melodyAnimation.start()
     }
 
@@ -104,7 +113,7 @@ export class KonnakolGame {
         this.renderMelody()
     }
 
-    public destroy(){
+    public destroy() {
         this.stop()
         this.stage.removeChildren()
     }
@@ -200,7 +209,7 @@ export class KonnakolGame {
 
             this.lastRenderedBeat = beat
 
-            let groupLayer = this.renderBeatGroup(beat, n, (TERMINATOR_OFFSET_X + i * BEAT_WIDTH))
+            let groupLayer = this.renderBeatGroup(beat, n, (BEAT_START_OFFSET_X + i * BEAT_WIDTH))
 
             // render group
             this.melodyLayer.add(groupLayer)
@@ -226,7 +235,7 @@ export class KonnakolGame {
         // render melody start indicator
         if (beatIdx === 0) {
             var startIndicatorLine = new Konva.Line({
-                points: [BEAT_WIDTH / 2, 0, BEAT_WIDTH / 2, this.melody.instruments.length * GROUP_HEIGHT],
+                points: [BEAT_RADIUS, 0, BEAT_RADIUS, this.melody.instruments.length * GROUP_HEIGHT],
                 stroke: COLOR_BEAT,
                 strokeWidth: 1
             })
@@ -242,18 +251,29 @@ export class KonnakolGame {
 
             // render note
             var circle = new Konva.Circle({
-                x: BEAT_WIDTH / 2,
+                x: BEAT_RADIUS,
                 y: instrumentIndex * GROUP_HEIGHT + GROUP_HEIGHT / 2,
-                radius: 12,
+                radius: BEAT_RADIUS,
                 fill: COLOR_BEAT
             })
 
+            // render debug rect
+            // var debugBox = new Konva.Rect({
+            //     stroke: COLOR_BEAT,
+            //     strokeWidth: 1,
+            //     x: 0,
+            //     y: instrumentIndex * GROUP_HEIGHT,
+            //     width: BEAT_WIDTH,
+            //     height: GROUP_HEIGHT
+            // })
+            
             groupLayer.add(circle)
+            //groupLayer.add(debugBox)
         })
 
         // render konnakol
         const konnakolText = new Konva.Text({
-            x: BEAT_WIDTH / 2 - 8,
+            x: BEAT_RADIUS - 8,
             y: this.melody.instruments.length * GROUP_HEIGHT + GROUP_HEIGHT / 2,
             fontSize: 18,
             fill: beat.main ? COLOR_KONNAKOL_MAIN : COLOR_TEXT,
