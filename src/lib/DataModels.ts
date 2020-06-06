@@ -10,7 +10,7 @@ export type MelodyCollection = {
 export type Melody = {
 	readonly id?: string
 	readonly collection_id?: string
-	
+	readonly description?: string
 	readonly order: number
 	readonly name: string
 	instruments: string[]
@@ -45,6 +45,7 @@ export const MelodyConverter = {
 			id: snapshot.id,
 			order: data.order,
 			name: data.name,
+			description: data.description,
 			collection_id: snapshot.ref.parent.id,
 			instruments: data.instruments,
 			beats: data.beats

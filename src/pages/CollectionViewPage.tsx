@@ -73,6 +73,7 @@ const CollectionViewPage: React.FC<CollectionViewPageArgs> = (props) => {
             {state.melodies.map(m => <IonItem key={m.id} routerLink={`/collections/${props.match.params.collection_id}/melody/${m.id}`} routerDirection="forward">
               <IonLabel>
                 <h2>{m.order}. {m.name}</h2>
+                <p>{m.description}</p>
               </IonLabel>
             </IonItem>)}
           </IonList>
