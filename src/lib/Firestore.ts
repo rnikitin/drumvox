@@ -55,8 +55,8 @@ export class MelodiesStore {
 		let snapshop = (await firestoreDrum.collection(Collections.MelodyCollections)
 			.doc(id)
 			.collection(Collections.Melodies)
-			.withConverter(MelodyConverter)
 			.orderBy("order")
+			.withConverter(MelodyConverter)		
 			.get()).docs
 
 		return snapshop.map(m => m.data())
