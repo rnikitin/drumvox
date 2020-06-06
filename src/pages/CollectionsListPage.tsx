@@ -3,9 +3,10 @@ import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, 
 import { MelodiesStore } from "../lib/Firestore"
 import { MelodyCollection } from "../lib/DataModels"
 import { Analytics } from "../lib/Analytics"
+import EmptyContent from "../components/EmptyContent"
 
 type CollectionsListPageState = {
-	collections: MelodyCollection[]
+	collections: MelodyCollection[] 
 	loading: boolean
 }
 
@@ -18,6 +19,7 @@ const CollectionsListPage: React.FC = () => {
 
 	useIonViewWillEnter(() => {
 		MelodiesStore.getCollections().then((value) => {
+			console.log("getCollections", value)
 			setState({
 				collections: value,
 				loading: false
@@ -57,15 +59,8 @@ const CollectionsListPage: React.FC = () => {
 					</IonList>
 				}
 
-				{!state.loading && !state.collections.length &&
-					<IonCard>
-						<IonCardHeader>
-							<IonCardTitle>OMG!</IonCardTitle>
-						</IonCardHeader>
-						<IonCardContent>
-							There is no content right now. Please check this section later!
-						</IonCardContent>
-					</IonCard>
+				{!state.loading && !state.collections &&
+					<EmptyContent />
 				}
 			</IonContent>
 		</IonPage>

@@ -5,6 +5,7 @@ import { MelodiesStore } from "../lib/Firestore"
 import { Melody, MelodyCollection } from "../lib/DataModels"
 import { arrowBackOutline } from "ionicons/icons"
 import { Analytics } from "../lib/Analytics"
+import EmptyContent from "../components/EmptyContent"
 
 interface CollectionViewPageArgs extends RouteComponentProps<{
   collection_id: string;
@@ -18,9 +19,6 @@ type CollectionViewPageState = {
 
 const CollectionViewPage: React.FC<CollectionViewPageArgs> = (props) => {
 
-  const [currentCollection, setCurrentCollection] = useState<MelodyCollection>()
-  const [melodies, setMelodies] = useState<Melody[]>([])
-
   const [state, setState] = useState<CollectionViewPageState>({
     currentCollection: null,
     melodies: [],
@@ -29,7 +27,7 @@ const CollectionViewPage: React.FC<CollectionViewPageArgs> = (props) => {
 
   useIonViewWillEnter(() => {
 
-    console.log("CollectionViewPage.useIonViewWillEnter", currentCollection, melodies)
+    console.log("CollectionViewPage.useIonViewWillEnter", state)
 
     Promise.all([
       MelodiesStore.getCollection(props.match.params.collection_id),
@@ -42,14 +40,6 @@ const CollectionViewPage: React.FC<CollectionViewPageArgs> = (props) => {
           loading: false
         })
       })
-
-    MelodiesStore.getCollection(props.match.params.collection_id).then((value) => {
-      setCurrentCollection(value)
-    })
-
-    MelodiesStore.getMelodies(props.match.params.collection_id).then((value) => {
-      setMelodies(value)
-    })
   })
 
   useIonViewDidEnter(() => {
@@ -69,7 +59,7 @@ const CollectionViewPage: React.FC<CollectionViewPageArgs> = (props) => {
           <IonButtons slot="end">
             <IonMenuButton />
           </IonButtons>
-          <IonTitle>{currentCollection?.name}</IonTitle>
+          <IonTitle>{state.currentCollection?.name}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
@@ -78,14 +68,18 @@ const CollectionViewPage: React.FC<CollectionViewPageArgs> = (props) => {
           <IonProgressBar color="dark" type="indeterminate"></IonProgressBar>
         }
 
-        {!state.loading &&
+        {!state.loading && state.melodies.length > 0 &&
           <IonList>
-            {melodies.map(m => <IonItem key={m.id} routerLink={`/collections/${props.match.params.collection_id}/melody/${m.id}`} routerDirection="forward">
+            {state.melodies.map(m => <IonItem key={m.id} routerLink={`/collections/${props.match.params.collection_id}/melody/${m.id}`} routerDirection="forward">
               <IonLabel>
                 <h2>{m.order}. {m.name}</h2>
               </IonLabel>
             </IonItem>)}
           </IonList>
+        }
+
+        {!state.loading && state.melodies.length == 0 &&
+          <EmptyContent />
         }
 
       </IonContent>
