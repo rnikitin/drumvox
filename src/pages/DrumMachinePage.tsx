@@ -1,5 +1,5 @@
-import React, { useState } from "react"
-import { IonCol, IonRange, IonLabel, IonRow, IonGrid, IonContent, IonFab, IonFabButton, IonIcon, useIonViewWillEnter, IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, useIonViewDidEnter, IonButton } from "@ionic/react"
+import React, { useState, useEffect } from "react"
+import { IonCol, IonRange, IonLabel, IonRow, IonGrid, IonContent, IonFab, IonFabButton, IonIcon, useIonViewWillEnter, IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, useIonViewDidEnter, IonButton, IonSegment, IonSegmentButton } from "@ionic/react"
 import { play, pause, stop, trash, arrowBackOutline } from "ionicons/icons"
 import DrumPoint from "../components/DrumPoint"
 import KanakolCol from "../components/KanakolCol"
@@ -20,12 +20,9 @@ class DrumMachinePageState {
 
 export const DrumMachinePage: React.FC<DrumMachineProps> = () => {
 
-    const [state, setState] = useState({
-        forceReload: 0
-    })
-
-    console.log("DrumMachineComponent.init")
-    //const state = new DrumMachinePageState()
+    const [sequenceSize, setSequenceSize] = useState(8)
+    
+    let dm = new SSDM.DrumMachine(sequenceSize, notifyDrumPointComponents)
 
     useIonViewDidEnter(() => {
         Analytics.setCurrentScreen("DrumMachinePage", {})
@@ -33,8 +30,6 @@ export const DrumMachinePage: React.FC<DrumMachineProps> = () => {
 
     //const [playing, setPlaying] = useState(false)
     const beatCallbacks: Array<(tick: number) => void> = []
-
-    const dm = new SSDM.DrumMachine(notifyDrumPointComponents)
 
     /// HANDLERS
     function notifyDrumPointComponents(newBeat: number) {
@@ -67,11 +62,6 @@ export const DrumMachinePage: React.FC<DrumMachineProps> = () => {
         }, 50)
     }
 
-    function resetHandle() {
-        stopHandle()
-        dm.resetMelody()
-    }
-
     function changeBPM(e: any) {
         let newBpm = e.target.value
         console.log("DrumMachineComponent.changeBPM", newBpm)
@@ -89,7 +79,7 @@ export const DrumMachinePage: React.FC<DrumMachineProps> = () => {
         var drumPointColumns = []
 
         // iterate through sequence size
-        for (let i = 1; i <= SSDM.SEQUENCE_SIZE; i++) {
+        for (let i = 1; i <= sequenceSize; i++) {
             drumPointColumns.push(<DrumPoint key={"dp" + i} tick={i} note={drumNote} onToggle={togglePlayer} />)
         }
 
@@ -104,24 +94,45 @@ export const DrumMachinePage: React.FC<DrumMachineProps> = () => {
     // push first empy column
     kanakolColumns.push(<IonCol key="kan00" size="1" />)
     // add kanakol notes
-    for (let k = 1; k <= SSDM.SEQUENCE_SIZE; k++) {
+    for (let k = 1; k <= sequenceSize; k++) {
         kanakolColumns.push(<KanakolCol key={"kan" + k} position={k} subscribeOnBeat={subscriberOnBeat} />)
     }
 
+    function sequenceSizeChange(value: string) {
+        console.log("sequenceSizeChange", value)
+        stopHandle()
+        setSequenceSize(Number(value))
+        // create new drum machine
+        dm.destroy()
+        dm = new SSDM.DrumMachine(sequenceSize, notifyDrumPointComponents)
+    }
 
     return (
         <IonPage>
             <IonHeader>
-                <IonToolbar>
+                <IonToolbar mode="ios">
                     <IonButtons slot="start">
-                        <IonButton routerDirection={"back"} routerLink={"/collections"} >
+                        <IonButton color="dark" routerDirection={"back"} routerLink={"/collections"} >
                             <IonIcon slot="icon-only" icon={arrowBackOutline} />
                         </IonButton>
                     </IonButtons>
                     <IonButtons slot="end">
-                        <IonMenuButton />
+                        <IonMenuButton color="dark" />
                     </IonButtons>
-                    <IonTitle>Stupid Simple Drum Machine</IonTitle>
+                    <IonSegment mode="ios" value={sequenceSize.toString()} onIonChange={e => sequenceSizeChange(e.detail.value!)} color="primary">
+                        <IonSegmentButton value="4">
+                            <IonLabel>4</IonLabel>
+                        </IonSegmentButton>
+                        <IonSegmentButton value="8">
+                            <IonLabel>8</IonLabel>
+                        </IonSegmentButton>
+                        <IonSegmentButton value="12">
+                            <IonLabel>12</IonLabel>
+                        </IonSegmentButton>
+                        <IonSegmentButton value="16">
+                            <IonLabel>16</IonLabel>
+                        </IonSegmentButton>
+                    </IonSegment>
                 </IonToolbar>
             </IonHeader>
             <IonContent>
@@ -166,7 +177,7 @@ export const DrumMachinePage: React.FC<DrumMachineProps> = () => {
                                 snaps={true}
                                 step={5}
                                 ticks={false}
-                                value={dm.bpm}
+                                value={SSDM.DEFAULT_BPM}
                                 onIonChange={changeBPM}
                                 debounce={250}>
                                 <IonLabel slot="start">50</IonLabel>

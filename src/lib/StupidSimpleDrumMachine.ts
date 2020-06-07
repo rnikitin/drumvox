@@ -1,8 +1,6 @@
 import * as Tone from "tone"
 import { computed, observable } from "mobx"
 
-// size of playing sequence, constant for now
-export const SEQUENCE_SIZE = 16
 // Our set of drum notes with mp3
 export const DRUM_NOTES = {
     "Ride": "/assets/audio/drumvox/ride.mp3",
@@ -11,15 +9,18 @@ export const DRUM_NOTES = {
     "Kick": "/assets/audio/drumvox/kick.mp3",
 }
 
+export const DEFAULT_BPM = 60
+
 export class DrumMachine {
 
     melody: string[][] = []
     events: number[] = []
-    @observable _bpm = 60
+    @observable _bpm = DEFAULT_BPM
     @computed get bpm() { return this._bpm }
     private currentBeat = 0
     @observable _playing = false
     @computed get playing() { return this._playing }
+    sequenceSize: number
 
     beatUICallback: (beat: number) => void
 
@@ -33,7 +34,8 @@ export class DrumMachine {
         console.log("drums loaded")
     })
 
-    constructor(beatUICallback: (beat: number) => void) {
+    constructor(sequenceSize: number, beatUICallback: (beat: number) => void) {
+        this.sequenceSize = sequenceSize
         this.beatUICallback = beatUICallback
 
         console.log("DrumMachine.init")
@@ -67,13 +69,13 @@ export class DrumMachine {
 
     private createSequencer() {
         // generate sequence and empty melody
-        for (let i = 1; i <= SEQUENCE_SIZE; i++) {
+        for (let i = 1; i <= this.sequenceSize; i++) {
             this.melody[i] = []
             this.events.push(i)
         }
 
         // initialize sequencer
-        return new Tone.Sequence((time, beat) => this.seqenceStep(time, beat), this.events, "8n")
+        return new Tone.Sequence((time, beat) => this.seqenceStep(time, beat), this.events, this.sequenceSize + "n")
     }
 
     start() {
@@ -139,6 +141,9 @@ export class DrumMachine {
         console.log("DrumMachine.toggleBeat", tick, note, this.melody)
     }
 
-
+    destroy(){
+        this.stop()
+        this.sequencer.dispose()
+    }
 
 }

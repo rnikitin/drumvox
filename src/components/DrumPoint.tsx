@@ -20,7 +20,7 @@ const DrumPointStyle = {
   const DrumPoint: React.FC<DrumPointProps> = (props: DrumPointProps) => {
     return (
         <IonCol key={"col"+props.tick}>
-            <IonCheckbox style={DrumPointStyle} class="drum-point" mode="ios" value={props.tick.toString()} onIonChange={togglePoint} />
+            <IonCheckbox style={DrumPointStyle} class="drum-point" mode="ios" value={props.tick.toString()} checked={false} onIonChange={togglePoint} />
         </IonCol>
     )
 

@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react"
-import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonTitle, IonFooter, IonButton, IonIcon, useIonViewWillEnter, useIonViewDidEnter } from "@ionic/react"
+import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonTitle, IonFooter, IonButton, IonIcon, useIonViewWillEnter, useIonViewDidEnter, IonMenuButton } from "@ionic/react"
 import KonnakolPlayerToolbar from "../components/KonnakolPlayerToolbar"
 import { arrowBackOutline } from "ionicons/icons"
 import { RouteComponentProps } from "react-router"
@@ -26,7 +26,7 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
   const [loaded, setLoaded] = useState<boolean>(false)
 
   useIonViewWillEnter(() => {
-    
+
   })
 
   useIonViewDidEnter(() => {
@@ -185,6 +185,9 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
             <IonButton routerDirection={"back"} routerLink={`/collections/${props.match.params.collection_id}`} >
               <IonIcon slot="icon-only" icon={arrowBackOutline} />
             </IonButton>
+          </IonButtons>
+          <IonButtons slot="end">
+            <IonMenuButton />
           </IonButtons>
           <IonTitle>{loaded ? melody?.name : "..."}</IonTitle>
         </IonToolbar>
