@@ -1,13 +1,12 @@
 import { IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonContent, IonButton } from "@ionic/react"
 import React from "react"
 import { firestoreDrum, Collections } from "../lib/Firestore"
-import { Melody } from "../lib/DataModels"
+import { KonnakolMelody } from "../lib/DataModels"
 
 
 const KonnakolAdminPage: React.FC = () => {
 
-
-	let testMelody: Melody = {
+	let testMelody: KonnakolMelody = {
 		name: "Just a test melody",
 		order: 1,
 		instruments: ["Ride", "HH", "Snare", "Kick"],
@@ -31,7 +30,7 @@ const KonnakolAdminPage: React.FC = () => {
 		]
 	}
 
-	let konnakolBasics: Melody[] = [
+	let konnakolBasics: KonnakolMelody[] = [
 		{
 			id: "konnakol_basics_lesson_1",
 			name: "Exercise 1",
@@ -200,8 +199,8 @@ const KonnakolAdminPage: React.FC = () => {
 	]
 
 	function updateKonnakolBasics() {
-		var collectionRef = firestoreDrum.collection(Collections.MelodyCollections).doc("konnakol_basics")
-		var melodiesRef = collectionRef.collection(Collections.Melodies)
+		var collectionRef = firestoreDrum.collection(Collections.melody_collections).doc("konnakol_basics")
+		var melodiesRef = collectionRef.collection(Collections.melodies)
 
 		console.log("inserting", konnakolBasics)
 

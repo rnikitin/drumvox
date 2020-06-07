@@ -1,6 +1,6 @@
 import * as Tone from "tone"
-import { KonnakolMelody } from "./KonnakolMelody"
-import { Melody } from "./DataModels"
+import { KonnakolMelody } from "./DataModels"
+import { GameFeedbackCollector } from "./GameFeedback"
 
 // size of playing sequence, constant for now
 const SEQUENCE_SIZE = 8
@@ -16,13 +16,17 @@ export class KonnakolGameAudio {
 	private drumPlayers: Tone.Players
 	private bpm = 60
 	private melody: KonnakolMelody
+	private melodyPlayCounter = 0
 
 	private sequenceEvents: number[] = []
 	private Sequencer: Tone.Sequence<number>
+	private gameFeedback: GameFeedbackCollector
 
-	constructor(melody: Melody, bpm: number) {
+	constructor(melody: KonnakolMelody, bpm: number) {
 		this.melody = melody
 		this.bpm = bpm
+
+		this.gameFeedback = new GameFeedbackCollector(this.melody.id!, this.melody.collection_id!)
 
 		// generate sequencer events
 		for (var i = 0; i < melody.beats.length; i++) {
@@ -37,7 +41,7 @@ export class KonnakolGameAudio {
 
 		Tone.Transport.bpm.value = this.bpm
 
-		console.log("KonnakolGameAudio.constructor", DRUM_NOTES, this.sequenceEvents, this.bpm)
+		console.log("KonnakolGameAudio.constructor", this.melody)
 
 		// create sequencer
 		this.Sequencer = this.initSequencer()
@@ -50,11 +54,18 @@ export class KonnakolGameAudio {
 
 			let melodyBeat = this.melody.beats[beat]
 			this.playNotes(melodyBeat.notes, time)
+
+			// collect play times
+			if (beat === this.melody.beats.length-1){
+				this.melodyPlayCounter++
+				console.log("melody playCount", this.melodyPlayCounter)
+			}
 		}, this.sequenceEvents, "16n")
 	}
 
 	public destroy() {
 		this.stop()
+
 		Tone.Transport.stop()
 		this.Sequencer.clear()
 		this.Sequencer.dispose()
@@ -68,6 +79,7 @@ export class KonnakolGameAudio {
 
 			Tone.Transport.start()
 			this.Sequencer.start(0, 0)
+			this.gameFeedback.startTimer(this.bpm)
 		})
 	}
 
@@ -121,6 +133,8 @@ export class KonnakolGameAudio {
 				//do drawing or DOM manipulation here
 				onStart()
 			}, transportTime - 0.1)
+
+			this.gameFeedback.startTimer(this.bpm)
 		})
 	}
 
@@ -129,7 +143,9 @@ export class KonnakolGameAudio {
 
 		// pause or stop all
 		Tone.Transport.pause()
+		this.Sequencer.stop()
 		this.drumPlayers.stopAll()
+		this.gameFeedback.stopAndSaveHistory()
 	}
 
 	public stop() {
@@ -138,13 +154,19 @@ export class KonnakolGameAudio {
 		// stop all
 		Tone.Transport.stop()
 		this.Sequencer.stop()
-
 		this.drumPlayers.stopAll()
+		
+		// collect feedback
+		this.gameFeedback.stopAndSaveHistory()
+		this.gameFeedback.countMelody(this.melodyPlayCounter)
+		this.melodyPlayCounter = 0
 	}
 
 	public changeBPM(newBpm: number) {
 		this.bpm = newBpm
 		Tone.Transport.bpm.value = newBpm
+
+		this.gameFeedback.startTimer(this.bpm)
 	}
 
 	private playNotes(notes: string[], time: number) {

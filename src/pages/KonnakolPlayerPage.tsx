@@ -3,7 +3,6 @@ import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonTitle, IonFo
 import KonnakolPlayerToolbar from "../components/KonnakolPlayerToolbar"
 import { arrowBackOutline } from "ionicons/icons"
 import { RouteComponentProps } from "react-router"
-import { Melody } from "../lib/DataModels"
 import { MelodiesStore } from "../lib/Firestore"
 import { Analytics } from "../lib/Analytics"
 import { Stage } from "react-konva"
@@ -12,6 +11,7 @@ import { KonnakolGameAudio } from "../lib/KonnakolGameAudio"
 import { reaction, observe } from "mobx"
 import { AppContext, PlayerState } from "../AppContext"
 import { PowerManagement } from "@ionic-native/power-management"
+import { KonnakolMelody } from "../lib/DataModels"
 
 interface KanakolPlayerPagePageArgs extends RouteComponentProps<{
   melody_id: string
@@ -22,7 +22,7 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
   const contentRef = useRef<HTMLIonContentElement>(null)
   const stageRef = useRef<Stage>(null)
 
-  const [melody, setMelody] = useState<Melody>()
+  const [melody, setMelody] = useState<KonnakolMelody>()
   const [loaded, setLoaded] = useState<boolean>(false)
 
   useIonViewWillEnter(() => {
@@ -71,8 +71,8 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
       // dispose reactions
       disposers.map((disposer) => disposer())
 
-      game?.destroy()
-      gameAudio?.destroy()
+      game.destroy()
+      gameAudio.destroy()
 
       // release wakelock since we leave the page
       PowerManagement.release().then(() => {
@@ -123,35 +123,44 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
 
       switch (change.newValue) {
         case PlayerState.Playing:
-          
+
           if (change.oldValue == PlayerState.Stopped) {
-            // play from stop
-
-            // game?.play()
-            // gameAudio?.play()
-
-            gameAudio?.playWithPreCount(() => {
-              game?.play()
-            })
+            playWithPrecount()
           }
           else {
-            // resume playing
-            game?.play()
-            gameAudio?.play()
+            resumePlaying()
           }
           break
         case PlayerState.Paused:
-          game?.pause()
-          gameAudio?.pause()
+          pausePlaying()
           break
 
         case PlayerState.Stopped:
-          game?.stop()
-          gameAudio?.stop()
+          stopPlaying()
           break
       }
     })
 
+    function playWithPrecount() {
+      gameAudio?.playWithPreCount(() => {
+        game?.play()
+      })
+    }
+
+    function resumePlaying() {
+      game?.play()
+      gameAudio?.play()
+    }
+
+    function pausePlaying() {
+      game?.pause()
+      gameAudio?.pause()
+    }
+
+    function stopPlaying() {
+      game?.stop()
+      gameAudio?.stop()
+    }
 
     // react on BPM change
     const reactionBpmDisposer = reaction(() => AppContext.Player.bpm, newBPM => {

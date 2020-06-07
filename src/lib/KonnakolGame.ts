@@ -1,7 +1,7 @@
 import Konva from "konva"
 import { Stage } from "konva/types/Stage"
-import { KonnakolMelody, MelodyBeat } from "./KonnakolMelody"
 import { IFrame } from "konva/types/types"
+import { KonnakolMelody, MelodyBeat } from "./DataModels"
 
 /**
  * Отступ от края экрана для текста Инструментов
@@ -72,6 +72,7 @@ export class KonnakolGame {
     private lastRenderedBeat: MelodyBeat = { id: "-1", notes: [], konnakol: "" }
     private melodyAnimation: Konva.Animation
     private BPM = 60
+    
 
     private get GAME_HEIGHT() { return GROUP_HEIGHT * (this.melody.instruments.length + 1) }
 
@@ -266,7 +267,7 @@ export class KonnakolGame {
             //     width: BEAT_WIDTH,
             //     height: GROUP_HEIGHT
             // })
-            
+
             groupLayer.add(circle)
             //groupLayer.add(debugBox)
         })

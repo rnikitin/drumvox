@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonList, IonItem, IonLabel, IonButton, IonIcon, useIonViewWillEnter, useIonViewDidEnter, IonSpinner, IonProgressBar } from "@ionic/react"
 import { RouteComponentProps } from "react-router"
 import { MelodiesStore } from "../lib/Firestore"
-import { Melody, MelodyCollection } from "../lib/DataModels"
+import { KonnakolMelody, MelodyCollection } from "../lib/DataModels"
 import { arrowBackOutline } from "ionicons/icons"
 import { Analytics } from "../lib/Analytics"
 import EmptyContent from "../components/EmptyContent"
@@ -13,7 +13,7 @@ interface CollectionViewPageArgs extends RouteComponentProps<{
 
 type CollectionViewPageState = {
   currentCollection: MelodyCollection | null
-  melodies: Melody[]
+  melodies: KonnakolMelody[]
   loading: boolean
 }
 
@@ -36,7 +36,7 @@ const CollectionViewPage: React.FC<CollectionViewPageArgs> = (props) => {
       .then(values => {
         setState({
           currentCollection: (values[0] as MelodyCollection),
-          melodies: (values[1] as Melody[]),
+          melodies: (values[1] as KonnakolMelody[]),
           loading: false
         })
       })
