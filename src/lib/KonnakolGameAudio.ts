@@ -78,7 +78,7 @@ export class KonnakolGameAudio {
 			Tone.Transport.bpm.value = this.bpm
 
 			Tone.Transport.start()
-			this.Sequencer.start(0, 0)
+			this.Sequencer.start()
 			this.gameFeedback.startTimer(this.bpm)
 		})
 	}
@@ -145,6 +145,7 @@ export class KonnakolGameAudio {
 		Tone.Transport.pause()
 		this.Sequencer.stop()
 		this.drumPlayers.stopAll()
+
 		this.gameFeedback.stopAndSaveHistory()
 	}
 
