@@ -17,10 +17,11 @@ export type KonnakolMelody = {
 }
 
 export type MelodyBeat = {
-	id: string;
-	notes: string[];
-	konnakol: string;
-	main?: boolean;
+	id: string
+	notes: string[]
+	konnakol: string
+	num?: number
+	main?: boolean
 };
 
 export const MelodyCollectionConverter = {

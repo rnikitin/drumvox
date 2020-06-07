@@ -74,7 +74,7 @@ export class KonnakolGame {
     private BPM = 60
     
 
-    private get GAME_HEIGHT() { return GROUP_HEIGHT * (this.melody.instruments.length + 1) }
+    private get GAME_HEIGHT() { return GROUP_HEIGHT * (this.melody.instruments.length + 2) }
 
     constructor(stage: Stage, stageHeight: number, stageWidth: number, melody: KonnakolMelody, bpm: number) {
         this.stage = stage
@@ -139,7 +139,7 @@ export class KonnakolGame {
             x: 0,
             y: OFFSET_Y,
             width: TERMINATOR_OFFSET_X,
-            height: GROUP_HEIGHT * (this.melody.instruments.length + 1),
+            height: this.GAME_HEIGHT + 10,
             fill: COLOR_BACKGROUND
         })
 
@@ -151,7 +151,7 @@ export class KonnakolGame {
                 TERMINATOR_OFFSET_X,
                 OFFSET_Y,
                 TERMINATOR_OFFSET_X,
-                OFFSET_Y + (GROUP_HEIGHT * (this.melody.instruments.length + 1))
+                OFFSET_Y + this.GAME_HEIGHT
             ],
             stroke: TERMINATOR_COLOR,
             strokeWidth: 2,
@@ -272,16 +272,27 @@ export class KonnakolGame {
             //groupLayer.add(debugBox)
         })
 
-        // render konnakol
-        const konnakolText = new Konva.Text({
+        // render konnakol number
+        const konnakolNumber = new Konva.Text({
             x: BEAT_RADIUS - 8,
             y: this.melody.instruments.length * GROUP_HEIGHT + GROUP_HEIGHT / 2,
+            fontSize: 18,
+            fill: COLOR_TEXT,
+            text: beat.num?.toString(),
+            align: "center"
+        })
+
+        // render konnakol
+        const konnakolText = new Konva.Text({
+            x: BEAT_RADIUS - 12,
+            y: (this.melody.instruments.length + 1) * GROUP_HEIGHT + GROUP_HEIGHT / 2,
             fontSize: 18,
             fill: beat.main ? COLOR_KONNAKOL_MAIN : COLOR_TEXT,
             text: beat.konnakol,
             align: "center"
         })
 
+        groupLayer.add(konnakolNumber)
         groupLayer.add(konnakolText)
 
         return groupLayer
