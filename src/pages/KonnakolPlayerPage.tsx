@@ -26,15 +26,19 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
   const [loaded, setLoaded] = useState<boolean>(false)
 
   useIonViewWillEnter(() => {
-    load()
-    handleDeviceEvents()
+    
   })
 
   useIonViewDidEnter(() => {
+    load()
+    handleDeviceEvents()
+
     Analytics.setCurrentScreen("KonnakolPlayerPage", { collection_id: props.match.params.collection_id, melody_id: props.match.params.melody_id })
   })
 
   useEffect(() => {
+    console.log("KonnakolPlayerPage useEffect", loaded, melody)
+
     if (loaded) {
       // initialize player
       const desctructor = initPlayer()
@@ -42,7 +46,7 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
       // return destruct function
       return () => desctructor()
     }
-  })
+  }, [loaded])
 
   /**
    * initialize Konva and Tone players
