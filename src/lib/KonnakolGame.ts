@@ -26,7 +26,7 @@ const BEAT_WIDTH = 60
 /**
  * Отсутп справа для Терминатора
  */
-const TERMINATOR_OFFSET_X = 100
+const TERMINATOR_OFFSET_X = 250
 /**
  * Radius of the beat dot
  */
@@ -138,7 +138,7 @@ export class KonnakolGame {
         var terminatorRect = new Konva.Rect({
             x: 0,
             y: OFFSET_Y,
-            width: TERMINATOR_OFFSET_X,
+            width: LINE_OFFSET_X,
             height: this.GAME_HEIGHT + 10,
             fill: COLOR_BACKGROUND
         })
