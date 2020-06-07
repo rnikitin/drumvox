@@ -9,5 +9,15 @@
       "APP_SECRET": "b7ebc8e9-fc69-44ff-b157-e952ba47fbdf",
       "FIREBASE_ANALYTICS_COLLECTION_ENABLED": "true"
     }
+  },
+  "plugins": {
+    "GoogleAuth": {
+      "scopes": [
+        "profile",
+        "email"
+      ],
+      "serverClientId": "380858414699-cf888euo0q0c68f1nc3t7htt89j9g5rt.apps.googleusercontent.com",
+      "forceCodeForRefreshToken": true
+    }
   }
 }

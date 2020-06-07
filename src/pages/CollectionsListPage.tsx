@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonItem, IonLabel, IonList, useIonViewWillEnter, useIonViewDidEnter, IonSpinner, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonProgressBar } from "@ionic/react"
+import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonItem, IonLabel, IonList, useIonViewWillEnter, useIonViewDidEnter, IonProgressBar } from "@ionic/react"
 import { MelodiesStore } from "../lib/Firestore"
 import { MelodyCollection } from "../lib/DataModels"
 import { Analytics } from "../lib/Analytics"

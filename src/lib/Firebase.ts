@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app"
 //import "firebase/analytics"
 import "firebase/firestore"
+import "firebase/auth"
 
 var firebaseConfig = {
     apiKey: "AIzaSyCBkrRh_OabSeLb-kyhpNytTbwIRP6hxkA",
@@ -14,4 +15,4 @@ var firebaseConfig = {
   }
 
   // Initialize Firebase
-  export const app = initializeApp(firebaseConfig)
+  export default initializeApp(firebaseConfig)

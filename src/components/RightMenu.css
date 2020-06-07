@@ -1,0 +1,11 @@
+.b-signout {
+	text-align: center;
+	position: absolute;
+	bottom: 10px;
+	display: block;
+	width: 100%;
+}
+
+.b-userinfo {
+	text-align: center;
+}

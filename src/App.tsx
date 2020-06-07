@@ -2,15 +2,7 @@ import React from "react"
 import { Redirect, Route } from "react-router-dom"
 import {
   IonApp,
-  IonRouterOutlet,
-  IonContent,
-  IonMenu,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonList,
-  IonItem
-} from "@ionic/react"
+  IonRouterOutlet} from "@ionic/react"
 import { IonReactRouter } from "@ionic/react-router"
 import { DrumMachinePage } from "./pages/DrumMachinePage"
 import KonnakolPlayerPage from "./pages/KonnakolPlayerPage"
@@ -39,6 +31,7 @@ import CollectionsListPage from "./pages/CollectionsListPage"
 import CollectionView from "./pages/CollectionViewPage"
 import KonnakolAdminPage from "./pages/KonnakolAdminPage"
 import AboutPage from "./pages/AboutPage"
+import RightMenu from "./components/RightMenu"
 
 //LogRocket.init('zfojck/drumvox');
 
@@ -57,20 +50,8 @@ ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.LANDSCAPE)
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
-      <IonMenu side="end" menuId="first" contentId="mainContent">
-        <IonHeader>
-          <IonToolbar>
-            <IonTitle>DrumVox</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent>
-          <IonList>
-            <IonItem href="/collections">Training</IonItem>
-            <IonItem href="/drumMachine">Stupid Simple Drum Machine</IonItem>
-            <IonItem href="/about">About App</IonItem>
-          </IonList>
-        </IonContent>
-      </IonMenu>
+      
+      <RightMenu />
 
       <IonRouterOutlet id="mainContent">
         <Route path="/drumMachine" component={DrumMachinePage} exact={true} />

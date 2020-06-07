@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react"
-import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonTitle, IonFooter, IonButton, IonIcon, useIonViewWillEnter, useIonViewDidEnter, IonToast } from "@ionic/react"
+import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonTitle, IonFooter, IonButton, IonIcon, useIonViewWillEnter, useIonViewDidEnter } from "@ionic/react"
 import KonnakolPlayerToolbar from "../components/KonnakolPlayerToolbar"
 import { arrowBackOutline } from "ionicons/icons"
 import { RouteComponentProps } from "react-router"
@@ -12,7 +12,6 @@ import { KonnakolGameAudio } from "../lib/KonnakolGameAudio"
 import { reaction, observe } from "mobx"
 import { AppContext, PlayerState } from "../AppContext"
 import { PowerManagement } from "@ionic-native/power-management"
-import { toastController } from "@ionic/core"
 
 interface KanakolPlayerPagePageArgs extends RouteComponentProps<{
   melody_id: string
@@ -22,7 +21,6 @@ interface KanakolPlayerPagePageArgs extends RouteComponentProps<{
 const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
   const contentRef = useRef<HTMLIonContentElement>(null)
   const stageRef = useRef<Stage>(null)
-  const toastRef = useRef<HTMLIonToastElement>(null)
 
   const [melody, setMelody] = useState<Melody>()
   const [loaded, setLoaded] = useState<boolean>(false)

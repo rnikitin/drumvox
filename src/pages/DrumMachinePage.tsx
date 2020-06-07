@@ -155,12 +155,6 @@ export const DrumMachinePage: React.FC<DrumMachineProps> = () => {
                                     <IonIcon icon={stop} />
                                 </IonFabButton>
                             </IonFab>
-                            {/* <IonFab vertical="bottom" horizontal="end">
-                                <IonFabButton color="light" onClick={resetHandle} size="small">
-                                    <IonIcon icon={trash} />
-                                </IonFabButton>
-                            </IonFab> */}
-
                         </IonCol>
                         <IonCol size="9">
                             <IonRange

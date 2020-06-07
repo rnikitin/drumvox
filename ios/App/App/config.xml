@@ -26,6 +26,11 @@
     <param name="onload" value="$FIREBASE_ANALYTICS_COLLECTION_ENABLED"/>
   </feature>
 
+  <feature name="FirebaseAuthentication">
+    <param name="ios-package" value="FirebaseAuthenticationPlugin"/>
+    <param name="onload" value="false"/>
+  </feature>
+
   <feature name="IonicCordovaCommon">
     <param name="ios-package" value="IonicCordovaCommon" onload="true"/>
   </feature>

@@ -7,8 +7,8 @@ export const SEQUENCE_SIZE = 16
 export const DRUM_NOTES = {
     "Ride": "/assets/audio/drumvox/ride.mp3",
     "HH": "/assets/audio/drumvox/hh.mp3",
-    "Kick": "/assets/audio/drumvox/kick.mp3",
     "Snare": "/assets/audio/drumvox/snare.mp3",
+    "Kick": "/assets/audio/drumvox/kick.mp3",
 }
 
 export class DrumMachine {

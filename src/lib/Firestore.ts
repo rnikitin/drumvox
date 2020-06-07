@@ -1,4 +1,4 @@
-import { app } from "./Firebase"
+import app from "./Firebase"
 import { MelodyCollectionConverter, MelodyConverter } from "./DataModels"
 
 export function debug() {
