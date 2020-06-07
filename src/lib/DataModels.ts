@@ -1,13 +1,13 @@
 
 export type MelodyCollection = {
-	readonly id: string
+	id: string
 	readonly order: number
 	readonly name: string
 	readonly description: string
 }
 
 export type KonnakolMelody = {
-	readonly id?: string
+	id?: string
 	readonly collection_id?: string
 	readonly description?: string
 	readonly order: number
@@ -33,7 +33,13 @@ export const MelodyCollectionConverter = {
 	): MelodyCollection {
 		const data = snapshot.data(options)!
 
-		return { id: snapshot.id, order: data.order, name: data.name, description: data.description }
+		return { 
+			id: snapshot.id, 
+			order: data.order, 
+			name: data.name, 
+			description: 
+			data.description 
+		}
 	}
 }
 

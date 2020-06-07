@@ -19,7 +19,7 @@ function init() {
 }
 
 export enum Collections {
-	melody_collections = "melody_collections",
+	collections = "collections",
 	melodies = "melodies",
 	users = "users",
 	melody_stats = "melody_stats",
@@ -32,7 +32,7 @@ export class MelodiesStore {
 	 * Get all available melodies collections
 	 */
 	public static async getCollections() {
-		let snapshop = (await firestoreDrum.collection(Collections.melody_collections)
+		let snapshop = (await firestoreDrum.collection(Collections.collections)
 			.withConverter(MelodyCollectionConverter)
 			.orderBy("order")
 			.get()).docs
@@ -44,7 +44,7 @@ export class MelodiesStore {
 	 * @param id collection's id
 	 */
 	public static async getCollection(id: string) {
-		let snapshop = await firestoreDrum.collection(Collections.melody_collections)
+		let snapshop = await firestoreDrum.collection(Collections.collections)
 			.doc(id)
 			.withConverter(MelodyCollectionConverter)
 			.get()
@@ -56,7 +56,7 @@ export class MelodiesStore {
 	 * @param id collection's id
 	 */
 	public static async getMelodies(id: string) {
-		let snapshop = (await firestoreDrum.collection(Collections.melody_collections)
+		let snapshop = (await firestoreDrum.collection(Collections.collections)
 			.doc(id)
 			.collection(Collections.melodies)
 			.orderBy("order")
@@ -67,7 +67,7 @@ export class MelodiesStore {
 	}
 
 	public static async getMelody(collection_id: string, id: string) {
-		let snapshop = await firestoreDrum.collection(Collections.melody_collections)
+		let snapshop = await firestoreDrum.collection(Collections.collections)
 			.doc(collection_id)
 			.collection(Collections.melodies)
 			.doc(id)
