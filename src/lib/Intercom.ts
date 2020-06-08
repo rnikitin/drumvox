@@ -1,9 +1,6 @@
-import { Intercom } from "capacitor-intercom"
-import { Kommunicate } from "@ionic-native/kommunicate"
+import * as I from "capacitor-intercom"
+
 import { Plugins } from "@capacitor/core"
-const { PushNotifications } = Plugins
 
-PushNotifications.register()
-	
-
-export default new Intercom()
+export const PushNotifications = Plugins.PushNotifications
+export const Intercom = new I.Intercom()

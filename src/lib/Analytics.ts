@@ -1,7 +1,7 @@
 
 import { AppCenterAnalytics } from "@ionic-native/app-center-analytics"
 import { FirebaseAnalytics } from "@ionic-native/firebase-analytics"
-import Intercom from "./Intercom"
+import { Intercom } from "./Intercom"
 
 //const fa = app.analytics()
 

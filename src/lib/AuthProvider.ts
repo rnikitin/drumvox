@@ -4,7 +4,7 @@ import { Plugins } from "@capacitor/core"
 import { getPlatforms } from "@ionic/react"
 import { observable } from "mobx"
 import { Analytics } from "./Analytics"
-import Intercom from "./Intercom"
+import { Intercom } from "./Intercom"
 import { K, KommunicateLogin } from "./Kommunicate"
 
 
@@ -29,16 +29,16 @@ class AuthProvider {
 				else {
 					Intercom.registerIdentifiedUser({ userId: this.currentUser.uid, email: this.currentUser.email! })
 						.then(() => {
-							Intercom.updateUser({ customAttributes: { 
-								user_id: this.currentUser?.uid, 
-								name: this.currentUser?.displayName, 
-								email: this.currentUser?.email,
-								created_at: this.currentUser?.metadata.creationTime,
-								avatar: this.currentUser?.photoURL
-							} })
+							Intercom.updateUser({
+								customAttributes: {
+									user_id: this.currentUser?.uid,
+									name: this.currentUser?.displayName,
+									email: this.currentUser?.email,
+									created_at: this.currentUser?.metadata.creationTime,
+									avatar: this.currentUser?.photoURL
+								}
+							})
 						})
-
-					//KommunicateLogin(value.uid!, value.email!)
 				}
 			}
 			else {
@@ -80,7 +80,6 @@ class AuthProvider {
 			let result = await firebaseAuth.signInWithPopup(provider)
 			console.log("signInWithPopup", result)
 		}
-
 	}
 
 	public signOut() {

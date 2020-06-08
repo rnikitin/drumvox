@@ -33,8 +33,7 @@ import "@ionic/react/css/display.css"
 
 /* Theme variables */
 import "./theme/variables.css"
-import Intercom from "./lib/Intercom"
-import { Kommunicate } from "@ionic-native/kommunicate"
+import {Intercom, PushNotifications} from "./lib/Intercom"
 
 
 
@@ -54,6 +53,11 @@ const App: React.FC = () => {
 
   useEffect(() => {
     Intercom.displayLauncher()
+    
+    PushNotifications.requestPermission().then(() => {
+      PushNotifications.register()
+    })
+    
   }, [])
 
   return (
