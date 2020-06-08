@@ -7,7 +7,9 @@
   "cordova": {
     "preferences": {
       "APP_SECRET": "b7ebc8e9-fc69-44ff-b157-e952ba47fbdf",
-      "FIREBASE_ANALYTICS_COLLECTION_ENABLED": "true"
+      "FIREBASE_ANALYTICS_COLLECTION_ENABLED": "true",
+      "intercom-app-id": "wwbad1yw",
+      "intercom-android-api-key": "android_sdk-6b5ace4bcd9899688b2dd1cd138bb821fa505c36"
     }
   },
   "plugins": {
@@ -18,6 +20,10 @@
       ],
       "serverClientId": "380858414699-cf888euo0q0c68f1nc3t7htt89j9g5rt.apps.googleusercontent.com",
       "forceCodeForRefreshToken": true
+    },
+    "IntercomPlugin": {
+      "android-apiKey": "android_sdk-6b5ace4bcd9899688b2dd1cd138bb821fa505c36",
+      "android-appId": "wwbad1yw"
     }
   }
 }

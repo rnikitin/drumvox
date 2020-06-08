@@ -46,4 +46,6 @@
   
   <preference name="APP_SECRET" value="b7ebc8e9-fc69-44ff-b157-e952ba47fbdf" />
   <preference name="FIREBASE_ANALYTICS_COLLECTION_ENABLED" value="true" />
+  <preference name="intercom-app-id" value="wwbad1yw" />
+  <preference name="intercom-android-api-key" value="android_sdk-6b5ace4bcd9899688b2dd1cd138bb821fa505c36" />
 </widget>

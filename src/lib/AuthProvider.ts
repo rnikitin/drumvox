@@ -4,6 +4,10 @@ import { Plugins } from "@capacitor/core"
 import { getPlatforms } from "@ionic/react"
 import { observable } from "mobx"
 import { Analytics } from "./Analytics"
+import Intercom from "./Intercom"
+import { K, KommunicateLogin } from "./Kommunicate"
+
+
 
 const firebaseAuth = firebaseApp.auth()
 
@@ -18,6 +22,24 @@ class AuthProvider {
 
 			if (value) {
 				this.currentUser = value!
+
+				if (this.currentUser.isAnonymous) {
+					Intercom.registerUnidentifiedUser()
+				}
+				else {
+					Intercom.registerIdentifiedUser({ userId: this.currentUser.uid, email: this.currentUser.email! })
+						.then(() => {
+							Intercom.updateUser({ customAttributes: { 
+								user_id: this.currentUser?.uid, 
+								name: this.currentUser?.displayName, 
+								email: this.currentUser?.email,
+								created_at: this.currentUser?.metadata.creationTime,
+								avatar: this.currentUser?.photoURL
+							} })
+						})
+
+					//KommunicateLogin(value.uid!, value.email!)
+				}
 			}
 			else {
 				this.signInAnonym()
@@ -26,7 +48,7 @@ class AuthProvider {
 	}
 
 	public async signInAnonym() {
-		
+
 		Analytics.LogEvent("Auth/Anoninymous", {})
 
 		try {
@@ -65,6 +87,7 @@ class AuthProvider {
 		Analytics.LogEvent("Auth/Signout", {})
 
 		firebaseAuth.signOut()
+		Intercom.logout()
 	}
 }
 
