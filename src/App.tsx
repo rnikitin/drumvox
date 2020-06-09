@@ -53,10 +53,9 @@ const App: React.FC = () => {
 
   useEffect(() => {
     Intercom.displayLauncher()
-    
-    PushNotifications.requestPermission().then(() => {
-      PushNotifications.register()
-    })
+
+    PushNotifications.requestPermission()
+    PushNotifications.register()
     
   }, [])
 

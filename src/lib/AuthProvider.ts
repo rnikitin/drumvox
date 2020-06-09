@@ -5,9 +5,6 @@ import { getPlatforms } from "@ionic/react"
 import { observable } from "mobx"
 import { Analytics } from "./Analytics"
 import { Intercom } from "./Intercom"
-import { K, KommunicateLogin } from "./Kommunicate"
-
-
 
 const firebaseAuth = firebaseApp.auth()
 
