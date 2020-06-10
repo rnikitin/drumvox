@@ -56,7 +56,7 @@ export class KonnakolGameAudio {
 			this.playNotes(melodyBeat.notes, time)
 
 			// collect play times
-			if (beat === this.melody.beats.length-1){
+			if (beat === this.melody.beats.length - 1) {
 				this.melodyPlayCounter++
 				console.log("melody playCount", this.melodyPlayCounter)
 			}
@@ -128,11 +128,11 @@ export class KonnakolGameAudio {
 			this.Sequencer.start(transportTime - firstTime, 0)
 
 			// schedule start just before music start
-			Tone.Draw.schedule(function(){
+			Tone.Draw.schedule(function () {
 				console.log("Tone.Draw.schedule")
 				//do drawing or DOM manipulation here
 				onStart()
-			}, transportTime - measureTime/4 - 0.1)
+			}, transportTime - measureTime / 4)
 
 			this.gameFeedback.startTimer(this.bpm)
 		})
@@ -156,7 +156,7 @@ export class KonnakolGameAudio {
 		Tone.Transport.stop()
 		this.Sequencer.stop()
 		this.drumPlayers.stopAll()
-		
+
 		// collect feedback
 		this.gameFeedback.stopAndSaveHistory()
 		this.gameFeedback.countMelody(this.melodyPlayCounter)
@@ -173,7 +173,7 @@ export class KonnakolGameAudio {
 	private playNotes(notes: string[], time: number) {
 		if (notes.length > 0) {
 			for (var note of notes) {
-				console.log("KonnakolGameAudio.playNote", note, time)
+				//console.log("KonnakolGameAudio.playNote", note, time)
 				this.drumPlayers.player(note).start(time, 0)
 			}
 		}

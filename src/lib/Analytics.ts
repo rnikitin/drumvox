@@ -17,14 +17,9 @@ export class Analytics {
 	public static LogEvent(name: string, data: any) {
 
 		setTimeout(() => {
-			try{
-				FirebaseAnalytics.logEvent(name, data)
-				AppCenterAnalytics.trackEvent(name, data)
-				Intercom.logEvent({ name, data })
-			}
-			catch (err){
-				console.error(err)
-			}
+			FirebaseAnalytics.logEvent(name, data)
+			AppCenterAnalytics.trackEvent(name, data)
+			Intercom?.logEvent({ name, data }).then(() => 1, (err) => console.error(err))
 		})
 	}
 

@@ -17,19 +17,11 @@ export const KonnakolBasics: KonnakolMelody[] = [
 		beats: [
 			{ id: "1", notes: ["HH", "Snare"], konnakol: "Ta", main: true, num: 1 },
 			{ id: "", notes: [], konnakol: "" },
-			{ id: "", notes: [], konnakol: "" },
-			{ id: "", notes: [], konnakol: "" },
 			{ id: "2", notes: ["HH", "Snare"], konnakol: "Ta", main: true, num: 1 },
-			{ id: "", notes: [], konnakol: "" },
-			{ id: "", notes: [], konnakol: "" },
 			{ id: "", notes: [], konnakol: "" },
 			{ id: "3", notes: ["HH", "Snare"], konnakol: "Ta", main: true, num: 1 },
 			{ id: "", notes: [], konnakol: "" },
-			{ id: "", notes: [], konnakol: "" },
-			{ id: "", notes: [], konnakol: "" },
 			{ id: "4", notes: ["HH", "Snare"], konnakol: "Ta", main: true, num: 1 },
-			{ id: "", notes: [], konnakol: "" },
-			{ id: "", notes: [], konnakol: "" },
 			{ id: "", notes: [], konnakol: "" },
 		]
 	},
@@ -190,8 +182,6 @@ export const KonnakolBasics: KonnakolMelody[] = [
 		beats: [
 			{ id: "1", notes: ["HH", "Snare"], konnakol: "Ta", main: true, num: 1 },
 			{ id: "", notes: [], konnakol: "" },
-			{ id: "", notes: [], konnakol: "" },
-			{ id: "", notes: [], konnakol: "" },
 
 			{ id: "2", notes: ["HH", "Snare"], konnakol: "Ta", main: true, num: 2 },
 			{ id: "", notes: [], konnakol: "" },
@@ -269,8 +259,6 @@ export const KonnakolBasics: KonnakolMelody[] = [
 
 			{ id: "15", notes: ["HH", "Snare"], konnakol: "Ta", main: true, num: 1 },
 			{ id: "", notes: [], konnakol: "" },
-			{ id: "", notes: [], konnakol: "" },
-			{ id: "", notes: [], konnakol: "" },
 		]
 	},
 
@@ -283,8 +271,6 @@ export const KonnakolBasics: KonnakolMelody[] = [
 		beats: [
 
 			{ id: "1", notes: ["HH", "Snare"], konnakol: "Ta", main: true, num: 1 },
-			{ id: "", notes: [], konnakol: "" },
-			{ id: "", notes: [], konnakol: "" },
 			{ id: "", notes: [], konnakol: "" },
 
 			{ id: "2", notes: ["HH", "Snare"], konnakol: "Ta", main: true, num: 2 },
@@ -383,8 +369,6 @@ export const KonnakolBasics: KonnakolMelody[] = [
 
 			{ id: "15", notes: ["HH", "Snare"], konnakol: "Ta", main: true, num: 1 },
 			{ id: "", notes: [], konnakol: "" },
-			{ id: "", notes: [], konnakol: "" },
-			{ id: "", notes: [], konnakol: "" },
 
 			{ id: "16", notes: ["HH", "Snare"], konnakol: "Ta", main: true, num: 2 },
 			{ id: "", notes: [], konnakol: "" },
@@ -413,18 +397,14 @@ export const KonnakolBasics: KonnakolMelody[] = [
 	{
 		id: "konnakol_basics_lesson_10",
 		name: "Exercise 10",
-		description: "Double climb up on the rhythm",
+		description: "Double climb up on the pyramid rhythm",
 		order: 10,
 		instruments: ["HH", "Snare"],
 		beats: [
 			{ id: "1", notes: ["HH", "Snare"], konnakol: "Ta", main: true, num: 1 },
 			{ id: "", notes: [], konnakol: "" },
-			{ id: "", notes: [], konnakol: "" },
-			{ id: "", notes: [], konnakol: "" },
 
 			{ id: "2", notes: ["HH", "Snare"], konnakol: "Ta", main: true, num: 1 },
-			{ id: "", notes: [], konnakol: "" },
-			{ id: "", notes: [], konnakol: "" },
 			{ id: "", notes: [], konnakol: "" },
 
 			{ id: "3", notes: ["HH", "Snare"], konnakol: "Ta", main: true, num: 2 },
@@ -567,12 +547,8 @@ export const KonnakolBasics: KonnakolMelody[] = [
 
 			{ id: "29", notes: ["HH", "Snare"], konnakol: "Ta", main: true, num: 1 },
 			{ id: "", notes: [], konnakol: "" },
-			{ id: "", notes: [], konnakol: "" },
-			{ id: "", notes: [], konnakol: "" },
 
 			{ id: "30", notes: ["HH", "Snare"], konnakol: "Ta", main: true, num: 1 },
-			{ id: "", notes: [], konnakol: "" },
-			{ id: "", notes: [], konnakol: "" },
 			{ id: "", notes: [], konnakol: "" },
 		]
 	},
