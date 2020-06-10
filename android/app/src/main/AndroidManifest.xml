@@ -15,7 +15,7 @@
             android:name="com.drumvox.DrumVoxMessagingService"
             android:stopWithTask="false"
             android:exported="false">
-            <intent-filter android:priority="100">
+            <intent-filter android:priority="0">
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>

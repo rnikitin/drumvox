@@ -7,7 +7,7 @@ import {
 import { IonReactRouter } from "@ionic/react-router"
 import { DrumMachinePage } from "./pages/DrumMachinePage"
 import KonnakolPlayerPage from "./pages/KonnakolPlayerPage"
-import { ScreenOrientation } from "@ionic-native/screen-orientation"
+
 import CollectionsListPage from "./pages/CollectionsListPage"
 import CollectionView from "./pages/CollectionViewPage"
 import KonnakolAdminPage from "./pages/KonnakolAdminPage"
@@ -39,15 +39,6 @@ import {Intercom, PushNotifications} from "./lib/Intercom"
 
 
 //LogRocket.init('zfojck/drumvox');
-
-
-ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.LANDSCAPE)
-  .then(v => {
-    console.log("Screen orientation locked.", v)
-  },
-    err => {
-      console.log("failed to lock orientation...", err)
-    })
 
 const App: React.FC = () => {
 

@@ -38,7 +38,7 @@ const CollectionsListPage: React.FC = () => {
 					<IonButtons slot="end">
 						<IonMenuButton />
 					</IonButtons>
-					<IonTitle>Explore our best collections</IonTitle>
+					<IonTitle>Drum & Rhythm Exersises</IonTitle>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent>

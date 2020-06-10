@@ -38,7 +38,7 @@ const BEAT_START_OFFSET_X = TERMINATOR_OFFSET_X
 /**
  * Цвет Терминатора
  */
-const TERMINATOR_COLOR = "#FF0000"
+const TERMINATOR_COLOR = "#F2F2F2"
 /**
  * Цвет текста
  */
@@ -58,21 +58,38 @@ const COLOR_KONNAKOL_MAIN = "#EB5757"
 /**
  * Цвет Бита
  */
-const COLOR_BEAT = "#F2F2F2"
+const COLOR_BEAT_MAIN = "#F2F2F2"
+
+/**
+ * цвет второстепенного
+ */
+const COLOR_BEAT_SECONDARY = "#828282"
 /**
  * Сколько нот рендерить вперед
  */
 const COUNT_BEATS_TO_RENDER_AHEAD = 32
+
+/**
+ * Цвет лиии начала мелодии
+ */
+const COLOR_MELODY_START_LINE = "#EB5757"
+
+/**
+ * Вкл/выкл режима дебага канваса
+ */
+const CANVAS_DEBUG = false
 
 export class KonnakolGame {
     private stage: Stage
     private melody: KonnakolMelody
     private instrumentsLayer = new Konva.Layer()
     private melodyLayer = new Konva.Layer()
+    private beatRailsGroup = new Konva.Group()
+    private beatsGroup = new Konva.Group()
     private lastRenderedBeat: MelodyBeat = { id: "-1", notes: [], konnakol: "" }
     private melodyAnimation: Konva.Animation
     private BPM = 60
-    
+
 
     private get GAME_HEIGHT() { return GROUP_HEIGHT * (this.melody.instruments.length + 2) }
 
@@ -110,8 +127,9 @@ export class KonnakolGame {
 
     private render() {
         this.calculateRulers()
-        this.renderInstruments()
         this.renderMelody()
+        this.renderInstruments()
+        this.updateLayerZIndexes()
     }
 
     public destroy() {
@@ -129,17 +147,17 @@ export class KonnakolGame {
     }
 
     private updateLayerZIndexes() {
-        this.melodyLayer.moveToBottom()
         this.instrumentsLayer.moveToTop()
+        this.melodyLayer.moveToBottom()
     }
 
     private renderInstruments() {
         // render TERMINATOR overflow
         var terminatorRect = new Konva.Rect({
             x: 0,
-            y: OFFSET_Y,
+            y: OFFSET_Y / 2,
             width: LINE_OFFSET_X,
-            height: this.GAME_HEIGHT + 10,
+            height: OFFSET_Y + this.GAME_HEIGHT + 10,
             fill: COLOR_BACKGROUND
         })
 
@@ -151,14 +169,14 @@ export class KonnakolGame {
                 TERMINATOR_OFFSET_X,
                 OFFSET_Y,
                 TERMINATOR_OFFSET_X,
-                OFFSET_Y + this.GAME_HEIGHT
+                OFFSET_Y + GROUP_HEIGHT * this.melody.instruments.length
             ],
             stroke: TERMINATOR_COLOR,
-            strokeWidth: 2,
+            strokeWidth: 10,
+            //opacity: 0.7,
             lineCap: "round",
             lineJoin: "round"
         })
-
         this.instrumentsLayer.add(terminatorLine)
 
         // render each instrument canvas layer
@@ -172,9 +190,24 @@ export class KonnakolGame {
                 text: instrument
             })
 
+            this.instrumentsLayer.add(text)
+        })
+
+        // now show layer
+        this.stage.add(this.instrumentsLayer)
+    }
+
+    private renderMelody() {
+        // clean up melody layer
+        this.beatsGroup.destroy()
+        this.beatsGroup = new Konva.Group()
+
+        this.beatsGroup.transformsEnabled("position")
+
+        this.melody.instruments.forEach((_instrument, i) => {
             const lineY = OFFSET_Y + i * GROUP_HEIGHT + GROUP_HEIGHT / 2
 
-            const line = new Konva.Line({
+            const rail = new Konva.Line({
                 points: [
                     LINE_OFFSET_X,
                     lineY,
@@ -185,38 +218,26 @@ export class KonnakolGame {
                 strokeWidth: 1
             })
 
-            group.add(text)
-            group.add(line)
-            this.instrumentsLayer.add(group)
+            this.beatRailsGroup.add(rail)
         })
 
-        // now show layer
-        this.stage.add(this.instrumentsLayer)
-
-        this.updateLayerZIndexes()
-    }
-
-    private renderMelody() {
-        // clean up melody layer
-        this.melodyLayer
-            .destroyChildren()
-            .clear()
-
         // render first chunk of melody notes
-        for (var i = 0; i < COUNT_BEATS_TO_RENDER_AHEAD; i++) {
+        for (let i = 0; i < COUNT_BEATS_TO_RENDER_AHEAD; i++) {
             // вычисляем следующий Beat
-            var n = i % this.melody.beats.length
-            var beat = this.melody.beats[n]
+            let n = i % this.melody.beats.length
+            let beat = this.melody.beats[n]
 
             this.lastRenderedBeat = beat
 
-            let groupLayer = this.renderBeatGroup(beat, n, (BEAT_START_OFFSET_X + i * BEAT_WIDTH))
+            let groupLayer = this.renderBeatGroup(beat, n, (BEAT_START_OFFSET_X + (i + 1) * BEAT_WIDTH))
 
             // render group
-            this.melodyLayer.add(groupLayer)
+            this.beatsGroup.add(groupLayer)
         }
 
         // finnally add to stage
+        this.melodyLayer.add(this.beatRailsGroup)
+        this.melodyLayer.add(this.beatsGroup)
         this.stage.add(this.melodyLayer)
 
         this.updateLayerZIndexes()
@@ -235,10 +256,10 @@ export class KonnakolGame {
 
         // render melody start indicator
         if (beatIdx === 0) {
-            var startIndicatorLine = new Konva.Line({
-                points: [BEAT_RADIUS, 0, BEAT_RADIUS, this.melody.instruments.length * GROUP_HEIGHT],
-                stroke: COLOR_BEAT,
-                strokeWidth: 1
+            let startIndicatorLine = new Konva.Line({
+                points: [BEAT_RADIUS, -5, BEAT_RADIUS, this.melody.instruments.length * GROUP_HEIGHT + 5],
+                stroke: COLOR_MELODY_START_LINE,
+                strokeWidth: 2
             })
 
             groupLayer.add(startIndicatorLine)
@@ -248,28 +269,29 @@ export class KonnakolGame {
         beat.notes.forEach(note => {
 
             // find instrument
-            var instrumentIndex = this.melody.instruments.indexOf(note)
+            let instrumentIndex = this.melody.instruments.indexOf(note)
 
             // render note
             var circle = new Konva.Circle({
                 x: BEAT_RADIUS,
                 y: instrumentIndex * GROUP_HEIGHT + GROUP_HEIGHT / 2,
                 radius: BEAT_RADIUS,
-                fill: COLOR_BEAT
+                fill: beat.main ? COLOR_BEAT_MAIN : COLOR_BEAT_SECONDARY
             })
-
-            // render debug rect
-            // var debugBox = new Konva.Rect({
-            //     stroke: COLOR_BEAT,
-            //     strokeWidth: 1,
-            //     x: 0,
-            //     y: instrumentIndex * GROUP_HEIGHT,
-            //     width: BEAT_WIDTH,
-            //     height: GROUP_HEIGHT
-            // })
-
             groupLayer.add(circle)
-            //groupLayer.add(debugBox)
+
+            if (CANVAS_DEBUG) {
+                // render debug rect
+                var debugBox = new Konva.Rect({
+                    stroke: COLOR_BEAT_SECONDARY,
+                    strokeWidth: 1,
+                    x: 0,
+                    y: instrumentIndex * GROUP_HEIGHT,
+                    width: BEAT_WIDTH,
+                    height: GROUP_HEIGHT
+                })
+                groupLayer.add(debugBox)
+            }
         })
 
         // render konnakol number
@@ -299,10 +321,10 @@ export class KonnakolGame {
     }
 
     private renderMelodyAhead() {
-        const notesRendered = this.melodyLayer.children.length
+        const notesRendered = this.beatsGroup.children.length
 
         // get last group with notes
-        var lastGroup = this.melodyLayer.children[this.melodyLayer.children.length - 1]
+        var lastGroup = this.beatsGroup.children[notesRendered - 1]
 
         // find beats to render
         var idx = this.melody.beats.indexOf(this.lastRenderedBeat) + 1
@@ -322,7 +344,7 @@ export class KonnakolGame {
             let groupLayer = this.renderBeatGroup(beat, idx + n, lastGroup.x() + BEAT_WIDTH)
 
             // render group
-            this.melodyLayer.add(groupLayer)
+            this.beatsGroup.add(groupLayer)
 
             this.lastRenderedBeat = beat
         })
@@ -343,22 +365,19 @@ export class KonnakolGame {
 
         //console.log(`S=${S} t=${t} v=${v} tdiff=${tdiff} Sdiff=${Sdiff} fps=${frame?.frameRate}`)
 
-        // move all beats left
-        this.melodyLayer.children.each(child => {
-            // calculate new X coordinate
-            var newX = child.x() - Sdiff
+        for (let beatGroup of this.beatsGroup.children.toArray()) {
+            // move group left
+            let newX = beatGroup.x() - Sdiff
+            beatGroup.x(newX)
 
-            // remove node, if it goes off screen
-            if (newX < 0) {
-                child.remove()
+            if (beatGroup.x() < 0) {
+                // destroy this beat
+                beatGroup.destroy()
 
-                // render melody ahead
+                // render ahead on every 5 beats
+                if ((COUNT_BEATS_TO_RENDER_AHEAD - beatGroup.children.length) > 5)
                 setTimeout(() => this.renderMelodyAhead())
             }
-            else {
-                // set new position to group
-                child.x(newX)
-            }
-        })
+        }
     }
 }

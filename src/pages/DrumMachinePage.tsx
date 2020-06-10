@@ -1,28 +1,33 @@
-import React, { useState, useEffect } from "react"
-import { IonCol, IonRange, IonLabel, IonRow, IonGrid, IonContent, IonFab, IonFabButton, IonIcon, useIonViewWillEnter, IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, useIonViewDidEnter, IonButton, IonSegment, IonSegmentButton } from "@ionic/react"
-import { play, pause, stop, trash, arrowBackOutline } from "ionicons/icons"
+import React, { useState } from "react"
+import { IonCol, IonRange, IonLabel, IonRow, IonGrid, IonContent, IonFab, IonFabButton, IonIcon, useIonViewWillEnter, IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, useIonViewDidEnter, IonButton, IonSegment, IonSegmentButton, useIonViewWillLeave } from "@ionic/react"
+import { play, pause, stop, arrowBackOutline } from "ionicons/icons"
 import DrumPoint from "../components/DrumPoint"
 import KanakolCol from "../components/KanakolCol"
 import * as SSDM from "../lib/StupidSimpleDrumMachine"
 import { Analytics } from "../lib/Analytics"
 import "./DrumMachinePage.css"
-import { observable } from "mobx"
-import { observer, Observer } from "mobx-react"
+import { Observer } from "mobx-react"
+import { ScreenOrientation } from "@ionic-native/screen-orientation"
 
 type DrumMachineProps = {
 
 }
 
-class DrumMachinePageState {
-    @observable playing: boolean = false
-}
-
-
 export const DrumMachinePage: React.FC<DrumMachineProps> = () => {
 
     const [sequenceSize, setSequenceSize] = useState(8)
-    
+
     let dm = new SSDM.DrumMachine(sequenceSize, notifyDrumPointComponents)
+
+    useIonViewWillEnter(() => {
+        ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.LANDSCAPE)
+            .then(v => console.log("Screen orientation locked.", v),
+                err => console.log("failed to lock orientation...", err))
+    })
+
+    useIonViewWillLeave(() => {
+        ScreenOrientation.unlock()
+    })
 
     useIonViewDidEnter(() => {
         Analytics.setCurrentScreen("DrumMachinePage", {})

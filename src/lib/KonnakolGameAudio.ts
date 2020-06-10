@@ -127,12 +127,12 @@ export class KonnakolGameAudio {
 			// start the sequencer
 			this.Sequencer.start(transportTime - firstTime, 0)
 
-			// it's dirty but let it be
+			// schedule start just before music start
 			Tone.Draw.schedule(function(){
 				console.log("Tone.Draw.schedule")
 				//do drawing or DOM manipulation here
 				onStart()
-			}, transportTime - 0.1)
+			}, transportTime - measureTime/4 - 0.1)
 
 			this.gameFeedback.startTimer(this.bpm)
 		})

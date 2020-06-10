@@ -1,9 +1,11 @@
 import React from "react"
-import { IonToolbar, IonButtons, IonButton, IonIcon, IonTitle } from "@ionic/react"
+import { IonToolbar, IonButtons, IonButton, IonIcon, IonTitle, IonText } from "@ionic/react"
 import { Observer } from "mobx-react"
-import { play, pause, addCircleOutline, removeCircleOutline, stop } from "ionicons/icons"
+import { playOutline, pauseOutline, addCircleOutline, removeCircleOutline, stopOutline } from "ionicons/icons"
 import { AppContext, PlayerState } from "../AppContext"
 import { Analytics } from "../lib/Analytics"
+
+import "./KonnakolPlayerToolbar.css"
 
 const BPM_STEP = 10
 
@@ -35,33 +37,42 @@ const KonnakolPlayerToolbar: React.FC = () => {
 
     return (
         <IonToolbar>
-            <IonButtons slot="start">
-                <Observer>
-                    {
-                        () => (
-                            <IonButton onClick={onPlay}>
-                                <IonIcon slot="icon-only" icon={AppContext.Player.state == PlayerState.Playing ? pause : play} />
-                            </IonButton>
-                        )
-                    }
-                </Observer>
-                <IonButton onClick={onStop}>
-                    <IonIcon slot="icon-only" icon={stop} />
-                </IonButton>
+            <IonButtons slot="start" className="toolbar-controls">
                 <IonButton onClick={() => onChangeBpm(-BPM_STEP)}>
                     <IonIcon slot="icon-only" icon={removeCircleOutline} />
                 </IonButton>
                 <Observer>
                     {
                         () => (
-                            <IonTitle>{AppContext.Player.bpm}</IonTitle>
+                            <IonText className="control-speed">
+                                <div className="control-speed-bpm">{AppContext.Player.bpm}</div>
+                                <div className="control-speed-label">SPEED</div>
+                            </IonText>
                         )
                     }
                 </Observer>
                 <IonButton onClick={() => onChangeBpm(+BPM_STEP)}>
                     <IonIcon slot="icon-only" icon={addCircleOutline} />
                 </IonButton>
+
+
+                <IonButton className="controls-stop" onClick={onStop}>
+                    <IonIcon slot="icon-only" icon={stopOutline} />
+                </IonButton>
+
+                <Observer>
+                    {
+                        () => (
+                            <IonButton onClick={onPlay}>
+                                <IonIcon slot="icon-only" icon={AppContext.Player.state == PlayerState.Playing ? pauseOutline : playOutline} />
+                            </IonButton>
+                        )
+                    }
+                </Observer>
+
+
             </IonButtons>
+
         </IonToolbar>
     )
 }

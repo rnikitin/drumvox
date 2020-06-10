@@ -51,7 +51,6 @@ const CollectionViewPage: React.FC<CollectionViewPageArgs> = (props) => {
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-
             <IonButton routerDirection={"back"} routerLink="/collections">
               <IonIcon slot="icon-only" icon={arrowBackOutline} />
             </IonButton>

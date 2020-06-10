@@ -1,0 +1,22 @@
+.toolbar-controls {
+	padding-left: 50%;
+	margin-left: -9em;
+    padding-right: 1em;
+}
+
+.control-speed {
+	text-align: center;
+	margin-bottom: 0.4em;
+}
+
+.control-speed .control-speed-bpm {
+	font-size: 1em;
+}
+
+.control-speed .control-speed-label {
+	font-size: 0.7em;
+}
+
+.toolbar-controls .controls-stop {
+	margin-left: 1em !important;
+}

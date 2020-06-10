@@ -25,9 +25,5 @@
       "android-apiKey": "android_sdk-6b5ace4bcd9899688b2dd1cd138bb821fa505c36",
       "android-appId": "wwbad1yw"
     }
-  },
-  "server": {
-    "url": "http://192.168.0.100:8101",
-    "cleartext": true
   }
 }

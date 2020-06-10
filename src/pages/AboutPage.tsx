@@ -3,7 +3,7 @@ import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, 
 import { Analytics } from "../lib/Analytics"
 import { AppVersion } from "@ionic-native/app-version"
 import "./AboutPage.css"
-import { womanOutline, manOutline, flowerOutline, musicalNotesOutline, rocketOutline } from "ionicons/icons"
+import { womanOutline, manOutline, flowerOutline, musicalNotesOutline, rocketOutline, arrowBackOutline } from "ionicons/icons"
 
 type AboutPageState = {
 	appName: string
@@ -41,6 +41,11 @@ const AboutPage: React.FC = () => {
 		<IonPage>
 			<IonHeader>
 				<IonToolbar>
+					<IonButtons slot="start">
+						<IonButton routerDirection={"back"} routerLink="/collections">
+							<IonIcon slot="icon-only" icon={arrowBackOutline} />
+						</IonButton>
+					</IonButtons>
 					<IonButtons slot="end">
 						<IonMenuButton />
 					</IonButtons>

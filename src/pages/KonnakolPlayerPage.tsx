@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react"
-import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonTitle, IonFooter, IonButton, IonIcon, useIonViewWillEnter, useIonViewDidEnter, IonMenuButton } from "@ionic/react"
+import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonTitle, IonFooter, IonButton, IonIcon, useIonViewWillEnter, useIonViewDidEnter, IonMenuButton, useIonViewWillLeave } from "@ionic/react"
 import KonnakolPlayerToolbar from "../components/KonnakolPlayerToolbar"
 import { arrowBackOutline } from "ionicons/icons"
 import { RouteComponentProps } from "react-router"
@@ -12,6 +12,7 @@ import { reaction, observe } from "mobx"
 import { AppContext, PlayerState } from "../AppContext"
 import { PowerManagement } from "@ionic-native/power-management"
 import { KonnakolMelody } from "../lib/DataModels"
+import { ScreenOrientation } from "@ionic-native/screen-orientation"
 
 interface KanakolPlayerPagePageArgs extends RouteComponentProps<{
   melody_id: string
@@ -26,14 +27,21 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
   const [loaded, setLoaded] = useState<boolean>(false)
 
   useIonViewWillEnter(() => {
-
+    ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.LANDSCAPE)
+      .then(v => console.log("Screen orientation locked.", v),
+        err => console.log("failed to lock orientation...", err))
   })
+
 
   useIonViewDidEnter(() => {
     load()
     handleDeviceEvents()
 
     Analytics.setCurrentScreen("KonnakolPlayerPage", { collection_id: props.match.params.collection_id, melody_id: props.match.params.melody_id })
+  })
+
+  useIonViewWillLeave(() => {
+    ScreenOrientation.unlock()
   })
 
   useEffect(() => {

@@ -9,7 +9,7 @@ public class DrumVoxMessagingService extends com.google.firebase.messaging.Fireb
 
     @Override public void onNewToken(String refreshedToken) {
         super.onNewToken(refreshedToken);
-        
+
         intercomPushClient.sendTokenToIntercom(getApplication(), refreshedToken);
 
         Log.i("drumvox", "DrumVoxMessagingService.onNewToken="+refreshedToken);
