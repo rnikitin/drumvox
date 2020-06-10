@@ -24,6 +24,23 @@
     "IntercomPlugin": {
       "android-apiKey": "android_sdk-6b5ace4bcd9899688b2dd1cd138bb821fa505c36",
       "android-appId": "wwbad1yw"
+    },
+    "SplashScreen": {
+      "launchShowDuration": 1000,
+      "launchAutoHide": true,
+      "backgroundColor": "#00000000",
+      "androidSplashResourceName": "screen",
+      "androidScaleType": "CENTER_CROP",
+      "androidSpinnerStyle": "large",
+      "iosSpinnerStyle": "small",
+      "spinnerColor": "#999999",
+      "showSpinner": true,
+      "splashFullScreen": true,
+      "splashImmersive": true
     }
+  },
+  "server": {
+    "url": "http://192.168.0.100:8101",
+    "cleartext": true
   }
 }
