@@ -86,7 +86,7 @@ export class KonnakolGame {
     private melodyLayer = new Konva.Layer()
     private beatRailsGroup = new Konva.Group()
     private beatsGroup = new Konva.Group()
-    private lastRenderedBeat: MelodyBeat = { id: "-1", notes: [], konnakol: "" }
+    private lastRenderedBeat: MelodyBeat = { notes: [], konnakol: "" }
     private melodyAnimation: Konva.Animation
     private BPM = 60
 
@@ -250,8 +250,7 @@ export class KonnakolGame {
             x: offsetX,
             y: OFFSET_Y,
             width: BEAT_WIDTH,
-            height: (this.melody.instruments.length + 1),
-            name: beat.id
+            height: (this.melody.instruments.length + 1)
         })
 
         // render melody start indicator
@@ -373,6 +372,7 @@ export class KonnakolGame {
             if (beatGroup.x() < 0) {
                 // destroy this beat
                 beatGroup.destroy()
+                setTimeout(() => beatGroup.destroy())
 
                 // render ahead on every 5 beats
                 if ((COUNT_BEATS_TO_RENDER_AHEAD - beatGroup.children.length) > 5)

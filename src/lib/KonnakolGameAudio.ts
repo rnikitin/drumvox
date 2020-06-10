@@ -4,6 +4,7 @@ import { GameFeedbackCollector } from "./GameFeedback"
 
 // size of playing sequence, constant for now
 const SEQUENCE_SIZE = 8
+
 // Our set of drum notes with mp3
 const DRUM_NOTES = {
 	"Ride": "/assets/audio/drumvox/ride.mp3",

@@ -1,49 +1,26 @@
 import { IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonContent, IonButton, IonList, IonItem } from "@ionic/react"
 import React from "react"
 import { firestoreDrum, Collections } from "../lib/Firestore"
-import { KonnakolMelody } from "../lib/DataModels"
+import { KonnakolMelody, MelodyCollection } from "../lib/DataModels"
 import { KonnakolBasics, KonnakolBasicsCollection } from "../lib/collections/KonnakolBasics"
+import { RhythmicExercisesP1Collection, RhythmicExercisesP1Melodies } from "../lib/collections/RhythmicExersises_p1"
+import { BassAndSnareDrumReadinP1Melodies, BassAndSnareDrumReadinP1Collection } from "../lib/collections/BassAndSnareDrumReading_p1"
 
 
 const KonnakolAdminPage: React.FC = () => {
 
-	let testMelody: KonnakolMelody = {
-		name: "Just a test melody",
-		order: 1,
-		instruments: ["Ride", "HH", "Snare", "Kick"],
-		beats: [
-			{ id: "1", notes: ["Ride"], konnakol: "Ta", main: true },
-			{ id: "2", notes: ["HH"], konnakol: "Ka" },
-			{ id: "3", notes: ["HH"], konnakol: "Di" },
-			{ id: "4", notes: ["HH"], konnakol: "Mi" },
-			{ id: "5", notes: ["HH", "Snare"], konnakol: "Ta", main: true },
-			{ id: "6", notes: ["HH"], konnakol: "Ki" },
-			{ id: "7", notes: ["HH"], konnakol: "Ta" },
-			{ id: "8", notes: ["HH", "Kick"], konnakol: "Ta", main: true },
-			{ id: "9", notes: ["HH"], konnakol: "Ki" },
-			{ id: "10", notes: ["HH"], konnakol: "Ta" },
-			{ id: "11", notes: ["HH", "Kick"], konnakol: "Ta", main: true },
-			{ id: "12", notes: ["HH"], konnakol: "Ka" },
-			{ id: "13", notes: ["HH", "Snare"], konnakol: "Ta", main: true },
-			{ id: "14", notes: ["HH", "Kick"], konnakol: "Ta", main: true },
-			{ id: "15", notes: ["HH"], konnakol: "Ki" },
-			{ id: "16", notes: ["HH"], konnakol: "Ta" }
-		]
-	}
-
-	function updateKonnakolBasics() {
+	function updateCollection(collection: MelodyCollection, melodies: KonnakolMelody[]) {
 		var collectionRef = firestoreDrum
 			.collection(Collections.collections)
-			.doc(KonnakolBasicsCollection.id)
-
+			.doc(collection.id)
 		var melodiesRef = collectionRef.collection(Collections.melodies)
 
-		
-		console.log("updating", KonnakolBasicsCollection, KonnakolBasics)
+		console.log("updating", collection, melodies)
 
-		collectionRef.set(KonnakolBasicsCollection)
-		
-		KonnakolBasics.forEach((data) => {
+		// update
+		collectionRef.set(collection)
+
+		melodies.forEach((data) => {
 			melodiesRef.doc(data.id).set(data)
 		})
 	}
@@ -61,8 +38,14 @@ const KonnakolAdminPage: React.FC = () => {
 			</IonHeader>
 			<IonContent>
 
-				<IonButton onClick={updateKonnakolBasics}>
+				<IonButton onClick={(e) => updateCollection(KonnakolBasicsCollection, KonnakolBasics)}>
 					Update Konnakol Basics
+				</IonButton>
+				<IonButton onClick={(e) => updateCollection(RhythmicExercisesP1Collection, RhythmicExercisesP1Melodies)}>
+					Update Rhytmic Exercises part 1
+				</IonButton>
+				<IonButton onClick={(e) => updateCollection(BassAndSnareDrumReadinP1Collection, BassAndSnareDrumReadinP1Melodies)}>
+					Update Bass and Snare Drum Reading part 1
 				</IonButton>
 
 			</IonContent>
