@@ -26,7 +26,7 @@
       "android-appId": "wwbad1yw"
     },
     "SplashScreen": {
-      "launchShowDuration": 2000,
+      "launchShowDuration": 2500,
       "launchAutoHide": true,
       "androidSplashResourceName": "screen",
       "androidScaleType": "CENTER_CROP",
