@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react"
-import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonTitle, IonFooter, IonButton, IonIcon, useIonViewWillEnter, useIonViewDidEnter, IonMenuButton, useIonViewWillLeave } from "@ionic/react"
+import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonTitle, IonFooter, IonButton, IonIcon, useIonViewWillEnter, useIonViewDidEnter, IonMenuButton, useIonViewWillLeave, IonText } from "@ionic/react"
 import KonnakolPlayerToolbar from "../components/KonnakolPlayerToolbar"
 import { arrowBackOutline } from "ionicons/icons"
 import { RouteComponentProps } from "react-router"
@@ -197,7 +197,7 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
           <IonButtons slot="end">
             <IonMenuButton />
           </IonButtons>
-          <IonTitle>{loaded ? melody?.name : "..."}</IonTitle>
+          <IonTitle>{loaded ? melody?.name + " — " + melody?.description : "..."} </IonTitle>
         </IonToolbar>
       </IonHeader>
 

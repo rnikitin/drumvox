@@ -3,7 +3,7 @@ import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, 
 import { Analytics } from "../lib/Analytics"
 import { AppVersion } from "@ionic-native/app-version"
 import "./AboutPage.css"
-import { womanOutline, manOutline, flowerOutline, musicalNotesOutline, rocketOutline, arrowBackOutline } from "ionicons/icons"
+import { womanOutline, manOutline, flowerOutline, musicalNotesOutline, rocketOutline, arrowBackOutline, powerOutline } from "ionicons/icons"
 
 type AboutPageState = {
 	appName: string
@@ -80,7 +80,7 @@ const AboutPage: React.FC = () => {
 
 				<IonCard>
 					<IonCardHeader>
-						<IonCardTitle>Drumvox Team</IonCardTitle>
+						<IonCardTitle>Credits</IonCardTitle>
 					</IonCardHeader>
 
 					<IonItem>
@@ -90,13 +90,19 @@ const AboutPage: React.FC = () => {
 
 					<IonItem>
 						<IonIcon icon={rocketOutline} slot="start" />
-						<IonLabel>Roman Nikitin - developer</IonLabel>
+						<IonLabel>Roman Nikitin - development</IonLabel>
 						<IonButton fill="outline" slot="end" href="javascript:window.open('https://teleg.one/neuromantic','_system', 'location=yes')" >telegram</IonButton>
 					</IonItem>
 
 					<IonItem>
+						<IonIcon icon={powerOutline} slot="start" />
+						<IonLabel>Anastasia Axselrod - app design</IonLabel>
+					</IonItem>
+
+					<IonItem>
 						<IonIcon icon={flowerOutline} slot="start" />
-						<IonLabel>Anastasia Axselrod - designer</IonLabel>
+						<IonLabel>Aleksandra Kramarova - graphic design</IonLabel>
+						<IonButton fill="outline" slot="end" href="javascript:window.open('https://instagram.com/a_kramarova','_system', 'location=yes')" >instagram</IonButton>
 					</IonItem>
 
 					<IonCardContent>Per Aspera Ad Astra!</IonCardContent>

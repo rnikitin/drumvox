@@ -26,17 +26,12 @@
       "android-appId": "wwbad1yw"
     },
     "SplashScreen": {
-      "launchShowDuration": 1000,
+      "launchShowDuration": 2000,
       "launchAutoHide": true,
-      "backgroundColor": "#00000000",
       "androidSplashResourceName": "screen",
       "androidScaleType": "CENTER_CROP",
-      "androidSpinnerStyle": "large",
-      "iosSpinnerStyle": "small",
-      "spinnerColor": "#999999",
-      "showSpinner": true,
-      "splashFullScreen": true,
-      "splashImmersive": true
+      "splashFullScreen": false,
+      "splashImmersive": false
     }
   }
 }

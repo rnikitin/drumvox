@@ -26,17 +26,16 @@
       "android-appId": "wwbad1yw"
     },
     "SplashScreen": {
-      "launchShowDuration": 1000,
+      "launchShowDuration": 2000,
       "launchAutoHide": true,
-      "backgroundColor": "#00000000",
+      "backgroundColor": "#1E1E1E",
       "androidSplashResourceName": "screen",
-      "androidScaleType": "CENTER_CROP",
-      "androidSpinnerStyle": "large",
-      "iosSpinnerStyle": "small",
-      "spinnerColor": "#999999",
+      "androidScaleType": "CENTER_INSIDE",
+      "androidSpinnerStyle": "horizontal",
+      "spinnerColor": "#000000",
       "showSpinner": true,
-      "splashFullScreen": true,
-      "splashImmersive": true
+      "splashFullScreen": false,
+      "splashImmersive": false
     }
   }
 }
