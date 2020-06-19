@@ -177,7 +177,7 @@ export const KonnakolBasics: KonnakolMelody[] = [
 	{
 		id: "konnakol_basics_lesson_6",
 		name: "Exercise 6",
-		description: "Climb up on the rhythm",
+		description: "1 2 3 4 5 — Climb up on the rhythm",
 		order: 6,
 		instruments: [D.HH, D.Snare],
 		beats: [
@@ -221,7 +221,7 @@ export const KonnakolBasics: KonnakolMelody[] = [
 	{
 		id: "konnakol_basics_lesson_7",
 		name: "Exercise 7",
-		description: "Slide down on the rhythm",
+		description: "5 4 3 2 1 1 2 3 4 5 — Slide down on the rhythm",
 		order: 7,
 		instruments: [D.HH, D.Snare],
 		beats: [
@@ -266,7 +266,7 @@ export const KonnakolBasics: KonnakolMelody[] = [
 	{
 		id: "konnakol_basics_lesson_8",
 		name: "Exercise 8",
-		description: "Now lets climb up and then slide down on the rhythm",
+		description: "1 2 3 4 5 5 4 3 2 1 — Now lets climb up and then slide down on the rhythm",
 		order: 8,
 		instruments: [D.HH, D.Snare],
 		beats: [
@@ -306,6 +306,17 @@ export const KonnakolBasics: KonnakolMelody[] = [
 			{ notes: [D.HH], konnakol: "dum" },
 			{ notes: [], konnakol: "" },
 
+			{ notes: [D.HH, D.Snare], konnakol: "Da", main: true, num: 5 },
+			{ notes: [], konnakol: "" },
+			{ notes: [D.HH], konnakol: "di" },
+			{ notes: [], konnakol: "" },
+			{ notes: [D.HH], konnakol: "gi" },
+			{ notes: [], konnakol: "" },
+			{ notes: [D.HH], konnakol: "na" },
+			{ notes: [], konnakol: "" },
+			{ notes: [D.HH], konnakol: "dum" },
+			{ notes: [], konnakol: "" },
+
 			{ notes: [D.HH, D.Snare], konnakol: "Ta", main: true, num: 4 },
 			{ notes: [], konnakol: "" },
 			{ notes: [D.HH], konnakol: "ka" },
@@ -326,13 +337,16 @@ export const KonnakolBasics: KonnakolMelody[] = [
 			{ notes: [], konnakol: "" },
 			{ notes: [D.HH], konnakol: "ka" },
 			{ notes: [], konnakol: "" },
+
+			{ notes: [D.HH, D.Snare], konnakol: "Ta", main: true, num: 1 },
+			{ notes: [], konnakol: "" },
 		]
 	},
 
 	{
 		id: "konnakol_basics_lesson_9",
 		name: "Exercise 9",
-		description: "Guess what? Now we slide down and the climb up!",
+		description: "5 4 3 2 1 1 2 3 4 5 — Guess what? Now we slide down and the climb up!",
 		order: 9,
 		instruments: [D.HH, D.Snare],
 		beats: [
@@ -371,6 +385,9 @@ export const KonnakolBasics: KonnakolMelody[] = [
 			{ notes: [D.HH, D.Snare], konnakol: "Ta", main: true, num: 1 },
 			{ notes: [], konnakol: "" },
 
+			{ notes: [D.HH, D.Snare], konnakol: "Ta", main: true, num: 1 },
+			{ notes: [], konnakol: "" },
+
 			{ notes: [D.HH, D.Snare], konnakol: "Ta", main: true, num: 2 },
 			{ notes: [], konnakol: "" },
 			{ notes: [D.HH], konnakol: "ka" },
@@ -392,13 +409,24 @@ export const KonnakolBasics: KonnakolMelody[] = [
 			{ notes: [D.HH], konnakol: "mi" },
 			{ notes: [], konnakol: "" },
 
+			{ notes: [D.HH, D.Snare], konnakol: "Da", main: true, num: 5 },
+			{ notes: [], konnakol: "" },
+			{ notes: [D.HH], konnakol: "di" },
+			{ notes: [], konnakol: "" },
+			{ notes: [D.HH], konnakol: "gi" },
+			{ notes: [], konnakol: "" },
+			{ notes: [D.HH], konnakol: "na" },
+			{ notes: [], konnakol: "" },
+			{ notes: [D.HH], konnakol: "dum" },
+			{ notes: [], konnakol: "" },
+
 		]
 	},
 
 	{
 		id: "konnakol_basics_lesson_10",
 		name: "Exercise 10",
-		description: "Double climb up on the pyramid rhythm",
+		description: "11 22 33 44 55 — Double climb up on the pyramid rhythm",
 		order: 10,
 		instruments: [D.HH, D.Snare],
 		beats: [
@@ -477,7 +505,7 @@ export const KonnakolBasics: KonnakolMelody[] = [
 	{
 		id: "konnakol_basics_lesson_11",
 		name: "Exercise 11",
-		description: "Double slide down on the rhythm",
+		description: "55 44 33 22 11 — Double slide down on the rhythm",
 		order: 11,
 		instruments: [D.HH, D.Snare],
 		beats: [

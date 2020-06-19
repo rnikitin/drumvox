@@ -81,7 +81,9 @@
     ]
   },
   "devDependencies": {
-    "@capacitor/cli": "2.1.0"
+    "@capacitor/cli": "2.1.0",
+    "@typescript-eslint/eslint-plugin": "^3.2.0",
+    "@typescript-eslint/parser": "^3.2.0"
   },
   "description": "Drumvox - best online drumming school"
 }

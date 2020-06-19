@@ -35,9 +35,6 @@ import "@ionic/react/css/display.css"
 import "./theme/variables.css"
 import {Intercom, PushNotifications} from "./lib/Intercom"
 
-
-
-
 //LogRocket.init('zfojck/drumvox');
 
 const App: React.FC = () => {
@@ -45,9 +42,9 @@ const App: React.FC = () => {
   useEffect(() => {
     Intercom.displayLauncher()
 
-    PushNotifications.requestPermission()
-    PushNotifications.register()
-    
+    PushNotifications.requestPermission().then(() => {
+      PushNotifications.register()
+    })
   }, [])
 
   return (

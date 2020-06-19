@@ -1,4 +1,4 @@
-import { IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonContent, IonButton, IonList, IonItem } from "@ionic/react"
+import { IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonContent, IonButton } from "@ionic/react"
 import React from "react"
 import { firestoreDrum, Collections } from "../lib/Firestore"
 import { KonnakolMelody, MelodyCollection } from "../lib/DataModels"
@@ -10,10 +10,10 @@ import { BassAndSnareDrumReadinP1Melodies, BassAndSnareDrumReadinP1Collection } 
 const KonnakolAdminPage: React.FC = () => {
 
 	function updateCollection(collection: MelodyCollection, melodies: KonnakolMelody[]) {
-		var collectionRef = firestoreDrum
+		const collectionRef = firestoreDrum
 			.collection(Collections.collections)
 			.doc(collection.id)
-		var melodiesRef = collectionRef.collection(Collections.melodies)
+		const melodiesRef = collectionRef.collection(Collections.melodies)
 
 		console.log("updating", collection, melodies)
 
@@ -38,13 +38,13 @@ const KonnakolAdminPage: React.FC = () => {
 			</IonHeader>
 			<IonContent>
 
-				<IonButton onClick={(e) => updateCollection(KonnakolBasicsCollection, KonnakolBasics)}>
+				<IonButton onClick={() => updateCollection(KonnakolBasicsCollection, KonnakolBasics)}>
 					Update Konnakol Basics
 				</IonButton>
-				<IonButton onClick={(e) => updateCollection(RhythmicExercisesP1Collection, RhythmicExercisesP1Melodies)}>
+				<IonButton onClick={() => updateCollection(RhythmicExercisesP1Collection, RhythmicExercisesP1Melodies)}>
 					Update Rhytmic Exercises part 1
 				</IonButton>
-				<IonButton onClick={(e) => updateCollection(BassAndSnareDrumReadinP1Collection, BassAndSnareDrumReadinP1Melodies)}>
+				<IonButton onClick={() => updateCollection(BassAndSnareDrumReadinP1Collection, BassAndSnareDrumReadinP1Melodies)}>
 					Update Bass and Snare Drum Reading part 1
 				</IonButton>
 

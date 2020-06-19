@@ -68,7 +68,7 @@ export const DrumMachinePage: React.FC<DrumMachineProps> = () => {
     }
 
     function changeBPM(e: any) {
-        let newBpm = e.target.value
+        const newBpm = e.target.value
         console.log("DrumMachineComponent.changeBPM", newBpm)
         dm.setBPM(newBpm)
     }
@@ -80,8 +80,8 @@ export const DrumMachinePage: React.FC<DrumMachineProps> = () => {
 
     const drumPointRows: any[] = []
     // iterate all notes
-    for (let drumNote in SSDM.DRUM_NOTES) {
-        var drumPointColumns = []
+    for (const drumNote in SSDM.DRUM_NOTES) {
+        const drumPointColumns = []
 
         // iterate through sequence size
         for (let i = 1; i <= sequenceSize; i++) {
@@ -95,7 +95,7 @@ export const DrumMachinePage: React.FC<DrumMachineProps> = () => {
     }
 
     // kanakol row
-    var kanakolColumns: any[] = []
+    const kanakolColumns: any[] = []
     // push first empy column
     kanakolColumns.push(<IonCol key="kan00" size="1" />)
     // add kanakol notes

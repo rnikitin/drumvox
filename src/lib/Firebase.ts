@@ -3,7 +3,7 @@ import { initializeApp } from "firebase/app"
 import "firebase/firestore"
 import "firebase/auth"
 
-var firebaseConfig = {
+const firebaseConfig = {
     apiKey: "AIzaSyCBkrRh_OabSeLb-kyhpNytTbwIRP6hxkA",
     authDomain: "drumvox-prod.firebaseapp.com",
     databaseURL: "https://drumvox-prod.firebaseio.com",

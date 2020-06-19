@@ -26,14 +26,10 @@
       "android-appId": "wwbad1yw"
     },
     "SplashScreen": {
-      "launchShowDuration": 2000,
+      "launchShowDuration": 2500,
       "launchAutoHide": true,
-      "backgroundColor": "#1E1E1E",
       "androidSplashResourceName": "screen",
-      "androidScaleType": "CENTER_INSIDE",
-      "androidSpinnerStyle": "horizontal",
-      "spinnerColor": "#000000",
-      "showSpinner": true,
+      "androidScaleType": "CENTER_CROP",
       "splashFullScreen": false,
       "splashImmersive": false
     }

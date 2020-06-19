@@ -153,7 +153,7 @@ export class KonnakolGame {
 
     private renderInstruments() {
         // render TERMINATOR overflow
-        var terminatorRect = new Konva.Rect({
+        const terminatorRect = new Konva.Rect({
             x: 0,
             y: OFFSET_Y / 2,
             width: LINE_OFFSET_X,
@@ -164,7 +164,7 @@ export class KonnakolGame {
         this.instrumentsLayer.add(terminatorRect)
 
         // render TERMINATOR LINE
-        var terminatorLine = new Konva.Line({
+        const terminatorLine = new Konva.Line({
             points: [
                 TERMINATOR_OFFSET_X,
                 OFFSET_Y,
@@ -224,12 +224,12 @@ export class KonnakolGame {
         // render first chunk of melody notes
         for (let i = 0; i < COUNT_BEATS_TO_RENDER_AHEAD; i++) {
             // вычисляем следующий Beat
-            let n = i % this.melody.beats.length
-            let beat = this.melody.beats[n]
+            const n = i % this.melody.beats.length
+            const beat = this.melody.beats[n]
 
             this.lastRenderedBeat = beat
 
-            let groupLayer = this.renderBeatGroup(beat, n, (BEAT_START_OFFSET_X + (i + 1) * BEAT_WIDTH))
+            const groupLayer = this.renderBeatGroup(beat, n, (BEAT_START_OFFSET_X + (i + 1) * BEAT_WIDTH))
 
             // render group
             this.beatsGroup.add(groupLayer)
@@ -255,7 +255,7 @@ export class KonnakolGame {
 
         // render melody start indicator
         if (beatIdx === 0) {
-            let startIndicatorLine = new Konva.Line({
+            const startIndicatorLine = new Konva.Line({
                 points: [BEAT_RADIUS, -5, BEAT_RADIUS, this.melody.instruments.length * GROUP_HEIGHT + 5],
                 stroke: COLOR_MELODY_START_LINE,
                 strokeWidth: 2
@@ -268,10 +268,10 @@ export class KonnakolGame {
         beat.notes.forEach(note => {
 
             // find instrument
-            let instrumentIndex = this.melody.instruments.indexOf(note)
+            const instrumentIndex = this.melody.instruments.indexOf(note)
 
             // render note
-            var circle = new Konva.Circle({
+            const circle = new Konva.Circle({
                 x: BEAT_RADIUS,
                 y: instrumentIndex * GROUP_HEIGHT + GROUP_HEIGHT / 2,
                 radius: BEAT_RADIUS,
@@ -281,7 +281,7 @@ export class KonnakolGame {
 
             if (CANVAS_DEBUG) {
                 // render debug rect
-                var debugBox = new Konva.Rect({
+                const debugBox = new Konva.Rect({
                     stroke: COLOR_BEAT_SECONDARY,
                     strokeWidth: 1,
                     x: 0,
@@ -323,24 +323,24 @@ export class KonnakolGame {
         const notesRendered = this.beatsGroup.children.length
 
         // get last group with notes
-        var lastGroup = this.beatsGroup.children[notesRendered - 1]
+        const lastGroup = this.beatsGroup.children[notesRendered - 1]
 
         // find beats to render
-        var idx = this.melody.beats.indexOf(this.lastRenderedBeat) + 1
+        let idx = this.melody.beats.indexOf(this.lastRenderedBeat) + 1
 
         // restart melody if we approched the end
         if (idx === this.melody.beats.length)
             idx = 0
 
         // get next beats
-        var nextBeats = this.melody.beats.slice(idx, idx + (COUNT_BEATS_TO_RENDER_AHEAD - notesRendered - 1))
+        const nextBeats = this.melody.beats.slice(idx, idx + (COUNT_BEATS_TO_RENDER_AHEAD - notesRendered - 1))
 
         //console.log("renderMelodyAhead. notesRendered=", notesRendered, "idx=", idx, "nextBeats=", nextBeats)
 
         // render beats
         nextBeats.forEach((beat, n) => {
 
-            let groupLayer = this.renderBeatGroup(beat, idx + n, lastGroup.x() + BEAT_WIDTH)
+            const groupLayer = this.renderBeatGroup(beat, idx + n, lastGroup.x() + BEAT_WIDTH)
 
             // render group
             this.beatsGroup.add(groupLayer)
@@ -352,21 +352,21 @@ export class KonnakolGame {
     private animationStep = (frame: IFrame | undefined) => {
 
         // расстояние которое проходит бит за t
-        var S = BEAT_WIDTH
+        const S = BEAT_WIDTH
         // время, за которое проигрывается 1 бит
-        var t = 60 / (this.BPM * 4)
+        const t = 60 / (this.BPM * 4)
         // скорость, с которой движется бит по полотну
-        var v = S / t
+        const v = S / t
 
         // время с прошлого прыжка
-        var tdiff = frame!.timeDiff / 1000
-        var Sdiff = v * tdiff
+        const tdiff = frame!.timeDiff / 1000
+        const Sdiff = v * tdiff
 
         //console.log(`S=${S} t=${t} v=${v} tdiff=${tdiff} Sdiff=${Sdiff} fps=${frame?.frameRate}`)
 
-        for (let beatGroup of this.beatsGroup.children.toArray()) {
+        for (const beatGroup of this.beatsGroup.children.toArray()) {
             // move group left
-            let newX = beatGroup.x() - Sdiff
+            const newX = beatGroup.x() - Sdiff
             beatGroup.x(newX)
 
             if (beatGroup.x() < 0) {

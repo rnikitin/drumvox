@@ -3,9 +3,9 @@ import { computed, observable } from "mobx"
 
 // Our set of drum notes with mp3
 export const DRUM_NOTES = {
-    "Ride": "/assets/audio/drumvox/ride.mp3",
+    "Ride": "/assets/audio/drumvox/ride2.mp3",
     "HH": "/assets/audio/drumvox/hh.mp3",
-    "Snare": "/assets/audio/drumvox/snare.mp3",
+    "Snare": "/assets/audio/drumvox/snare2.mp3",
     "Kick": "/assets/audio/drumvox/kick.mp3",
 }
 
@@ -56,7 +56,7 @@ export class DrumMachine {
         // play some notes
         if (this.melody[beat].length > 0) {
             for (let i = 0; i < this.melody[beat].length; i++) {
-                let note = this.melody[beat][i]
+                const note = this.melody[beat][i]
                 this.drumPlayers.player(note).start(time, 0)
             }
         }
@@ -128,7 +128,7 @@ export class DrumMachine {
     toggleBeat(tick: number, note: string) {
 
 
-        let idx = this.melody[tick].indexOf(note)
+        const idx = this.melody[tick].indexOf(note)
         if (idx > -1) {
             // remove note
             this.melody[tick].splice(idx, 1)

@@ -1,10 +1,12 @@
 import firebase from "firebase"
 import firebaseApp from "../lib/Firebase"
-import { Plugins } from "@capacitor/core"
+import { Plugins, DeviceLanguageCodeResult } from "@capacitor/core"
 import { getPlatforms } from "@ionic/react"
 import { observable } from "mobx"
 import { Analytics } from "./Analytics"
 import { Intercom } from "./Intercom"
+const { Device } = Plugins
+
 
 const firebaseAuth = firebaseApp.auth()
 
@@ -14,6 +16,11 @@ class AuthProvider {
 
 	constructor() {
 
+		Device.getLanguageCode().then((result) => {
+			console.log("device lang code = " + result.value)
+		})
+		
+
 		firebaseAuth.onAuthStateChanged((value) => {
 			console.log("AUTH: onAuthStateChanged", value)
 
@@ -21,18 +28,33 @@ class AuthProvider {
 				this.currentUser = value!
 
 				if (this.currentUser.isAnonymous) {
-					Intercom.registerUnidentifiedUser()
+					Promise.all([Intercom.registerUnidentifiedUser(), Device.getLanguageCode()])
+					.then(result => {
+						const language = result[1]?.value ? result[1]?.value : "en"
+
+						Intercom.updateUser({
+							customAttributes: {
+								user_id: this.currentUser?.uid,
+								created_at: this.currentUser?.metadata.creationTime,
+								language_override: language
+							}
+						})
+					})
 				}
 				else {
-					Intercom.registerIdentifiedUser({ userId: this.currentUser.uid, email: this.currentUser.email! })
-						.then(() => {
+					Promise.all([Intercom.registerIdentifiedUser({ userId: this.currentUser.uid, email: this.currentUser.email! }),
+								Device.getLanguageCode()])
+						.then(result => {
+							const language = result[1]?.value ? result[1]?.value : "en"
+
 							Intercom.updateUser({
 								customAttributes: {
 									user_id: this.currentUser?.uid,
 									name: this.currentUser?.displayName,
 									email: this.currentUser?.email,
 									created_at: this.currentUser?.metadata.creationTime,
-									avatar: this.currentUser?.photoURL
+									avatar: this.currentUser?.photoURL,
+									language_override: language
 								}
 							})
 						})
@@ -64,17 +86,17 @@ class AuthProvider {
 		const platforms = getPlatforms()
 		if (platforms.includes("android")) {
 			// on android use this crappy plugin
-			let googleUser = await Plugins.GoogleAuth.signIn()
+			const googleUser = await Plugins.GoogleAuth.signIn()
 			console.log("Plugins.GoogleAuth.signIn", googleUser)
 
 			const credential = firebase.auth.GoogleAuthProvider.credential(googleUser.authentication.idToken)
-			let user = await firebaseAuth.signInAndRetrieveDataWithCredential(credential)
+			const user = await firebaseAuth.signInAndRetrieveDataWithCredential(credential)
 			console.log("signInAndRetrieveDataWithCredential", user)
 		}
 		else {
 			// otherwise try web signin
-			var provider = new firebase.auth.GoogleAuthProvider()
-			let result = await firebaseAuth.signInWithPopup(provider)
+			const provider = new firebase.auth.GoogleAuthProvider()
+			const result = await firebaseAuth.signInWithPopup(provider)
 			console.log("signInWithPopup", result)
 		}
 	}

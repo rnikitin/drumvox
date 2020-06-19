@@ -7,10 +7,10 @@ const SEQUENCE_SIZE = 8
 
 // Our set of drum notes with mp3
 const DRUM_NOTES = {
-	"Ride": "/assets/audio/drumvox/ride.mp3",
+	"Ride": "/assets/audio/drumvox/ride2.mp3",
 	"HH": "/assets/audio/drumvox/hh.mp3",
 	"Kick": "/assets/audio/drumvox/kick.mp3",
-	"Snare": "/assets/audio/drumvox/snare.mp3",
+	"Snare": "/assets/audio/drumvox/snare2.mp3",
 }
 
 export class KonnakolGameAudio {
@@ -30,7 +30,7 @@ export class KonnakolGameAudio {
 		this.gameFeedback = new GameFeedbackCollector(this.melody.id!, this.melody.collection_id!)
 
 		// generate sequencer events
-		for (var i = 0; i < melody.beats.length; i++) {
+		for (let i = 0; i < melody.beats.length; i++) {
 			this.sequenceEvents.push(i)
 		}
 
@@ -53,7 +53,7 @@ export class KonnakolGameAudio {
 
 			console.log("KonnakolGameAudio.sequencerCallback", time, beat)
 
-			let melodyBeat = this.melody.beats[beat]
+			const melodyBeat = this.melody.beats[beat]
 			this.playNotes(melodyBeat.notes, time)
 
 			// collect play times
@@ -95,9 +95,9 @@ export class KonnakolGameAudio {
 
 			// schedule drums
 			let transportTime = Tone.Transport.now()
-			let firstTime = transportTime
-			let measureTime = 60 / this.bpm
-			let snare = this.drumPlayers.player("Snare")
+			const firstTime = transportTime
+			const measureTime = 60 / this.bpm
+			const snare = this.drumPlayers.player("Snare")
 
 			console.log("Ta on", transportTime)
 			snare.start(transportTime, 0) // Takadimi
@@ -173,7 +173,7 @@ export class KonnakolGameAudio {
 
 	private playNotes(notes: string[], time: number) {
 		if (notes.length > 0) {
-			for (var note of notes) {
+			for (const note of notes) {
 				//console.log("KonnakolGameAudio.playNote", note, time)
 				this.drumPlayers.player(note).start(time, 0)
 			}
