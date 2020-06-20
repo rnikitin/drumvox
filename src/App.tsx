@@ -40,7 +40,9 @@ import {Intercom, PushNotifications} from "./lib/Intercom"
 const App: React.FC = () => {
 
   useEffect(() => {
-    Intercom.displayLauncher()
+    setTimeout(() => {
+      Intercom.displayLauncher()
+    }, 1000)
 
     PushNotifications.requestPermission().then(() => {
       PushNotifications.register()

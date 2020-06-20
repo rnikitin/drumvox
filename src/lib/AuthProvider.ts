@@ -7,7 +7,6 @@ import { Analytics } from "./Analytics"
 import { Intercom } from "./Intercom"
 const { Device } = Plugins
 
-
 const firebaseAuth = firebaseApp.auth()
 
 class AuthProvider {
@@ -19,7 +18,7 @@ class AuthProvider {
 		Device.getLanguageCode().then((result) => {
 			console.log("device lang code = " + result.value)
 		})
-		
+
 
 		firebaseAuth.onAuthStateChanged((value) => {
 			console.log("AUTH: onAuthStateChanged", value)
@@ -28,22 +27,23 @@ class AuthProvider {
 				this.currentUser = value!
 
 				if (this.currentUser.isAnonymous) {
-					Promise.all([Intercom.registerUnidentifiedUser(), Device.getLanguageCode()])
-					.then(result => {
-						const language = result[1]?.value ? result[1]?.value : "en"
+					Promise.all([Intercom.registerUnidentifiedUser(),
+					Device.getLanguageCode()])
+						.then(result => {
+							const language = result[1]?.value ? result[1]?.value : "en"
 
-						Intercom.updateUser({
-							customAttributes: {
-								user_id: this.currentUser?.uid,
-								created_at: this.currentUser?.metadata.creationTime,
-								language_override: language
-							}
+							Intercom.updateUser({
+								customAttributes: {
+									user_id: this.currentUser?.uid,
+									created_at: this.currentUser?.metadata.creationTime,
+									language_override: language
+								}
+							})
 						})
-					})
 				}
 				else {
 					Promise.all([Intercom.registerIdentifiedUser({ userId: this.currentUser.uid, email: this.currentUser.email! }),
-								Device.getLanguageCode()])
+					Device.getLanguageCode()])
 						.then(result => {
 							const language = result[1]?.value ? result[1]?.value : "en"
 
@@ -90,8 +90,8 @@ class AuthProvider {
 			console.log("Plugins.GoogleAuth.signIn", googleUser)
 
 			const credential = firebase.auth.GoogleAuthProvider.credential(googleUser.authentication.idToken)
-			const user = await firebaseAuth.signInAndRetrieveDataWithCredential(credential)
-			console.log("signInAndRetrieveDataWithCredential", user)
+			const user = await firebaseAuth.signInWithCredential(credential)
+			console.log("signInWithCredential", user)
 		}
 		else {
 			// otherwise try web signin
