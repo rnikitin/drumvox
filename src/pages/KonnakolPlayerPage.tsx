@@ -1,18 +1,19 @@
-import React, { useRef, useState, useEffect } from "react"
-import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonTitle, IonFooter, IonButton, IonIcon, useIonViewWillEnter, useIonViewDidEnter, IonMenuButton, useIonViewWillLeave, IonText } from "@ionic/react"
-import KonnakolPlayerToolbar from "../components/KonnakolPlayerToolbar"
-import { arrowBackOutline } from "ionicons/icons"
-import { RouteComponentProps } from "react-router"
-import { MelodiesStore } from "../lib/Firestore"
-import { Analytics } from "../lib/Analytics"
-import { Stage } from "react-konva"
-import { KonnakolGame } from "../lib/KonnakolGame"
-import { KonnakolGameAudio } from "../lib/KonnakolGameAudio"
-import { reaction, observe } from "mobx"
-import { AppContext, PlayerState } from "../AppContext"
-import { PowerManagement } from "@ionic-native/power-management"
-import { KonnakolMelody } from "../lib/DataModels"
-import { ScreenOrientation } from "@ionic-native/screen-orientation"
+import React, { useRef, useState, useEffect } from 'react'
+import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonTitle, IonFooter, IonButton, IonIcon, useIonViewWillEnter, useIonViewDidEnter, IonMenuButton, useIonViewWillLeave, IonText } from '@ionic/react'
+import KonnakolPlayerToolbar from '../components/KonnakolPlayerToolbar'
+import DOMKonnakolGame from '../components/DOMKonnakolGame'
+import { arrowBackOutline } from 'ionicons/icons'
+import { RouteComponentProps } from 'react-router'
+import { MelodiesStore } from '../lib/Firestore'
+import { Analytics } from '../lib/Analytics'
+import { Stage } from 'react-konva'
+import { KonnakolGame } from '../lib/KonnakolGame'
+import { KonnakolGameAudio } from '../lib/KonnakolGameAudio'
+import { reaction, observe } from 'mobx'
+import { AppContext, PlayerState } from '../AppContext'
+import { PowerManagement } from '@ionic-native/power-management'
+import { KonnakolMelody } from '../lib/DataModels'
+import { ScreenOrientation } from '@ionic-native/screen-orientation'
 
 interface KanakolPlayerPagePageArgs extends RouteComponentProps<{
   melody_id: string
@@ -28,8 +29,8 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
 
   useIonViewWillEnter(() => {
     ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.LANDSCAPE)
-      .then(v => console.log("Screen orientation locked.", v),
-        err => console.log("failed to lock orientation...", err))
+      .then(v => console.log('Screen orientation locked.', v),
+        err => console.log('failed to lock orientation...', err))
   })
 
 
@@ -37,7 +38,7 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
     load()
     handleDeviceEvents()
 
-    Analytics.setCurrentScreen("KonnakolPlayerPage", { collection_id: props.match.params.collection_id, melody_id: props.match.params.melody_id })
+    Analytics.setCurrentScreen('KonnakolPlayerPage', { collection_id: props.match.params.collection_id, melody_id: props.match.params.melody_id })
   })
 
   useIonViewWillLeave(() => {
@@ -45,7 +46,7 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
   })
 
   useEffect(() => {
-    console.log("KonnakolPlayerPage useEffect", loaded, melody)
+    console.log('KonnakolPlayerPage useEffect', loaded, melody)
 
     if (loaded) {
       // initialize player
@@ -63,32 +64,32 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
 
     // set a wakelock when entered page
     PowerManagement.acquire().then(() => {
-      console.log("wakelock acquired")
+      console.log('wakelock acquired')
     })
 
     // get size of content area
-    let contentRect = contentRef.current!.getBoundingClientRect()
-    console.log("KonnakolPlayerPage.initPlayer", contentRect, melody)
+    const contentRect = contentRef.current!.getBoundingClientRect()
+    console.log('KonnakolPlayerPage.initPlayer', contentRect, melody)
 
     // render canvas stage
-    const game = new KonnakolGame(stageRef!.current!.getStage(), contentRect!.height, contentRect!.width, melody!, AppContext.Player.bpm)
+    //const game = new KonnakolGame(stageRef!.current!.getStage(), contentRect!.height, contentRect!.width, melody!, AppContext.Player.bpm)
     const gameAudio = new KonnakolGameAudio(melody!, AppContext.Player.bpm)
 
-    let disposers = registerReactions(game, gameAudio)
+    //const disposers = registerReactions(game, gameAudio)
 
     // return desctructor function
     return () => {
       AppContext.Player.state = PlayerState.Stopped
 
       // dispose reactions
-      disposers.map((disposer) => disposer())
+      //disposers.map((disposer) => disposer())
 
-      game.destroy()
+      //game.destroy()
       gameAudio.destroy()
 
       // release wakelock since we leave the page
       PowerManagement.release().then(() => {
-        console.log("wakelock released")
+        console.log('wakelock released')
       })
     }
   }
@@ -100,7 +101,7 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
     MelodiesStore.getMelody(props.match.params.collection_id, props.match.params.melody_id)
       .then((val) => {
 
-        console.log("KonnakolPlayerPage.loaded melody", val)
+        console.log('KonnakolPlayerPage.loaded melody', val)
 
         setMelody(val)
         setLoaded(true)
@@ -109,19 +110,19 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
 
   function handleDeviceEvents() {
     // on device ready
-    document.addEventListener("deviceready", () => {
-      console.log("KonnakolPlayerPage.deviceready")
+    document.addEventListener('deviceready', () => {
+      console.log('KonnakolPlayerPage.deviceready')
     })
 
     // on app pause
-    document.addEventListener("pause", () => {
-      console.log("KonnakolPlayerPage.device.pause")
+    document.addEventListener('pause', () => {
+      console.log('KonnakolPlayerPage.device.pause')
       AppContext.Player.state = PlayerState.Paused
     })
 
     // on app resume
-    document.addEventListener("resume", () => {
-      console.log("KonnakolPlayerPage.device.resume")
+    document.addEventListener('resume', () => {
+      console.log('KonnakolPlayerPage.device.resume')
     })
   }
 
@@ -130,7 +131,7 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
   */
   function registerReactions(game: KonnakolGame, gameAudio: KonnakolGameAudio) {
 
-    const observeStateDisposer = observe(AppContext.Player, "state", (change) => {
+    const observeStateDisposer = observe(AppContext.Player, 'state', (change) => {
       console.log(`KonnakolPlayer.observe state changed ${change.oldValue} to ${change.newValue}`)
 
       switch (change.newValue) {
@@ -176,7 +177,7 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
 
     // react on BPM change
     const reactionBpmDisposer = reaction(() => AppContext.Player.bpm, newBPM => {
-      console.log("KonnakolPlayer.reaction.bpm", newBPM)
+      console.log('KonnakolPlayer.reaction.bpm', newBPM)
 
       game?.changeBPM(newBPM)
       gameAudio?.changeBPM(newBPM)
@@ -190,19 +191,19 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonButton routerDirection={"back"} routerLink={`/collections/${props.match.params.collection_id}`} >
+            <IonButton routerDirection={'back'} routerLink={`/collections/${props.match.params.collection_id}`} >
               <IonIcon slot="icon-only" icon={arrowBackOutline} />
             </IonButton>
           </IonButtons>
           <IonButtons slot="end">
             <IonMenuButton />
           </IonButtons>
-          <IonTitle>{loaded ? melody?.name + " — " + melody?.description : "..."} </IonTitle>
+          <IonTitle>{loaded ? melody?.name + ' — ' + melody?.description : '...'} </IonTitle>
         </IonToolbar>
       </IonHeader>
 
       <IonContent ref={contentRef} slot="fixed" forceOverscroll={false}>
-        <Stage ref={stageRef}></Stage>
+        {loaded && melody && (<DOMKonnakolGame melody={melody} container={contentRef} />)} 
       </IonContent>
 
       <IonFooter>

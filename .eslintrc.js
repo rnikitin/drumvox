@@ -31,7 +31,7 @@ module.exports = {
 		],
 		"quotes": [
 			"warn",
-			"double"
+			"single"
 		],
 		"semi": [
 			"warn",
