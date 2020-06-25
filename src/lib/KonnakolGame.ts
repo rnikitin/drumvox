@@ -22,7 +22,7 @@ const GROUP_HEIGHT = 32
 /**
  * Ширина Beat
  */
-const BEAT_WIDTH = 60
+const BEAT_WIDTH = 50
 /**
  * Отсутп справа для Терминатора
  */
@@ -67,7 +67,7 @@ const COLOR_BEAT_SECONDARY = "#828282"
 /**
  * Сколько нот рендерить вперед
  */
-const COUNT_BEATS_TO_RENDER_AHEAD = 32
+const COUNT_BEATS_TO_RENDER_AHEAD = 24
 
 /**
  * Цвет лиии начала мелодии
@@ -90,7 +90,6 @@ export class KonnakolGame {
     private melodyAnimation: Konva.Animation
     private BPM = 60
 
-
     private get GAME_HEIGHT() { return GROUP_HEIGHT * (this.melody.instruments.length + 2) }
 
     constructor(stage: Stage, stageHeight: number, stageWidth: number, melody: KonnakolMelody, bpm: number) {
@@ -104,7 +103,6 @@ export class KonnakolGame {
         this.render()
 
         this.melodyAnimation = new Konva.Animation(this.animationStep.bind(this), this.melodyLayer)
-
     }
 
     public play() {
@@ -143,7 +141,7 @@ export class KonnakolGame {
     private calculateRulers() {
         OFFSET_Y = (this.stage.height() - this.GAME_HEIGHT) * 0.5
 
-        console.log(`calculated ${OFFSET_Y}=(${this.stage.height()}-${this.GAME_HEIGHT}) * 0.6`)
+        //console.log(`calculated ${OFFSET_Y}=(${this.stage.height()}-${this.GAME_HEIGHT}) * 0.6`)
     }
 
     private updateLayerZIndexes() {
@@ -190,10 +188,24 @@ export class KonnakolGame {
                 text: instrument
             })
 
+            const lineY = OFFSET_Y + i * GROUP_HEIGHT + GROUP_HEIGHT / 2
+
+            const rail = new Konva.Line({
+                points: [
+                    LINE_OFFSET_X,
+                    lineY,
+                    2000,
+                    lineY
+                ],
+                stroke: COLOR_LINE,
+                strokeWidth: 1
+            })
+
+            this.beatRailsGroup.add(rail)
             this.instrumentsLayer.add(text)
         })
-
         // now show layer
+        this.instrumentsLayer.add(this.beatRailsGroup)
         this.stage.add(this.instrumentsLayer)
     }
 
@@ -203,23 +215,6 @@ export class KonnakolGame {
         this.beatsGroup = new Konva.Group()
 
         this.beatsGroup.transformsEnabled("position")
-
-        this.melody.instruments.forEach((_instrument, i) => {
-            const lineY = OFFSET_Y + i * GROUP_HEIGHT + GROUP_HEIGHT / 2
-
-            const rail = new Konva.Line({
-                points: [
-                    LINE_OFFSET_X,
-                    lineY,
-                    1000,
-                    lineY
-                ],
-                stroke: COLOR_LINE,
-                strokeWidth: 1
-            })
-
-            this.beatRailsGroup.add(rail)
-        })
 
         // render first chunk of melody notes
         for (let i = 0; i < COUNT_BEATS_TO_RENDER_AHEAD; i++) {
@@ -236,7 +231,6 @@ export class KonnakolGame {
         }
 
         // finnally add to stage
-        this.melodyLayer.add(this.beatRailsGroup)
         this.melodyLayer.add(this.beatsGroup)
         this.stage.add(this.melodyLayer)
 
@@ -250,15 +244,19 @@ export class KonnakolGame {
             x: offsetX,
             y: OFFSET_Y,
             width: BEAT_WIDTH,
-            height: (this.melody.instruments.length + 1)
+            height: (this.melody.instruments.length + 1),
+            listening: false,
         })
+        groupLayer.transformsEnabled("position")
+
 
         // render melody start indicator
         if (beatIdx === 0) {
             const startIndicatorLine = new Konva.Line({
                 points: [BEAT_RADIUS, -5, BEAT_RADIUS, this.melody.instruments.length * GROUP_HEIGHT + 5],
                 stroke: COLOR_MELODY_START_LINE,
-                strokeWidth: 2
+                strokeWidth: 2,
+                listening: false,
             })
 
             groupLayer.add(startIndicatorLine)
@@ -275,7 +273,8 @@ export class KonnakolGame {
                 x: BEAT_RADIUS,
                 y: instrumentIndex * GROUP_HEIGHT + GROUP_HEIGHT / 2,
                 radius: BEAT_RADIUS,
-                fill: beat.main ? COLOR_BEAT_MAIN : COLOR_BEAT_SECONDARY
+                fill: beat.main ? COLOR_BEAT_MAIN : COLOR_BEAT_SECONDARY,
+                listening: false,
             })
             groupLayer.add(circle)
 
@@ -300,7 +299,8 @@ export class KonnakolGame {
             fontSize: 18,
             fill: COLOR_TEXT,
             text: beat.num?.toString(),
-            align: "center"
+            align: "center",
+            listening: false,
         })
 
         // render konnakol
@@ -310,11 +310,13 @@ export class KonnakolGame {
             fontSize: 18,
             fill: beat.main ? COLOR_KONNAKOL_MAIN : COLOR_TEXT,
             text: beat.konnakol,
-            align: "center"
+            align: "center",
+            listening: false,
         })
 
         groupLayer.add(konnakolNumber)
         groupLayer.add(konnakolText)
+        groupLayer.cache()
 
         return groupLayer
     }
@@ -350,34 +352,36 @@ export class KonnakolGame {
     }
 
     private animationStep = (frame: IFrame | undefined) => {
-
-        // расстояние которое проходит бит за t
+        // расстояние которое проходит бит за t, в пикселях
         const S = BEAT_WIDTH
-        // время, за которое проигрывается 1 бит
+        // время, за которое проигрывается 1 бит, в секундах
         const t = 60 / (this.BPM * 4)
-        // скорость, с которой движется бит по полотну
+        // скорость, с которой движется бит по полотну, пикселей/секунду
         const v = S / t
 
-        // время с прошлого прыжка
+        // время с прошлого прыжка, в секундах
         const tdiff = frame!.timeDiff / 1000
         const Sdiff = v * tdiff
 
-        //console.log(`S=${S} t=${t} v=${v} tdiff=${tdiff} Sdiff=${Sdiff} fps=${frame?.frameRate}`)
+        //console.log(`[${this.animationStepCount}] S=${S} t=${t} v=${v} tdiff=${tdiff} Sdiff=${Sdiff} fps=${frame?.frameRate} length=${this.beatsGroup.children.length}`)
 
-        for (const beatGroup of this.beatsGroup.children.toArray()) {
+        this.beatsGroup.children.each((beatGroup, i) => {
             // move group left
             const newX = beatGroup.x() - Sdiff
             beatGroup.x(newX)
 
-            if (beatGroup.x() < 0) {
-                // destroy this beat
-                beatGroup.destroy()
-                setTimeout(() => beatGroup.destroy())
+            //console.log(`i=${i} x=${newX}`)
 
-                // render ahead on every 5 beats
-                if ((COUNT_BEATS_TO_RENDER_AHEAD - beatGroup.children.length) > 5)
-                setTimeout(() => this.renderMelodyAhead())
+            if (newX < 0) {
+                // hide the beat
+                beatGroup.hide()
+
+                setTimeout(() => {
+                    // destroy it and render a new one
+                    beatGroup.destroy()
+                    this.renderMelodyAhead()
+                })
             }
-        }
+        })
     }
 }

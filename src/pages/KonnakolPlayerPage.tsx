@@ -67,14 +67,14 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
     })
 
     // get size of content area
-    let contentRect = contentRef.current!.getBoundingClientRect()
+    const contentRect = contentRef.current!.getBoundingClientRect()
     console.log("KonnakolPlayerPage.initPlayer", contentRect, melody)
 
     // render canvas stage
     const game = new KonnakolGame(stageRef!.current!.getStage(), contentRect!.height, contentRect!.width, melody!, AppContext.Player.bpm)
     const gameAudio = new KonnakolGameAudio(melody!, AppContext.Player.bpm)
 
-    let disposers = registerReactions(game, gameAudio)
+    const disposers = registerReactions(game, gameAudio)
 
     // return desctructor function
     return () => {

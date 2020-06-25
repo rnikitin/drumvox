@@ -8,6 +8,7 @@ import { Analytics } from "../lib/Analytics"
 import "./DrumMachinePage.css"
 import { Observer } from "mobx-react"
 import { ScreenOrientation } from "@ionic-native/screen-orientation"
+import { PowerManagement } from "@ionic-native/power-management"
 
 type DrumMachineProps = {
 
@@ -23,10 +24,18 @@ export const DrumMachinePage: React.FC<DrumMachineProps> = () => {
         ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.LANDSCAPE)
             .then(v => console.log("Screen orientation locked.", v),
                 err => console.log("failed to lock orientation...", err))
+
+        PowerManagement.acquire().then(() => {
+            console.log("wakelock acquared")
+        })
     })
 
     useIonViewWillLeave(() => {
         ScreenOrientation.unlock()
+
+        PowerManagement.release().then(() => {
+            console.log("wakelock released")
+        })
     })
 
     useIonViewDidEnter(() => {
