@@ -23,3 +23,9 @@ To run the app with local development host
 ```
 ionic capacitor run android -l --external=http://192.168.0.100:8100
 ```
+
+To deploy drumvox webapp to firebase hosting
+```
+ionic build --prod
+firebase deploy --only hosting
+```

@@ -91,7 +91,7 @@ const AboutPage: React.FC = () => {
 					<IonItem>
 						<IonIcon icon={rocketOutline} slot="start" />
 						<IonLabel>Roman Nikitin - development</IonLabel>
-						<IonButton fill="outline" slot="end" href="javascript:window.open('https://teleg.one/neuromantic','_system', 'location=yes')" >telegram</IonButton>
+						<IonButton fill="outline" slot="end" href="javascript:window.open('https://t.me/neuromantic','_system', 'location=yes')" >telegram</IonButton>
 					</IonItem>
 
 					<IonItem>
