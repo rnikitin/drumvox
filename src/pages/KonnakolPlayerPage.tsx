@@ -22,7 +22,6 @@ interface KanakolPlayerPagePageArgs extends RouteComponentProps<{
 
 const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
   const contentRef = useRef<HTMLIonContentElement>(null)
-  const stageRef = useRef<Stage>(null)
 
   const [melody, setMelody] = useState<KonnakolMelody>()
   const [loaded, setLoaded] = useState<boolean>(false)
@@ -72,19 +71,19 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
     console.log('KonnakolPlayerPage.initPlayer', contentRect, melody)
 
     // render canvas stage
-    //const game = new KonnakolGame(stageRef!.current!.getStage(), contentRect!.height, contentRect!.width, melody!, AppContext.Player.bpm)
+    const game = new KonnakolGame(melody!, AppContext.Player.bpm)
     const gameAudio = new KonnakolGameAudio(melody!, AppContext.Player.bpm)
 
-    //const disposers = registerReactions(game, gameAudio)
+    const disposers = registerReactions(game, gameAudio)
 
     // return desctructor function
     return () => {
       AppContext.Player.state = PlayerState.Stopped
 
       // dispose reactions
-      //disposers.map((disposer) => disposer())
+      disposers.map((disposer) => disposer())
 
-      //game.destroy()
+      game.destroy()
       gameAudio.destroy()
 
       // release wakelock since we leave the page
@@ -129,7 +128,7 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
   /**
   * REACTIONS
   */
-  function registerReactions(game: KonnakolGame, gameAudio: KonnakolGameAudio) {
+  function registerReactions(game: KonnakolGame, gameAudio?: KonnakolGameAudio) {
 
     const observeStateDisposer = observe(AppContext.Player, 'state', (change) => {
       console.log(`KonnakolPlayer.observe state changed ${change.oldValue} to ${change.newValue}`)
@@ -155,13 +154,12 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
     })
 
     function playWithPrecount() {
-      gameAudio?.playWithPreCount(() => {
-        game?.play()
-      })
+      gameAudio?.playWithPreCount(()=> {})
+      game?.play(gameAudio?.PRECOUNT_LENGTH)
     }
 
     function resumePlaying() {
-      game?.play()
+      game?.resume()
       gameAudio?.play()
     }
 
