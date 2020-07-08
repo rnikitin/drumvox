@@ -1,10 +1,10 @@
-import { IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonContent, IonButton } from "@ionic/react"
-import React from "react"
-import { firestoreDrum, Collections } from "../lib/Firestore"
-import { KonnakolMelody, MelodyCollection } from "../lib/DataModels"
-import { KonnakolBasics, KonnakolBasicsCollection } from "../lib/collections/KonnakolBasics"
-import { RhythmicExercisesP1Collection, RhythmicExercisesP1Melodies } from "../lib/collections/RhythmicExersises_p1"
-import { BassAndSnareDrumReadinP1Melodies, BassAndSnareDrumReadinP1Collection } from "../lib/collections/BassAndSnareDrumReading_p1"
+import { IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonContent, IonButton } from '@ionic/react'
+import React from 'react'
+import { firestoreDrum, Collections } from '../lib/Firestore'
+import { KonnakolMelody, MelodyCollection } from '../lib/DataModels'
+import { KonnakolBasics, KonnakolBasicsCollection } from '../lib/collections/KonnakolBasics'
+import { RhythmicExercisesP1Collection, RhythmicExercisesP1Melodies } from '../lib/collections/RhythmicExersises_p1'
+import { BassAndSnareDrumReadinP1Melodies, BassAndSnareDrumReadinP1Collection } from '../lib/collections/BassAndSnareDrumReading_p1'
 
 
 const KonnakolAdminPage: React.FC = () => {
@@ -15,7 +15,7 @@ const KonnakolAdminPage: React.FC = () => {
 			.doc(collection.id)
 		const melodiesRef = collectionRef.collection(Collections.melodies)
 
-		console.log("updating", collection, melodies)
+		console.log('updating', collection, melodies)
 
 		// update
 		collectionRef.set(collection)
