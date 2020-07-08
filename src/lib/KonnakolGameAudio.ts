@@ -1,16 +1,16 @@
-import * as Tone from "tone"
-import { KonnakolMelody } from "./DataModels"
-import { GameFeedbackCollector } from "./GameFeedback"
+import * as Tone from 'tone'
+import { KonnakolMelody } from './DataModels'
+import { GameFeedbackCollector } from './GameFeedback'
 
 // size of playing sequence, constant for now
 const SEQUENCE_SIZE = 8
 
 // Our set of drum notes with mp3
 const DRUM_NOTES = {
-	"Ride": "/assets/audio/drumvox/ride2.mp3",
-	"HH": "/assets/audio/drumvox/hh.mp3",
-	"Kick": "/assets/audio/drumvox/kick.mp3",
-	"Snare": "/assets/audio/drumvox/snare2.mp3",
+	'Ride': '/assets/audio/drumvox/ride2.mp3',
+	'HH': '/assets/audio/drumvox/hh.mp3',
+	'Kick': '/assets/audio/drumvox/kick.mp3',
+	'Snare': '/assets/audio/drumvox/snare2.mp3',
 }
 
 export class KonnakolGameAudio {
@@ -22,6 +22,8 @@ export class KonnakolGameAudio {
 	private sequenceEvents: number[] = []
 	private Sequencer: Tone.Sequence<number>
 	private gameFeedback: GameFeedbackCollector
+
+	public PRECOUNT_LENGTH = 4000
 
 	constructor(melody: KonnakolMelody, bpm: number) {
 		this.melody = melody
@@ -42,7 +44,7 @@ export class KonnakolGameAudio {
 
 		Tone.Transport.bpm.value = this.bpm
 
-		console.log("KonnakolGameAudio.constructor", this.melody)
+		console.log('KonnakolGameAudio.constructor', this.melody)
 
 		// create sequencer
 		this.Sequencer = this.initSequencer()
@@ -51,7 +53,7 @@ export class KonnakolGameAudio {
 	private initSequencer() {
 		return new Tone.Sequence((time, beat) => {
 
-			console.log("KonnakolGameAudio.sequencerCallback", time, beat)
+			//console.log('KonnakolGameAudio.sequencerCallback', time, beat)
 
 			const melodyBeat = this.melody.beats[beat]
 			this.playNotes(melodyBeat.notes, time)
@@ -59,9 +61,9 @@ export class KonnakolGameAudio {
 			// collect play times
 			if (beat === this.melody.beats.length - 1) {
 				this.melodyPlayCounter++
-				console.log("melody playCount", this.melodyPlayCounter)
+				//console.log('melody playCount', this.melodyPlayCounter)
 			}
-		}, this.sequenceEvents, "16n")
+		}, this.sequenceEvents, '16n')
 	}
 
 	public destroy() {
@@ -73,7 +75,7 @@ export class KonnakolGameAudio {
 	}
 
 	public play() {
-		console.log("KonnakolGameAudio.play", this.bpm, Tone.Transport, this.Sequencer)
+		console.log('KonnakolGameAudio.play', this.bpm, Tone.Transport, this.Sequencer)
 
 		Tone.start().then(() => {
 			Tone.Transport.bpm.value = this.bpm
@@ -85,52 +87,52 @@ export class KonnakolGameAudio {
 	}
 
 	public playWithPreCount(onStart: () => void) {
-		console.log("KonnakolGameAudio.playWithPreCount", Tone.Transport.state)
+		console.log('KonnakolGameAudio.playWithPreCount', Tone.Transport.state)
 
 		// capture audio context
 		Tone.start().then(() => {
 			// stop in case it was playing
-			if (Tone.Transport.state == "stopped")
+			if (Tone.Transport.state == 'stopped')
 				Tone.Transport.start()
 
 			// schedule drums
 			let transportTime = Tone.Transport.now()
 			const firstTime = transportTime
 			const measureTime = 60 / this.bpm
-			const snare = this.drumPlayers.player("Snare")
+			const snare = this.drumPlayers.player('Snare')
 
-			console.log("Ta on", transportTime)
+			console.log('Ta on', transportTime)
 			snare.start(transportTime, 0) // Takadimi
 			transportTime += measureTime
 
-			console.log("Ta on", transportTime)
+			console.log('Ta on', transportTime)
 			snare.start(transportTime, 0) // Takadimi
 			transportTime += measureTime
 
-			console.log("TaKa on", transportTime)
+			console.log('TaKa on', transportTime)
 			snare.start(transportTime, 0) // TaKa
 			transportTime += measureTime / 2
 
-			console.log("TaKa on", transportTime)
+			console.log('TaKa on', transportTime)
 			snare.start(transportTime, 0) // Taka
 			transportTime += measureTime / 2
 
-			console.log("TaKa on", transportTime)
+			console.log('TaKa on', transportTime)
 			snare.start(transportTime, 0) // Taka
 			transportTime += measureTime / 2
 
-			console.log("TaKa on", transportTime)
+			console.log('TaKa on', transportTime)
 			snare.start(transportTime, 0) // Taka
 			transportTime += measureTime / 2
 
-			console.log("Play", transportTime)
+			console.log('Play', transportTime)
 
 			// start the sequencer
 			this.Sequencer.start(transportTime - firstTime, 0)
 
 			// schedule start just before music start
 			Tone.Draw.schedule(function () {
-				console.log("Tone.Draw.schedule")
+				console.log('Tone.Draw.schedule')
 				//do drawing or DOM manipulation here
 				onStart()
 			}, transportTime - measureTime / 4)
@@ -140,18 +142,17 @@ export class KonnakolGameAudio {
 	}
 
 	public pause() {
-		console.log("KonnakolGameAudio.pause", this.bpm)
+		console.log('KonnakolGameAudio.pause', this.bpm)
 
 		// pause or stop all
 		Tone.Transport.pause()
-		this.Sequencer.stop()
 		this.drumPlayers.stopAll()
 
 		this.gameFeedback.stopAndSaveHistory()
 	}
 
 	public stop() {
-		console.log("KonnakolGameAudio.stop")
+		console.log('KonnakolGameAudio.stop')
 
 		// stop all
 		Tone.Transport.stop()
@@ -165,10 +166,11 @@ export class KonnakolGameAudio {
 	}
 
 	public changeBPM(newBpm: number) {
+		this.stop()
 		this.bpm = newBpm
 		Tone.Transport.bpm.value = newBpm
-
 		this.gameFeedback.startTimer(this.bpm)
+		this.play()
 	}
 
 	private playNotes(notes: string[], time: number) {

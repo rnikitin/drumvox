@@ -1,0 +1,14 @@
+.game-container {
+	/* Hey browser, use your GPU */
+	transform: translate3d(0, 0, 0);
+}
+
+.melody-container {
+	/* Hey browser, use your GPU */
+	transform: translate3d(0, 0, 0);
+}
+
+.melody-block {
+	position: absolute;
+	transform: translate3d(0, 0, 0);
+}

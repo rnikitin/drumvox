@@ -1,0 +1,1 @@
+ionic capacitor run android -l --external=http://192.168.0.100:8100
