@@ -146,7 +146,6 @@ export class KonnakolGameAudio {
 
 		// pause or stop all
 		Tone.Transport.pause()
-		this.Sequencer.stop()
 		this.drumPlayers.stopAll()
 
 		this.gameFeedback.stopAndSaveHistory()
@@ -167,10 +166,11 @@ export class KonnakolGameAudio {
 	}
 
 	public changeBPM(newBpm: number) {
+		this.stop()
 		this.bpm = newBpm
 		Tone.Transport.bpm.value = newBpm
-
 		this.gameFeedback.startTimer(this.bpm)
+		this.play()
 	}
 
 	private playNotes(notes: string[], time: number) {

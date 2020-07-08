@@ -1,86 +1,9 @@
 import { KonnakolMelody, MelodyBeat } from '../lib/DataModels'
-import React, { DOMElement } from 'react'
-import { Stage } from 'konva/types/Stage'
-import Konva from 'konva'
-import { IFrame } from 'konva/types/types'
+import React from 'react'
+import * as CONST from '../lib/KonnakolGameConstants'
 
 import './DOMKonnakolGame.css'
-
-/**
- * Отступ от края экрана для текста Инструментов
- */
-const INSTRUMENTS_TEXT_OFFSET_X = 20
-/**
- * Отступ от края экрана для линии по которой едут точки Инструмента
- */
-const LINE_OFFSET_X = 80
-/**
- * Базовый отступ от верхнего края Stage
- */
-const BASE_OFFSET_Y = 35
-/**
- * Высота группы с инструментом
- */
-const GROUP_HEIGHT = 32
-/**
- * Ширина Beat
- */
-const BEAT_WIDTH = 40
-/**
- * Отсутп справа для Терминатора
- */
-const TERMINATOR_OFFSET_X = 250
-/**
- * Radius of the beat dot
- */
-const BEAT_RADIUS = 12
-/**
- * offset from left corner for the beat
- */
-const BEAT_START_OFFSET_X = TERMINATOR_OFFSET_X
-/**
- * Цвет Терминатора
- */
-const TERMINATOR_COLOR = '#F2F2F2'
-/**
- * Цвет текста
- */
-const COLOR_TEXT = '#E0E0E0'
-/**
- * Цвет линии
- */
-const COLOR_LINE = '#F2F2F2'
-/**
- *  Цвет фона
- */
-const COLOR_BACKGROUND = '#121212'
-/**
- * Цвет заглавного слога коннакола
- */
-const COLOR_KONNAKOL_MAIN = '#EB5757'
-/**
- * Цвет Бита
- */
-const COLOR_BEAT_MAIN = '#F2F2F2'
-
-/**
- * цвет второстепенного
- */
-const COLOR_BEAT_SECONDARY = '#828282'
-/**
- * Сколько нот рендерить вперед
- */
-const COUNT_BEATS_TO_RENDER_AHEAD = 30
-
-/**
- * Цвет лиии начала мелодии
- */
-const COLOR_MELODY_START_LINE = '#EB5757'
-
-/**
- * Вкл/выкл режима дебага канваса
- */
-const CANVAS_DEBUG = false
+import { posix } from 'path'
 
 interface DOMKOnnakolGameProps {
     melody: KonnakolMelody
@@ -99,15 +22,11 @@ const melodyContainerStyle: React.CSSProperties = {
     height: '100%'
 }
 
-const instrumentsContainerStyle: React.CSSProperties = {
-
-}
-
 const DOMKOnnakolGame: React.FC<DOMKOnnakolGameProps> = (props: DOMKOnnakolGameProps) => {
 
     console.log('DOMKOnnakolGame', props)
 
-    const GAME_HEIGHT = () => GROUP_HEIGHT * (props?.melody?.instruments.length! + 2)
+    const GAME_HEIGHT = () => CONST.GROUP_HEIGHT * (props?.melody?.instruments.length! + 2)
     const OFFSET_Y = () => (props?.container.current?.clientHeight! - GAME_HEIGHT()) * 0.5
 
     let lastRenderedBeat: MelodyBeat | null = null
@@ -115,30 +34,50 @@ const DOMKOnnakolGame: React.FC<DOMKOnnakolGameProps> = (props: DOMKOnnakolGameP
     function renderMelody() {
         const melodyElements: JSX.Element[] = []
 
-        // render first chunk of melody notes
-        for (let i = 0; i < COUNT_BEATS_TO_RENDER_AHEAD; i++) {
-            // вычисляем следующий Beat
-            const n = i % props.melody.beats.length
-            const beat = props.melody.beats[n]
+        // count of melodies to render ahead
+        const melodies_ahead_count = 3
+        console.log('render melody. ahead=', melodies_ahead_count)
 
-            lastRenderedBeat = beat
+        // render melodies
+        for (let i = 0; i < melodies_ahead_count; i++) {
 
-            melodyElements.push(renderBeatGroup(beat, n, (BEAT_START_OFFSET_X + (i + 1) * BEAT_WIDTH)))
+            // render melody
+            const melodyBeatsElements = props.melody.beats.map((beat, n) => {
+                lastRenderedBeat = beat
+                // offsetX = base offset + offset for current beat + whole melody offset
+                return renderBeatGroup(beat, n, n * CONST.BEAT_WIDTH)
+            })
+
+            melodyElements.push(<div
+                key={'melody' + i}
+                className='melody-block'
+                style={{
+                    left: CONST.BEAT_START_OFFSET_X + (i * props.melody.beats.length * CONST.BEAT_WIDTH) + CONST.BEAT_WIDTH,
+                    top: OFFSET_Y(),
+                    width: props.melody.beats.length * CONST.BEAT_WIDTH,
+                    height: GAME_HEIGHT()
+                }}>
+                {melodyBeatsElements}
+            </div>)
         }
 
         return melodyElements
     }
 
     function renderBeatGroup(beat: MelodyBeat, beatIdx: number, offsetX: number) {
+
+        console.log('renderBeatGroup', beatIdx, offsetX)
+
         // render melody start indicator
+        let startIndicator = <span></span>
         if (beatIdx === 0) {
-            const beginIndicatorElement = <div style={{
+            startIndicator = <div style={{
+                backgroundColor: CONST.COLOR_MELODY_START_LINE,
                 position: 'absolute',
-                left: BEAT_RADIUS,
-                top: -5,
-                height: props.melody.instruments.length * GROUP_HEIGHT + 5,
-                width: 2,
-                backgroundColor: COLOR_MELODY_START_LINE,
+                left: CONST.BEAT_RADIUS,
+                top: 0,
+                width: 1,
+                height: props.melody.instruments.length * CONST.GROUP_HEIGHT + 4
             }}>&nbsp;</div>
         }
 
@@ -150,46 +89,43 @@ const DOMKOnnakolGame: React.FC<DOMKOnnakolGameProps> = (props: DOMKOnnakolGameP
             return (<div key={beatIdx + note} style={{
                 position: 'absolute',
                 left: 0,
-                top: instrumentIndex * GROUP_HEIGHT,
-                width: 2 * BEAT_RADIUS,
-                height: 2 * BEAT_RADIUS,
+                top: instrumentIndex * CONST.GROUP_HEIGHT,
+                width: 2 * CONST.BEAT_RADIUS,
+                height: 2 * CONST.BEAT_RADIUS,
                 borderRadius: '50%',
-                backgroundColor: beat.main ? COLOR_BEAT_MAIN : COLOR_BEAT_SECONDARY
+                backgroundColor: beat.main ? CONST.COLOR_BEAT_MAIN : CONST.COLOR_BEAT_SECONDARY
 
             }}>&nbsp;</div>)
         })
 
-        // render konnakol number
-        const konnakolNumberElement = <div style={{
-            position: 'absolute',
-            left: BEAT_RADIUS - 6,
-            bottom: GROUP_HEIGHT,
-            fontSize: '1em',
-            color: COLOR_TEXT,
-            textAlign: 'center'
+        return <div className="beat-group" key={'beat' + offsetX}
+            style={{
+                position: 'absolute',
+                left: offsetX,
+                top: 0,
+                width: CONST.BEAT_WIDTH,
+                height: (props.melody.instruments.length + 2) * CONST.GROUP_HEIGHT,
+            }}>
+            {startIndicator}
+            {beatNotesElements}
+            <div style={{
+                position: 'absolute',
+                left: CONST.BEAT_RADIUS - 6,
+                bottom: CONST.GROUP_HEIGHT,
+                fontSize: '1em',
+                color: CONST.COLOR_TEXT,
+                textAlign: 'center'
 
-        }}>{beat.num}</div>
-
-        // render konnakol
-        const konnakolTextElement = <div style={{
-            position: 'absolute',
-            left: BEAT_RADIUS - 8,
-            bottom: 0,
-            fontSize: '1em',
-            color: COLOR_TEXT,
-            textAlign: 'center'
-        }}>{beat.konnakol}</div>
-
-        return <div className="beat-group" key={'beat' + offsetX} style={{
-            position: 'absolute',
-            left: offsetX,
-            top: OFFSET_Y(),
-            width: BEAT_WIDTH,
-            height: (props.melody.instruments.length + 2) * GROUP_HEIGHT,
-            //border: '1px solid red',
-        }}>{beatNotesElements}
-            {konnakolNumberElement}
-            {konnakolTextElement}</div>
+            }}>{beat.num}</div>
+            <div style={{
+                position: 'absolute',
+                left: CONST.BEAT_RADIUS - 8,
+                bottom: 0,
+                fontSize: '1em',
+                color: beat.main ? CONST.COLOR_KONNAKOL_MAIN : CONST.COLOR_BEAT_SECONDARY,
+                textAlign: 'center'
+            }}>{beat.konnakol}</div>
+        </div>
     }
 
     function renderInstruments() {
@@ -198,13 +134,13 @@ const DOMKOnnakolGame: React.FC<DOMKOnnakolGameProps> = (props: DOMKOnnakolGameP
         // render TERMINATOR LINE
         instrumentElements.push(<div key="terminator" style={{
             position: 'absolute',
-            left: TERMINATOR_OFFSET_X,
-            top: OFFSET_Y(),
+            left: CONST.TERMINATOR_OFFSET_X,
+            top: 0,
             width: '1em',
-            backgroundColor: TERMINATOR_COLOR,
+            backgroundColor: CONST.TERMINATOR_COLOR,
             borderRadius: '1em',
             opacity: 0.8,
-            height: GROUP_HEIGHT * props.melody.instruments.length + 'px'
+            height: CONST.GROUP_HEIGHT * props.melody.instruments.length
         }}>&nbsp;</div>)
 
         // render each instrument
@@ -212,19 +148,19 @@ const DOMKOnnakolGame: React.FC<DOMKOnnakolGameProps> = (props: DOMKOnnakolGameP
             // add instrument name
             instrumentElements.push(<div key={'instrument_lbl_' + instrument} style={{
                 position: 'absolute',
-                left: INSTRUMENTS_TEXT_OFFSET_X,
-                top: (OFFSET_Y() + i * GROUP_HEIGHT + 6),
+                left: CONST.INSTRUMENTS_TEXT_OFFSET_X,
+                top: + i * CONST.GROUP_HEIGHT + 6,
                 fontSize: '1em',
-                color: COLOR_TEXT
+                color: CONST.COLOR_TEXT
             }}>{instrument}</div>)
 
             // add instrument rail
             instrumentElements.push(<div key={'rail_' + instrument} style={{
                 position: 'absolute',
-                left: LINE_OFFSET_X,
-                top: OFFSET_Y() + i * GROUP_HEIGHT + BEAT_RADIUS,
+                left: CONST.LINE_OFFSET_X,
+                top: i * CONST.GROUP_HEIGHT + CONST.BEAT_RADIUS,
                 width: 2000,
-                backgroundColor: COLOR_LINE,
+                backgroundColor: CONST.COLOR_LINE,
                 height: 1
             }}>&nbsp;</div>)
         })
@@ -235,7 +171,13 @@ const DOMKOnnakolGame: React.FC<DOMKOnnakolGameProps> = (props: DOMKOnnakolGameP
     function render() {
         return (<div style={gameContainerStyle} className='game-container'>
             <div style={melodyContainerStyle} className='melody-container'>{renderMelody()}</div>
-            <div style={instrumentsContainerStyle} className='instruments-container'>{renderInstruments()}</div>
+            <div style={{
+                position: 'absolute',
+                left: 0, top: OFFSET_Y(),
+                width: CONST.LINE_OFFSET_X,
+                height: CONST.GROUP_HEIGHT * (props.melody.instruments.length + 2),
+                backgroundColor: CONST.COLOR_BACKGROUND,
+            }} className='instruments-container'>{renderInstruments()}</div>
         </div>)
     }
 

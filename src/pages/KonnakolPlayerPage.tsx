@@ -154,7 +154,7 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
     })
 
     function playWithPrecount() {
-      gameAudio?.playWithPreCount(()=> {})
+      gameAudio?.playWithPreCount(() => { })
       game?.play(gameAudio?.PRECOUNT_LENGTH)
     }
 
@@ -201,7 +201,7 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
       </IonHeader>
 
       <IonContent ref={contentRef} slot="fixed" forceOverscroll={false}>
-        {loaded && melody && (<DOMKonnakolGame melody={melody} container={contentRef} />)} 
+        {loaded && melody && (<DOMKonnakolGame melody={melody} container={contentRef} />)}
       </IonContent>
 
       <IonFooter>
