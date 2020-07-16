@@ -12,7 +12,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import java.util.ArrayList;
 
 import io.intercom.android.sdk.push.IntercomPushClient;
-import io.stewan.capacitor.intercom.IntercomPlugin;
+import com.getcapacitor.community.intercom.IntercomPlugin;
 
 public class MainActivity extends BridgeActivity {
 

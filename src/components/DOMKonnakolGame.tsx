@@ -52,7 +52,7 @@ const DOMKOnnakolGame: React.FC<DOMKOnnakolGameProps> = (props: DOMKOnnakolGameP
                 key={'melody' + i}
                 className='melody-block'
                 style={{
-                    left: CONST.BEAT_START_OFFSET_X + (i * props.melody.beats.length * CONST.BEAT_WIDTH) + CONST.BEAT_WIDTH,
+                    left: CONST.BEAT_START_OFFSET_X + (i * props.melody.beats.length * CONST.BEAT_WIDTH + 16),
                     top: OFFSET_Y(),
                     width: props.melody.beats.length * CONST.BEAT_WIDTH,
                     height: GAME_HEIGHT()

@@ -1,7 +1,6 @@
-import AuthProvider from "./AuthProvider"
-import { PlayingHistory } from "./DataModels"
-import { firestore } from "firebase"
-import { MelodiesStore } from "./Firestore"
+import AuthProvider from './AuthProvider'
+import { PlayingHistory } from './DataModels'
+import { MelodiesStore } from './Firestore'
 
 
 
@@ -19,7 +18,7 @@ export class GameFeedbackCollector {
 	}
 
 	public startTimer(tempo: number) {
-		console.log("GameFeedbackCollector startTimer", tempo, this.started)
+		console.log('GameFeedbackCollector startTimer', tempo, this.started)
 
 		if (this.started) {
 			// stop timer, collect data
@@ -34,7 +33,7 @@ export class GameFeedbackCollector {
 
 	public async stopAndSaveHistory() {
 		this.started = false
-		let endTime = new Date()
+		const endTime = new Date()
 
 		const secondsPlayed = (endTime.getTime() - this.startTime.getTime()) / 1000
 		const history: PlayingHistory = {
@@ -53,17 +52,17 @@ export class GameFeedbackCollector {
 	}
 
 	public updateLastPlayed(timestamp: Date) {
-		console.log("GameFeedbackCollector updateLastPlayed", this.melody_id, timestamp)
+		console.log('GameFeedbackCollector updateLastPlayed', this.melody_id, timestamp)
 		return MelodiesStore.updateMelodyLastPlayedForUser(AuthProvider.currentUser?.uid!, this.collection_id, this.melody_id, timestamp)
 	}
 
 	public countMelody(played_count: number) {
-		console.log("GameFeedbackCollector countMelody", played_count)
+		console.log('GameFeedbackCollector countMelody', played_count)
 		return MelodiesStore.incMelodyForUser(AuthProvider.currentUser?.uid!, this.collection_id, this.melody_id, played_count)
 	}
 
 	private saveHistory(history: PlayingHistory) {
-		console.log("GameFeedbackCollector saveHistory", history)
+		console.log('GameFeedbackCollector saveHistory', history)
 		return MelodiesStore.savePlayingHistoryForUser(AuthProvider.currentUser?.uid!, history)
 	}
 }

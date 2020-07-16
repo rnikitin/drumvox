@@ -1,16 +1,8 @@
-import app from "./Firebase"
-import { MelodyCollectionConverter, MelodyConverter, PlayingHistory, MelodyStatsConverter } from "./DataModels"
-
-export function debug() {
-	firestoreDrum.collection("melody_collections").get().then((data) => {
-		console.log("melody_collections", data.docs)
-	})
-
-	return "testing connection to firestore"
-}
+import { firebaseWebApp } from './Firebase'
+import { MelodyCollectionConverter, MelodyConverter, PlayingHistory, MelodyStatsConverter } from './DataModels'
 
 function init() {
-	const firestore = app.firestore()
+	const firestore = firebaseWebApp.firestore()
 
 	// enable persistance storage by default
 	firestore.enablePersistence({ synchronizeTabs: true })
@@ -19,12 +11,12 @@ function init() {
 }
 
 export enum Collections {
-	collections = "collections",
-	melodies = "melodies",
-	users = "users",
-	melody_stats = "melody_stats",
-	tempo_stats = "tempo_stats",
-	playing_history = "playing_history"
+	collections = 'collections',
+	melodies = 'melodies',
+	users = 'users',
+	melody_stats = 'melody_stats',
+	tempo_stats = 'tempo_stats',
+	playing_history = 'playing_history'
 }
 
 export class MelodiesStore {
@@ -32,9 +24,9 @@ export class MelodiesStore {
 	 * Get all available melodies collections
 	 */
 	public static async getCollections() {
-		let snapshop = (await firestoreDrum.collection(Collections.collections)
+		const snapshop = (await firestoreDrum.collection(Collections.collections)
 			.withConverter(MelodyCollectionConverter)
-			.orderBy("order")
+			.orderBy('order')
 			.get()).docs
 		return snapshop.map(c => c.data())
 	}
@@ -44,7 +36,7 @@ export class MelodiesStore {
 	 * @param id collection's id
 	 */
 	public static async getCollection(id: string) {
-		let snapshop = await firestoreDrum.collection(Collections.collections)
+		const snapshop = await firestoreDrum.collection(Collections.collections)
 			.doc(id)
 			.withConverter(MelodyCollectionConverter)
 			.get()
@@ -56,10 +48,10 @@ export class MelodiesStore {
 	 * @param id collection's id
 	 */
 	public static async getMelodies(id: string) {
-		let snapshop = (await firestoreDrum.collection(Collections.collections)
+		const snapshop = (await firestoreDrum.collection(Collections.collections)
 			.doc(id)
 			.collection(Collections.melodies)
-			.orderBy("order")
+			.orderBy('order')
 			.withConverter(MelodyConverter)
 			.get()).docs
 
@@ -67,7 +59,7 @@ export class MelodiesStore {
 	}
 
 	public static async getMelody(collection_id: string, id: string) {
-		let snapshop = await firestoreDrum.collection(Collections.collections)
+		const snapshop = await firestoreDrum.collection(Collections.collections)
 			.doc(collection_id)
 			.collection(Collections.melodies)
 			.doc(id)
@@ -84,14 +76,14 @@ export class MelodiesStore {
 	 * @param timestamp 
 	 */
 	public static async updateMelodyLastPlayedForUser(user_id: string, collection_id: string, melody_id: string, timestamp: Date) {
-		console.log("Firestore updateLastPlayed", user_id, melody_id, timestamp)
+		console.log('Firestore updateLastPlayed', user_id, melody_id, timestamp)
 
-		let snapshop = await firestoreDrum.collection(Collections.users)
+		const snapshop = await firestoreDrum.collection(Collections.users)
 			.doc(user_id)
 			.collection(Collections.melody_stats)
 			.doc(MelodyStatsConverter.compoundId(collection_id, melody_id))
 
-		let melody_stats = (await snapshop
+		const melody_stats = (await snapshop
 			.withConverter(MelodyStatsConverter)
 			.get())
 			.data()
@@ -119,14 +111,14 @@ export class MelodiesStore {
 	 * @param played_count 
 	 */
 	public static async incMelodyForUser(user_id: string, collection_id: string, melody_id: string, played_count: number) {
-		console.log("Firestore countMelody", collection_id, melody_id, played_count)
+		console.log('Firestore countMelody', collection_id, melody_id, played_count)
 
-		let snapshop = await firestoreDrum.collection(Collections.users)
+		const snapshop = await firestoreDrum.collection(Collections.users)
 			.doc(user_id)
 			.collection(Collections.melody_stats)
 			.doc(MelodyStatsConverter.compoundId(collection_id, melody_id))
 
-		let melody_stats = (await snapshop
+		const melody_stats = (await snapshop
 			.withConverter(MelodyStatsConverter)
 			.get())
 			.data()
@@ -155,9 +147,9 @@ export class MelodiesStore {
 	 * @param history 
 	 */
 	public static async savePlayingHistoryForUser(user_id: string, history: PlayingHistory) {
-		console.log("Firestore saveHistory", history)
+		console.log('Firestore saveHistory', history)
 
-		let snapshot = firestoreDrum.collection(Collections.users)
+		const snapshot = firestoreDrum.collection(Collections.users)
 			.doc(user_id)
 			.collection(Collections.melody_stats)
 			.doc(MelodyStatsConverter.compoundId(history.collection_id, history.melody_id))

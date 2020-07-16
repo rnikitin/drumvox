@@ -1,11 +1,6 @@
-
-import { AppCenterAnalytics } from "@ionic-native/app-center-analytics"
-import { FirebaseAnalytics } from "@ionic-native/firebase-analytics"
-import { Intercom } from "./Intercom"
-
-//const fa = app.analytics()
-
-FirebaseAnalytics.setEnabled(true)
+import { AppCenterAnalytics } from '@ionic-native/app-center-analytics'
+import { Intercom } from './Intercom'
+import { UniversalFirebaseAnalytics } from './Firebase'
 
 export class Analytics {
 
@@ -17,7 +12,7 @@ export class Analytics {
 	public static LogEvent(name: string, data: any) {
 
 		setTimeout(() => {
-			FirebaseAnalytics.logEvent(name, data)
+			UniversalFirebaseAnalytics.logEvent(name, data)
 			AppCenterAnalytics.trackEvent(name, data)
 			Intercom?.logEvent({ name, data }).then(() => 1, (err) => console.error(err))
 		})
@@ -27,9 +22,9 @@ export class Analytics {
 	public static setCurrentScreen(name: string, data: any) {
 
 		setTimeout(() => {
-			FirebaseAnalytics.setCurrentScreen(name)
-			AppCenterAnalytics.trackEvent("PageView", { ...data, screenName: name })
-			Intercom.logEvent({ name: "PageView/" + name, data: data })
+			UniversalFirebaseAnalytics.setCurrentScreen(name)
+			AppCenterAnalytics.trackEvent('PageView', { ...data, screenName: name })
+			Intercom.logEvent({ name: 'PageView/' + name, data: data })
 		})
 	}
 }

@@ -13,6 +13,7 @@ import { AppContext, PlayerState } from '../AppContext'
 import { PowerManagement } from '@ionic-native/power-management'
 import { KonnakolMelody } from '../lib/DataModels'
 import { ScreenOrientation } from '@ionic-native/screen-orientation'
+import { Context } from 'tone'
 
 interface KanakolPlayerPagePageArgs extends RouteComponentProps<{
   melody_id: string
@@ -153,8 +154,10 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
     })
 
     function playWithPrecount() {
-      gameAudio?.playWithPreCount(() => { })
-      game?.play(gameAudio?.PRECOUNT_LENGTH)
+      gameAudio?.playWithPreCount(() => {
+        game?.play()
+      })
+
     }
 
     function resumePlaying() {
@@ -163,8 +166,16 @@ const KonnakolPlayerPage: React.FC<KanakolPlayerPagePageArgs> = (props) => {
     }
 
     function pausePlaying() {
-      game?.pause()
-      gameAudio?.pause()
+      console.log('pause, mainLoop', gameAudio?.startedMainLoop)
+
+      if (gameAudio?.startedMainLoop) {
+        game?.pause()
+        gameAudio?.pause()
+      }
+      else {
+        // if we are in pre-count phase, stop whole animation
+        AppContext.Player.state = PlayerState.Stopped
+      }
     }
 
     function stopPlaying() {

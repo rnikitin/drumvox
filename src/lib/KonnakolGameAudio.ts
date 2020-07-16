@@ -1,6 +1,7 @@
 import * as Tone from 'tone'
 import { KonnakolMelody } from './DataModels'
 import { GameFeedbackCollector } from './GameFeedback'
+import { Draw } from 'tone/build/esm/core'
 
 // size of playing sequence, constant for now
 const SEQUENCE_SIZE = 8
@@ -22,6 +23,8 @@ export class KonnakolGameAudio {
 	private sequenceEvents: number[] = []
 	private Sequencer: Tone.Sequence<number>
 	private gameFeedback: GameFeedbackCollector
+	private scheduleOnStart?: Draw
+	public startedMainLoop = false
 
 	public PRECOUNT_LENGTH = 4000
 
@@ -76,6 +79,7 @@ export class KonnakolGameAudio {
 
 	public play() {
 		console.log('KonnakolGameAudio.play', this.bpm, Tone.Transport, this.Sequencer)
+		this.startedMainLoop = true
 
 		Tone.start().then(() => {
 			Tone.Transport.bpm.value = this.bpm
@@ -88,6 +92,7 @@ export class KonnakolGameAudio {
 
 	public playWithPreCount(onStart: () => void) {
 		console.log('KonnakolGameAudio.playWithPreCount', Tone.Transport.state)
+		this.startedMainLoop = false
 
 		// capture audio context
 		Tone.start().then(() => {
@@ -131,11 +136,12 @@ export class KonnakolGameAudio {
 			this.Sequencer.start(transportTime - firstTime, 0)
 
 			// schedule start just before music start
-			Tone.Draw.schedule(function () {
+			this.scheduleOnStart = Tone.Draw.schedule(() => {
 				console.log('Tone.Draw.schedule')
-				//do drawing or DOM manipulation here
+				//do DOM here
+				this.startedMainLoop = true
 				onStart()
-			}, transportTime - measureTime / 4)
+			}, transportTime)
 
 			this.gameFeedback.startTimer(this.bpm)
 		})
@@ -143,10 +149,10 @@ export class KonnakolGameAudio {
 
 	public pause() {
 		console.log('KonnakolGameAudio.pause', this.bpm)
-
-		// pause or stop all
+		// pause
 		Tone.Transport.pause()
 		this.drumPlayers.stopAll()
+		this.scheduleOnStart?.cancel()
 
 		this.gameFeedback.stopAndSaveHistory()
 	}
@@ -158,6 +164,7 @@ export class KonnakolGameAudio {
 		Tone.Transport.stop()
 		this.Sequencer.stop()
 		this.drumPlayers.stopAll()
+		this.scheduleOnStart?.cancel()
 
 		// collect feedback
 		this.gameFeedback.stopAndSaveHistory()

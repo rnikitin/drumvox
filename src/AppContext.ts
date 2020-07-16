@@ -1,10 +1,10 @@
-import { observable } from "mobx"
+import { observable } from 'mobx'
 
 
 export enum PlayerState {
-	Stopped = "Stopped",
-	Playing = "Playing",
-	Paused = "Paused"
+	Stopped = 'Stopped',
+	Playing = 'Playing',
+	Paused = 'Paused'
 }
 
 export class PlayerStateStore {
