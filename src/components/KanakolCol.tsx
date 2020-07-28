@@ -1,6 +1,6 @@
-import React, { useState } from "react"
-import { IonCol } from "@ionic/react"
-import "./KanakolCol.css"
+import React, { useState } from 'react'
+import { IonCol } from '@ionic/react'
+import './KanakolCol.css'
 
 type KonnakolColProp = {
     subscribeOnBeat: (callback: (tick: number) => void) => void;
@@ -8,14 +8,14 @@ type KonnakolColProp = {
 }
 
 const KanakolCol: React.FC<KonnakolColProp> = (props) => {
-    let [beat, updateBeat] = useState(0)
+    const [beat, updateBeat] = useState(0)
 
     props.subscribeOnBeat((newBeat: number) => {
         updateBeat(newBeat)
     })
     
     return (<IonCol
-        class={(beat === props.position) ? "kan-current" : ""}>
+        class={(beat === props.position) ? 'kan-current' : 'md hydrated'}>
         { props.position }
     </IonCol>)
 }

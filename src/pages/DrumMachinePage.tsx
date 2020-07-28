@@ -1,14 +1,14 @@
-import React, { useState } from "react"
-import { IonCol, IonRange, IonLabel, IonRow, IonGrid, IonContent, IonFab, IonFabButton, IonIcon, useIonViewWillEnter, IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, useIonViewDidEnter, IonButton, IonSegment, IonSegmentButton, useIonViewWillLeave } from "@ionic/react"
-import { play, pause, stop, arrowBackOutline } from "ionicons/icons"
-import DrumPoint from "../components/DrumPoint"
-import KanakolCol from "../components/KanakolCol"
-import * as SSDM from "../lib/StupidSimpleDrumMachine"
-import { Analytics } from "../lib/Analytics"
-import "./DrumMachinePage.css"
-import { Observer } from "mobx-react"
-import { ScreenOrientation } from "@ionic-native/screen-orientation"
-import { PowerManagement } from "@ionic-native/power-management"
+import React, { useState } from 'react'
+import { IonCol, IonRange, IonLabel, IonRow, IonGrid, IonContent, IonFab, IonFabButton, IonIcon, useIonViewWillEnter, IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, useIonViewDidEnter, IonButton, IonSegment, IonSegmentButton, useIonViewWillLeave } from '@ionic/react'
+import { play, pause, stop, arrowBackOutline } from 'ionicons/icons'
+import DrumPoint from '../components/DrumPoint'
+import KanakolCol from '../components/KanakolCol'
+import * as SSDM from '../lib/StupidSimpleDrumMachine'
+import { Analytics } from '../lib/Analytics'
+import './DrumMachinePage.css'
+import { Observer } from 'mobx-react'
+import { ScreenOrientation } from '@ionic-native/screen-orientation'
+import { PowerManagement } from '@ionic-native/power-management'
 
 type DrumMachineProps = {
 
@@ -22,11 +22,11 @@ export const DrumMachinePage: React.FC<DrumMachineProps> = () => {
 
     useIonViewWillEnter(() => {
         ScreenOrientation.lock(ScreenOrientation.ORIENTATIONS.LANDSCAPE)
-            .then(v => console.log("Screen orientation locked.", v),
-                err => console.log("failed to lock orientation...", err))
+            .then(v => console.log('Screen orientation locked.', v),
+                err => console.log('failed to lock orientation...', err))
 
         PowerManagement.acquire().then(() => {
-            console.log("wakelock acquared")
+            console.log('wakelock acquared')
         })
     })
 
@@ -34,12 +34,12 @@ export const DrumMachinePage: React.FC<DrumMachineProps> = () => {
         ScreenOrientation.unlock()
 
         PowerManagement.release().then(() => {
-            console.log("wakelock released")
+            console.log('wakelock released')
         })
     })
 
     useIonViewDidEnter(() => {
-        Analytics.setCurrentScreen("DrumMachinePage", {})
+        Analytics.setCurrentScreen('DrumMachinePage', {})
     })
 
     //const [playing, setPlaying] = useState(false)
@@ -47,7 +47,7 @@ export const DrumMachinePage: React.FC<DrumMachineProps> = () => {
 
     /// HANDLERS
     function notifyDrumPointComponents(newBeat: number) {
-        console.log("DrumMachineComponent.notifyDrumPointComponents", newBeat)
+        console.log('DrumMachineComponent.notifyDrumPointComponents', newBeat)
         beatCallbacks.forEach((callback) => callback(newBeat))
     }
 
@@ -57,7 +57,7 @@ export const DrumMachinePage: React.FC<DrumMachineProps> = () => {
     }
 
     function togglePlayPause() {
-        console.log("DrumMachineComponent.togglePlayPause")
+        console.log('DrumMachineComponent.togglePlayPause')
 
         if (!dm.playing) {
             dm.start()
@@ -66,7 +66,7 @@ export const DrumMachinePage: React.FC<DrumMachineProps> = () => {
             dm.pause()
         }
 
-        console.log("DrumMachineComponent.togglePlayPause", dm.playing)
+        console.log('DrumMachineComponent.togglePlayPause', dm.playing)
     }
 
     function stopHandle() {
@@ -78,12 +78,12 @@ export const DrumMachinePage: React.FC<DrumMachineProps> = () => {
 
     function changeBPM(e: any) {
         const newBpm = e.target.value
-        console.log("DrumMachineComponent.changeBPM", newBpm)
+        console.log('DrumMachineComponent.changeBPM', newBpm)
         dm.setBPM(newBpm)
     }
 
     function togglePlayer(tick: number, note: string) {
-        console.log("DrumMachineComponent.togglePlayer", tick, note)
+        console.log('DrumMachineComponent.togglePlayer', tick, note)
         dm.toggleBeat(tick, note)
     }
 
@@ -94,10 +94,10 @@ export const DrumMachinePage: React.FC<DrumMachineProps> = () => {
 
         // iterate through sequence size
         for (let i = 1; i <= sequenceSize; i++) {
-            drumPointColumns.push(<DrumPoint key={"dp" + i} tick={i} note={drumNote} onToggle={togglePlayer} />)
+            drumPointColumns.push(<DrumPoint key={'dp' + i} tick={i} note={drumNote} onToggle={togglePlayer} />)
         }
 
-        drumPointRows.push(<IonRow key={"row" + drumNote}>
+        drumPointRows.push(<IonRow key={'row' + drumNote}>
             <IonCol size="1">{drumNote}</IonCol>
             {drumPointColumns}
         </IonRow>)
@@ -109,11 +109,11 @@ export const DrumMachinePage: React.FC<DrumMachineProps> = () => {
     kanakolColumns.push(<IonCol key="kan00" size="1" />)
     // add kanakol notes
     for (let k = 1; k <= sequenceSize; k++) {
-        kanakolColumns.push(<KanakolCol key={"kan" + k} position={k} subscribeOnBeat={subscriberOnBeat} />)
+        kanakolColumns.push(<KanakolCol key={'kan' + k} position={k} subscribeOnBeat={subscriberOnBeat} />)
     }
 
     function sequenceSizeChange(value: string) {
-        console.log("sequenceSizeChange", value)
+        console.log('sequenceSizeChange', value)
         stopHandle()
         setSequenceSize(Number(value))
         // create new drum machine
@@ -126,7 +126,7 @@ export const DrumMachinePage: React.FC<DrumMachineProps> = () => {
             <IonHeader>
                 <IonToolbar mode="ios">
                     <IonButtons slot="start">
-                        <IonButton color="dark" routerDirection={"back"} routerLink={"/collections"} >
+                        <IonButton color="dark" routerDirection={'back'} routerLink={'/collections'} >
                             <IonIcon slot="icon-only" icon={arrowBackOutline} />
                         </IonButton>
                     </IonButtons>

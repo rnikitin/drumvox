@@ -2,4 +2,6 @@
     color: #ef6c00;
     transform: scale(1.5);
     text-shadow: 0 0 10px;
+    visibility: visible;
+    text-align: center;
 }
