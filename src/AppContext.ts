@@ -11,6 +11,7 @@ export class PlayerStateStore {
 	// TODO: make it getters and add actions
 	@observable state = PlayerState.Stopped
 	@observable bpm = 60
+	@observable speedDisabled = false
 }
 
 export class ContextStore {

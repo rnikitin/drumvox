@@ -2,7 +2,8 @@ import { KonnakolMelody, MelodyBeat } from './DataModels'
 import * as CONST from './KonnakolGameConstants'
 import { createAnimation } from '@ionic/react'
 import { Animation } from '@ionic/core'
-
+import KonnakolAdminPage from '../pages/KonnakolAdminPage'
+import { AppContext, PlayerState } from '../AppContext'
 
 export class KonnakolGame {
     private melody: KonnakolMelody
@@ -82,10 +83,13 @@ export class KonnakolGame {
     }
 
     public changeBPM(newBPM: number) {
-        this.stop()
         this.BPM = newBPM
         this.recalculateAnimations()
-        this.play(0)
+
+        if (AppContext.Player.state == PlayerState.Playing) {
+            this.stop()
+            this.play(0)
+        }
     }
 
     public stop() {

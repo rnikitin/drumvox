@@ -2,6 +2,7 @@ import * as Tone from 'tone'
 import { KonnakolMelody } from './DataModels'
 import { GameFeedbackCollector } from './GameFeedback'
 import { Draw } from 'tone/build/esm/core'
+import { AppContext } from '../AppContext'
 
 // size of playing sequence, constant for now
 const SEQUENCE_SIZE = 8
@@ -80,6 +81,7 @@ export class KonnakolGameAudio {
 	public play() {
 		console.log('KonnakolGameAudio.play', this.bpm, Tone.Transport, this.Sequencer)
 		this.startedMainLoop = true
+		AppContext.Player.speedDisabled = false
 
 		Tone.start().then(() => {
 			Tone.Transport.bpm.value = this.bpm
@@ -93,6 +95,8 @@ export class KonnakolGameAudio {
 	public playWithPreCount(onStart: () => void) {
 		console.log('KonnakolGameAudio.playWithPreCount', Tone.Transport.state)
 		this.startedMainLoop = false
+		// disable bpm control
+		AppContext.Player.speedDisabled = true
 
 		// capture audio context
 		Tone.start().then(() => {
@@ -141,6 +145,8 @@ export class KonnakolGameAudio {
 				//do DOM here
 				this.startedMainLoop = true
 				onStart()
+				// undisable speed controls
+				AppContext.Player.speedDisabled = false
 			}, transportTime)
 
 			this.gameFeedback.startTimer(this.bpm)
@@ -154,6 +160,8 @@ export class KonnakolGameAudio {
 		this.drumPlayers.stopAll()
 		this.scheduleOnStart?.cancel()
 
+		AppContext.Player.speedDisabled = false
+
 		this.gameFeedback.stopAndSaveHistory()
 	}
 
@@ -166,6 +174,8 @@ export class KonnakolGameAudio {
 		this.drumPlayers.stopAll()
 		this.scheduleOnStart?.cancel()
 
+		AppContext.Player.speedDisabled = false
+
 		// collect feedback
 		this.gameFeedback.stopAndSaveHistory()
 		this.gameFeedback.countMelody(this.melodyPlayCounter)
@@ -173,17 +183,21 @@ export class KonnakolGameAudio {
 	}
 
 	public changeBPM(newBpm: number) {
-		this.stop()
 		this.bpm = newBpm
 		Tone.Transport.bpm.value = newBpm
+
+		if (this.startedMainLoop) {
+			this.stop()
+			this.play()
+		}
+		
 		this.gameFeedback.startTimer(this.bpm)
-		this.play()
+
 	}
 
 	private playNotes(notes: string[], time: number) {
 		if (notes.length > 0) {
 			for (const note of notes) {
-				//console.log("KonnakolGameAudio.playNote", note, time)
 				this.drumPlayers.player(note).start(time, 0)
 			}
 		}

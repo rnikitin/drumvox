@@ -112,7 +112,7 @@ const DOMKOnnakolGame: React.FC<DOMKOnnakolGameProps> = (props: DOMKOnnakolGameP
                 position: 'absolute',
                 left: CONST.BEAT_RADIUS - 6,
                 bottom: CONST.GROUP_HEIGHT,
-                fontSize: '1em',
+                fontSize: '20px',
                 color: CONST.COLOR_TEXT,
                 textAlign: 'center'
 
