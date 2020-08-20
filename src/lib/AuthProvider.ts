@@ -4,7 +4,7 @@ import { Plugins } from '@capacitor/core'
 import { getPlatforms } from '@ionic/react'
 import { observable } from 'mobx'
 import { Analytics } from './Analytics'
-import { Intercom } from './Intercom'
+//import { Intercom } from './Intercom'
 const { Device } = Plugins
 
 const firebaseAuth = firebaseWebApp.auth()
@@ -26,39 +26,39 @@ class AuthProvider {
 			if (value) {
 				this.currentUser = value!
 
-				if (this.currentUser.isAnonymous) {
-					Promise.all([Intercom.registerUnidentifiedUser(),
-					Device.getLanguageCode()])
-						.then(result => {
-							const language = result[1]?.value ? result[1]?.value : 'en'
+				// if (this.currentUser.isAnonymous) {
+				// 	Promise.all([Intercom.registerUnidentifiedUser(),
+				// 	Device.getLanguageCode()])
+				// 		.then(result => {
+				// 			const language = result[1]?.value ? result[1]?.value : 'en'
 
-							Intercom.updateUser({
-								customAttributes: {
-									user_id: this.currentUser?.uid,
-									created_at: this.currentUser?.metadata.creationTime,
-									language_override: language
-								}
-							})
-						})
-				}
-				else {
-					Promise.all([Intercom.registerIdentifiedUser({ userId: this.currentUser.uid, email: this.currentUser.email! }),
-					Device.getLanguageCode()])
-						.then(result => {
-							const language = result[1]?.value ? result[1]?.value : 'en'
+				// 			// Intercom.updateUser({
+				// 			// 	customAttributes: {
+				// 			// 		user_id: this.currentUser?.uid,
+				// 			// 		created_at: this.currentUser?.metadata.creationTime,
+				// 			// 		language_override: language
+				// 			// 	}
+				// 			// })
+				// 		})
+				// }
+				// else {
+				// 	Promise.all([Intercom.registerIdentifiedUser({ userId: this.currentUser.uid, email: this.currentUser.email! }),
+				// 	Device.getLanguageCode()])
+				// 		.then(result => {
+				// 			const language = result[1]?.value ? result[1]?.value : 'en'
 
-							Intercom.updateUser({
-								customAttributes: {
-									user_id: this.currentUser?.uid,
-									name: this.currentUser?.displayName,
-									email: this.currentUser?.email,
-									created_at: this.currentUser?.metadata.creationTime,
-									avatar: this.currentUser?.photoURL,
-									language_override: language
-								}
-							})
-						})
-				}
+				// 			Intercom.updateUser({
+				// 				customAttributes: {
+				// 					user_id: this.currentUser?.uid,
+				// 					name: this.currentUser?.displayName,
+				// 					email: this.currentUser?.email,
+				// 					created_at: this.currentUser?.metadata.creationTime,
+				// 					avatar: this.currentUser?.photoURL,
+				// 					language_override: language
+				// 				}
+				// 			})
+				// 		})
+				//}
 			}
 			else {
 				this.signInAnonym()
@@ -105,7 +105,7 @@ class AuthProvider {
 		Analytics.LogEvent('Auth/Signout', {})
 
 		firebaseAuth.signOut()
-		Intercom.logout()
+		//Intercom.logout()
 	}
 }
 

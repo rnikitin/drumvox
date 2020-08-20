@@ -17,7 +17,6 @@ dependencies {
     implementation "com.google.firebase:firebase-analytics:17.4.+"
 }
 apply from: "../../node_modules/cordova-plugin-ionic/src/android/cordovapluginionic.gradle"
-apply from: "../../node_modules/cordova-support-google-services/build.gradle"
 
 if (hasProperty('postBuildExtras')) {
   postBuildExtras()

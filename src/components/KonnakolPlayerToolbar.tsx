@@ -14,7 +14,7 @@ const KonnakolPlayerToolbar: React.FC = () => {
     const onPlay = () => {
         console.log('onPlay', AppContext.Player.state)
 
-        AppContext.Player.state = AppContext.Player.state == PlayerState.Playing ? PlayerState.Paused : PlayerState.Playing
+        AppContext.Player.state = AppContext.Player.state == PlayerState.Playing ? PlayerState.Stopped : PlayerState.Playing
 
         Analytics.LogEvent('Player.StateChange', { playerState: AppContext.Player.state })
     }
@@ -55,12 +55,12 @@ const KonnakolPlayerToolbar: React.FC = () => {
                             </IonButton>
 
 
-                            <IonButton className="controls-stop" onClick={onStop}>
+                            {/* <IonButton className="controls-stop" onClick={onStop}>
                                 <IonIcon slot="icon-only" icon={stopOutline} />
-                            </IonButton>
+                            </IonButton> */}
 
                             <IonButton onClick={onPlay}>
-                                <IonIcon slot="icon-only" icon={AppContext.Player.state == PlayerState.Playing ? pauseOutline : playOutline} />
+                                <IonIcon slot="icon-only" icon={AppContext.Player.state == PlayerState.Playing ? stopOutline : playOutline} />
                             </IonButton>
 
                         </IonButtons>

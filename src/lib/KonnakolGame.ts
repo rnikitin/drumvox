@@ -10,15 +10,24 @@ export class KonnakolGame {
 
     private BPM = 60
 
-    offsetAnimation: Animation
-    loopAnimation: Animation
+    offsetAnimation?: Animation
+    loopAnimation?: Animation
     private offsetAnimationFinished = false
 
     constructor(melody: KonnakolMelody, bpm: number) {
         this.melody = melody
         this.BPM = bpm
 
+        this.recalculateAnimations()
+    }
+
+    private recalculateAnimations() {
         const domMelodyContainer = document.querySelector('.melody-container')
+
+        if (this.offsetAnimation){
+            this.offsetAnimation.stop()
+            this.offsetAnimation.destroy()
+        }
 
         this.offsetAnimation = this.offsetAnimation = createAnimation()
             .addElement(domMelodyContainer!)
@@ -27,14 +36,15 @@ export class KonnakolGame {
                 this.offsetAnimationFinished = true
             })
 
+        if (this.loopAnimation){
+            this.offsetAnimation.stop()
+            this.loopAnimation.destroy()
+        }
+
         this.loopAnimation = createAnimation()
             .addElement(domMelodyContainer!)
             .iterations(Infinity)
 
-        this.recalculateAnimations()
-    }
-
-    private recalculateAnimations() {
         // расстояние которое проходит бит за t
         const S = CONST.BEAT_WIDTH
         // время, за которое проигрывается 1 бит
@@ -50,24 +60,21 @@ export class KonnakolGame {
 
         console.log(`KonnakolGame.recalculateAnimations v=${v} offset_t=${offset_t} offset_s=${offset_s} loop_t=${loop_t} loop_s=${loop_s} `)
 
-        this.offsetAnimation
-            .duration(offset_t)
+        this.offsetAnimation?.duration(offset_t)
             .fromTo('transform', 'translateX(0px)', `translateX(-${offset_s}px)`)
 
-        this.loopAnimation
-            .duration(loop_t)
+        this.loopAnimation?.duration(loop_t)
             .fromTo('transform', `translateX(-${offset_s}px)`, `translateX(-${loop_s + offset_s}px)`)
-
     }
 
     public async play(delay = 0) {
         // set delay
-        this.offsetAnimation.delay(delay)
+        this.offsetAnimation?.delay(delay)
 
         // start animation
         this.offsetAnimationFinished = false
-        await this.offsetAnimation.play()
-        await this.loopAnimation.play()
+        await this.offsetAnimation?.play()
+        await this.loopAnimation?.play()
     }
 
     public pause() {
@@ -83,11 +90,17 @@ export class KonnakolGame {
     }
 
     public changeBPM(newBPM: number) {
+
+        console.log('changeBPM', newBPM, 'state', AppContext.Player.state)
+        
         this.BPM = newBPM
+
+        this.stop()
+
         this.recalculateAnimations()
 
-        if (AppContext.Player.state == PlayerState.Playing) {
-            this.stop()
+        if (AppContext.Player.state === PlayerState.Playing) {
+            console.log('newbpm = ', newBPM, 'state', AppContext.Player.state)
             this.play(0)
         }
     }

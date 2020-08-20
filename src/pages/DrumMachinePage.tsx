@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { IonCol, IonRange, IonLabel, IonRow, IonGrid, IonContent, IonFab, IonFabButton, IonIcon, useIonViewWillEnter, IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, useIonViewDidEnter, IonButton, IonSegment, IonSegmentButton, useIonViewWillLeave } from '@ionic/react'
+import { IonCol, IonRange, IonLabel, IonRow, IonGrid, IonContent, IonFab, IonFabButton, IonIcon, useIonViewWillEnter, IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, useIonViewDidEnter, IonButton, IonSegment, IonSegmentButton, useIonViewWillLeave, IonSelect, IonSelectOption } from '@ionic/react'
 import { play, pause, stop, arrowBackOutline } from 'ionicons/icons'
 import DrumPoint from '../components/DrumPoint'
 import KanakolCol from '../components/KanakolCol'
@@ -121,6 +121,16 @@ export const DrumMachinePage: React.FC<DrumMachineProps> = () => {
         dm = new SSDM.DrumMachine(sequenceSize, notifyDrumPointComponents)
     }
 
+    function generateMeasureSegments() {
+        const segments = []
+
+        for (let i = 3; i <= 16; i++) {
+            segments.push(<IonSelectOption value={i}>{i}</IonSelectOption>)
+        }
+
+        return segments
+    }
+
     return (
         <IonPage>
             <IonHeader>
@@ -131,22 +141,16 @@ export const DrumMachinePage: React.FC<DrumMachineProps> = () => {
                         </IonButton>
                     </IonButtons>
                     <IonButtons slot="end">
+                        <IonLabel>Measure</IonLabel>
+                        <IonSelect value={sequenceSize} interface="popover" onIonChange={e => sequenceSizeChange(e.detail.value!)}>
+                            {generateMeasureSegments()}
+                        </IonSelect>
                         <IonMenuButton color="dark" />
                     </IonButtons>
-                    <IonSegment mode="ios" value={sequenceSize.toString()} onIonChange={e => sequenceSizeChange(e.detail.value!)} color="primary">
-                        <IonSegmentButton value="4">
-                            <IonLabel>4</IonLabel>
-                        </IonSegmentButton>
-                        <IonSegmentButton value="8">
-                            <IonLabel>8</IonLabel>
-                        </IonSegmentButton>
-                        <IonSegmentButton value="12">
-                            <IonLabel>12</IonLabel>
-                        </IonSegmentButton>
-                        <IonSegmentButton value="16">
-                            <IonLabel>16</IonLabel>
-                        </IonSegmentButton>
-                    </IonSegment>
+
+                    {/* <IonSegment mode="ios" value={sequenceSize.toString()} onIonChange={e => sequenceSizeChange(e.detail.value!)} color="primary">
+                        {generateMeasureSegments()}
+                    </IonSegment> */}
                 </IonToolbar>
             </IonHeader>
             <IonContent>
@@ -193,7 +197,8 @@ export const DrumMachinePage: React.FC<DrumMachineProps> = () => {
                                 ticks={false}
                                 value={SSDM.DEFAULT_BPM}
                                 onIonChange={changeBPM}
-                                debounce={250}>
+                                debounce={250}
+                                className="bpm-range">
                                 <IonLabel slot="start">50</IonLabel>
                                 <IonLabel slot="end">250</IonLabel>
                             </IonRange>

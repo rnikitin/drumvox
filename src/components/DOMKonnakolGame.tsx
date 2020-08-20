@@ -3,7 +3,6 @@ import React from 'react'
 import * as CONST from '../lib/KonnakolGameConstants'
 
 import './DOMKonnakolGame.css'
-import { posix } from 'path'
 
 interface DOMKOnnakolGameProps {
     melody: KonnakolMelody

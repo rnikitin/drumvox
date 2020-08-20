@@ -2,7 +2,7 @@ import * as Tone from 'tone'
 import { KonnakolMelody } from './DataModels'
 import { GameFeedbackCollector } from './GameFeedback'
 import { Draw } from 'tone/build/esm/core'
-import { AppContext } from '../AppContext'
+import { AppContext, PlayerState } from '../AppContext'
 
 // size of playing sequence, constant for now
 const SEQUENCE_SIZE = 8
@@ -186,8 +186,10 @@ export class KonnakolGameAudio {
 		this.bpm = newBpm
 		Tone.Transport.bpm.value = newBpm
 
-		if (this.startedMainLoop) {
-			this.stop()
+		this.stop()
+
+		// restart playing
+		if (AppContext.Player.state == PlayerState.Playing){
 			this.play()
 		}
 		

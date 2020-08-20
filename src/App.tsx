@@ -33,16 +33,16 @@ import '@ionic/react/css/display.css'
 
 /* Theme variables */
 import './theme/variables.css'
-import {Intercom, PushNotifications} from './lib/Intercom'
+import {PushNotifications} from './lib/Intercom'
 
 //LogRocket.init('zfojck/drumvox');
 
 const App: React.FC = () => {
 
   useEffect(() => {
-    setTimeout(() => {
-      Intercom.displayLauncher()
-    }, 1000)
+    // setTimeout(() => {
+    //   Intercom.displayLauncher()
+    // }, 1000)
 
     PushNotifications.requestPermission().then(() => {
       PushNotifications.register()

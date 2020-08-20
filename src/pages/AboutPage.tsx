@@ -1,9 +1,9 @@
-import React, { useState } from "react"
-import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, useIonViewDidEnter, useIonViewWillEnter, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonItem, IonIcon, IonLabel, IonButton } from "@ionic/react"
-import { Analytics } from "../lib/Analytics"
-import { AppVersion } from "@ionic-native/app-version"
-import "./AboutPage.css"
-import { womanOutline, manOutline, flowerOutline, musicalNotesOutline, rocketOutline, arrowBackOutline, powerOutline } from "ionicons/icons"
+import React, { useState } from 'react'
+import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, useIonViewDidEnter, useIonViewWillEnter, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonItem, IonIcon, IonLabel, IonButton } from '@ionic/react'
+import { Analytics } from '../lib/Analytics'
+import { AppVersion } from '@ionic-native/app-version'
+import './AboutPage.css'
+import { womanOutline, manOutline, flowerOutline, musicalNotesOutline, rocketOutline, arrowBackOutline, powerOutline } from 'ionicons/icons'
 
 type AboutPageState = {
 	appName: string
@@ -15,10 +15,10 @@ type AboutPageState = {
 const AboutPage: React.FC = () => {
 
 	const [state, setState] = useState<AboutPageState>({
-		appName: "Drumvox",
-		packageName: "drumvox.web",
+		appName: 'Drumvox',
+		packageName: 'drumvox.web',
 		versionCode: -1,
-		versionNumber: "0.0.1"
+		versionNumber: '0.0.1'
 	})
 
 	useIonViewWillEnter(() => {
@@ -34,7 +34,7 @@ const AboutPage: React.FC = () => {
 	})
 
 	useIonViewDidEnter(() => {
-		Analytics.setCurrentScreen("AboutPage", {})
+		Analytics.setCurrentScreen('AboutPage', {})
 	})
 
 	return (
@@ -42,7 +42,7 @@ const AboutPage: React.FC = () => {
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">
-						<IonButton routerDirection={"back"} routerLink="/collections">
+						<IonButton routerDirection={'back'} routerLink="/collections">
 							<IonIcon slot="icon-only" icon={arrowBackOutline} />
 						</IonButton>
 					</IonButtons>
@@ -86,6 +86,7 @@ const AboutPage: React.FC = () => {
 					<IonItem>
 						<IonIcon icon={musicalNotesOutline} slot="start" />
 						<IonLabel>Mike Dolgov - konnakol guru, drum teacher</IonLabel>
+						<IonButton fill="outline" slot="end" href="javascript:window.open('https://vk.com/podok','_system', 'location=yes')" >vk</IonButton>
 					</IonItem>
 
 					<IonItem>
